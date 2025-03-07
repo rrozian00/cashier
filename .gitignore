@@ -1,0 +1,10 @@
+# Mengabaikan semua file dengan ekstensi tertentu
+*.mp4
+*.zip
+*.iso
+*.exe
+*.apk
+
+# Mengabaikan folder tertentu
+/build/
+node_modules/

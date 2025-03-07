@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "54320001887",
+    "project_id": "cashier-d2878",
+    "storage_bucket": "cashier-d2878.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54320001887:android:e6633233d0ec8ab5197cea",
+        "android_client_info": {
+          "package_name": "com.natureship.cashier"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBfLadQcC0dlrTNMLoyCxgKU6u50BBto4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
