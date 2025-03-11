@@ -8,3 +8,4 @@
 # Mengabaikan folder tertentu
 /build/
 node_modules/
+android/app/.cxx/
