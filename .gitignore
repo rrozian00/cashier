@@ -9,3 +9,27 @@
 /build/
 node_modules/
 android/app/.cxx/
+
+# Flutter/Dart related
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+pubspec.lock
+
+# macOS related
+.DS_Store
+
+# Windows related
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IntelliJ / VS Code related
+.idea/
+.vscode/
+
+# Xcode related
+*.xcworkspace/
+*.xcuserdata/
