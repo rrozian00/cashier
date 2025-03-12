@@ -64,10 +64,10 @@ class SettingsView extends GetView<SettingsController> {
               ),
               _Listile(
                 onPress: () {
-                  Get.toNamed(Routes.PRINTER);
+                  Get.toNamed(Routes.HISTORY_ORDER);
                 },
-                title: "Printer",
-                icon: Icons.print,
+                title: "Riwayat",
+                icon: Icons.history_toggle_off_rounded,
               ),
               Text("version: v.1, db.version: 1"),
             ],

@@ -13,7 +13,6 @@ import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 
 class OrderController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final HomeController homeController = Get.find();
 
@@ -61,6 +60,8 @@ class OrderController extends GetxController {
   var jumlahBayar = 0.obs;
   var kembalian = 0.obs;
 
+  final userName = ''.obs;
+
   var selectedProduk = Rxn<MenuModel>(); // Kembalikan selectedProduk
   TextEditingController bayarController =
       TextEditingController(); // Kembalikan bayarController
@@ -77,9 +78,16 @@ class OrderController extends GetxController {
       }
     });
 
+    getUser();
     // Auto-update kembalian ketika jumlahBayar atau totalHarga berubah
     ever(jumlahBayar, (_) => hitungTotal());
     ever(totalHarga, (_) => hitungTotal());
+  }
+
+  void getUser() async {
+    final userId = _auth.currentUser!.uid;
+    var snapshot = await _firestore.collection('users').doc(userId).get();
+    userName.value = snapshot.data()?['name'];
   }
 
   void clearUserData() {
@@ -222,18 +230,13 @@ class OrderController extends GetxController {
     }
 
     tampilkanStruk();
-    displayText.value = '';
-    keranjangBelanja.clear();
-    jumlahBayar.value = 0;
-    bayarController.clear();
-    kembalian.value = 0;
     hitungTotal();
   }
 
   void tampilkanStruk() {
     String storeName = homeController.storeNameFinal.value;
     String address = homeController.storeAddressFinal.value;
-    String kasir = homeController.userNameFinal.value;
+    String kasir = userName.value;
     debugPrint(
         "Isi Keranjang sebelum tampilkan struk: ${keranjangBelanja.toList()}");
 
@@ -243,6 +246,8 @@ class OrderController extends GetxController {
     }
 
     Get.bottomSheet(
+      enableDrag: false,
+      isDismissible: false,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       Container(
         height: 700,
@@ -341,7 +346,6 @@ class OrderController extends GetxController {
             Column(
               children: [
                 _buildRow("Subtotal", totalHarga.value),
-                _buildRow("Diskon", 0), // Bisa diubah sesuai kebutuhan
                 _buildRow("Total Harga", totalHarga.value, bold: true),
                 _buildRow("Bayar", jumlahBayar.value),
                 _buildRow("Kembalian", kembalian.value, bold: true),
@@ -357,6 +361,11 @@ class OrderController extends GetxController {
                 children: [
                   ElevatedButton(
                     onPressed: () {
+                      displayText.value = '';
+                      keranjangBelanja.clear();
+                      jumlahBayar.value = 0;
+                      bayarController.clear();
+                      kembalian.value = 0;
                       Get.back(); // Menutup BottomSheet
                       Get.back(); // Menutup BottomSheet
                     },
@@ -459,21 +468,31 @@ class OrderController extends GetxController {
     bytes += generator.text("--------------------------------");
 
     // **2. Informasi Transaksi**
-    final kasir = homeController.userNameFinal;
-    bytes += generator.text("Tanggal: ${DateTime.now()}",
+    final kasir = userName.value;
+    final today = DateFormat('dd-MM-yyyy HH:mm:ss').format(DateTime.now());
+    bytes += generator.text("Tanggal: $today",
         styles: PosStyles(align: PosAlign.left));
-    bytes += generator.text("Kasir: $kasir",
+    bytes += generator.text("Kasir  : $kasir",
         styles: PosStyles(align: PosAlign.left));
     bytes += generator.text("--------------------------------");
 
     // **3. Header Daftar Produk**
     bytes += generator.text(
-      "Nama Produk  Qty  Harga     Subtotal",
+      "Nama Produk  Qty  Harga Subtotal",
       styles: PosStyles(bold: true),
     );
     bytes += generator.text("--------------------------------");
 
     // **4. Daftar Produk**
+    debugPrint(
+        "Isi Keranjang: ${keranjangBelanja.map((e) => e.toString()).toList()}");
+
+    if (keranjangBelanja.isEmpty) {
+      debugPrint("Tidak ada item dalam keranjang!");
+      Get.snackbar("Error", "Keranjang masih kosong!");
+      return;
+    }
+
     for (var item in keranjangBelanja) {
       final produk = item['produk'] as MenuModel?;
       if (produk == null) continue;
@@ -493,7 +512,7 @@ class OrderController extends GetxController {
             width: 2,
             styles: PosStyles(align: PosAlign.right)),
         PosColumn(
-            text: "Rp $hargaSatuan",
+            text: rupiahConverter(hargaSatuan),
             width: 4,
             styles: PosStyles(align: PosAlign.right)),
       ]);
@@ -503,7 +522,7 @@ class OrderController extends GetxController {
             width: 8,
             styles: PosStyles(align: PosAlign.right)),
         PosColumn(
-            text: "Rp $subTotal",
+            text: rupiahConverter(subTotal),
             width: 4,
             styles: PosStyles(align: PosAlign.right)),
       ]);
@@ -518,7 +537,7 @@ class OrderController extends GetxController {
           width: 8,
           styles: PosStyles(align: PosAlign.right, bold: true)),
       PosColumn(
-          text: "Rp ${totalHarga.value}",
+          text: rupiahConverter(totalHarga.value),
           width: 4,
           styles: PosStyles(align: PosAlign.right, bold: true)),
     ]);
@@ -526,7 +545,7 @@ class OrderController extends GetxController {
       PosColumn(
           text: "Bayar:", width: 8, styles: PosStyles(align: PosAlign.right)),
       PosColumn(
-          text: "Rp ${jumlahBayar.value}",
+          text: rupiahConverter(jumlahBayar.value),
           width: 4,
           styles: PosStyles(align: PosAlign.right)),
     ]);
@@ -536,7 +555,7 @@ class OrderController extends GetxController {
           width: 8,
           styles: PosStyles(align: PosAlign.right, bold: true)),
       PosColumn(
-          text: "Rp ${kembalian.value}",
+          text: rupiahConverter(kembalian.value),
           width: 4,
           styles: PosStyles(align: PosAlign.right, bold: true)),
     ]);
@@ -546,7 +565,7 @@ class OrderController extends GetxController {
     // **6. Footer Struk**
     bytes += generator.text("Terima Kasih!",
         styles: PosStyles(align: PosAlign.center, bold: true));
-    bytes += generator.text("Silakan datang kembali",
+    bytes += generator.text("Silahkan datang kembali",
         styles: PosStyles(align: PosAlign.center));
     bytes += generator.cut(); // Potong kertas setelah cetak selesai
 
@@ -554,6 +573,7 @@ class OrderController extends GetxController {
     final result = await PrintBluetoothThermal.writeBytes(bytes);
     if (result) {
       debugPrint("Cetak berhasil!");
+      debugPrint("Data yang dikirim ke printer: $bytes");
     } else {
       debugPrint("Cetak gagal!");
     }

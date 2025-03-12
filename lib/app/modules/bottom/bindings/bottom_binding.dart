@@ -4,6 +4,7 @@ import 'package:cashier/app/modules/history_order/controllers/history_order_cont
 import 'package:cashier/app/modules/login/controllers/login_controller.dart';
 import 'package:cashier/app/modules/menu/controllers/menuu_controller.dart';
 import 'package:cashier/app/modules/order/controllers/order_controller.dart';
+import 'package:cashier/app/modules/printer/controllers/printer_controller.dart';
 import 'package:cashier/app/modules/profile/controllers/profile_controller.dart';
 import 'package:cashier/app/modules/settings/controllers/settings_controller.dart';
 import 'package:get/get.dart';
@@ -23,5 +24,6 @@ class BottomBinding extends Bindings {
     Get.lazyPut<SettingsController>(() => SettingsController());
     Get.lazyPut<MenuuController>(() => MenuuController());
     Get.lazyPut<ProfileController>(() => ProfileController());
+    Get.lazyPut<PrinterController>(() => PrinterController());
   }
 }

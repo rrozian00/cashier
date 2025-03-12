@@ -1,3 +1,4 @@
+import 'package:cashier/utils/my_appbar.dart';
 import 'package:cashier/utils/my_elevated.dart';
 import 'package:cashier/utils/no_data.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,10 @@ class PrinterView extends GetView<PrinterController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.isConnected.value;
     return Scaffold(
-      appBar: AppBar(
+      appBar: MyAppBar(
         title: Text("Printers"),
-        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
