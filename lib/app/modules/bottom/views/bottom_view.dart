@@ -37,8 +37,7 @@ class BottomView extends GetView<BottomController> {
           curve: Curves.bounceIn,
           // tabBorder: Border.all(),
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          padding:
-              const EdgeInsets.only(right: 10, left: 10, bottom: 10, top: 20),
+          padding: const EdgeInsets.only(right: 10, left: 10, bottom: 30),
           tabBorderRadius: 15,
           // backgroundColor: Colors.grey[100]!,
           color: Colors.grey[400],

@@ -52,11 +52,6 @@ class AddEmployeeController extends GetxController {
 
       // Ambil ID owner yang sedang login
       String? ownerId = _auth.currentUser?.uid;
-      if (ownerId == null) {
-        Get.snackbar("Error", "Gagal mendapatkan ID Owner.");
-        isLoading.value = false;
-        return;
-      }
 
       // Cari store yang dimiliki owner atau tempat dia bekerja
       QuerySnapshot<Map<String, dynamic>> storeQuery = await _firestore
