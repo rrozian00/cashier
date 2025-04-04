@@ -4,8 +4,21 @@
 <dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Aplikasi ini memerlukan akses Bluetooth untuk mencetak struk.</string>
+
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Aplikasi ini menggunakan Bluetooth untuk berkomunikasi dengan printer.</string>
+
+	<!-- Tambahan izin untuk iOS 13+ -->
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Aplikasi ini memerlukan akses Bluetooth setiap saat untuk mencetak struk.</string>
+
+	<!-- Jika menggunakan BLE (Bluetooth Low Energy), tambahkan ini -->
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Aplikasi ini menggunakan Bluetooth untuk berkomunikasi dengan perangkat BLE.</string>
+
+	<key>NSCameraUsageDescription</key>
+	<string>Camera permission is required for barcode scanning.</string>
+	
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
