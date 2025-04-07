@@ -91,7 +91,7 @@ class AddMenusView extends GetView<MenusController> {
                   ),
                 ),
                 SizedBox(height: 25),
-                myBlueElevated(
+                myPurpleElevated(
                     text: "Simpan", onPress: () => controller.addMenu()),
               ],
             )),

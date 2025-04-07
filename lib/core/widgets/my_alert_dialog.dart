@@ -42,7 +42,7 @@ class MyAlertDialog extends GetView {
                 text: "Batal",
                 onPress: onCancel ?? () => Get.back(),
               ),
-              myBlueElevated(
+              myPurpleElevated(
                 text: onConfirmText ?? "Simpan",
                 onPress: () {
                   onConfirm();

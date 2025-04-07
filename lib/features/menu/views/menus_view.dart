@@ -19,7 +19,7 @@ class MenusView extends GetView<MenusController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-        titleText: "Daftar Menu",
+        titleText: "Daftar Produk",
       ),
       body: SafeArea(
         child: Obx(() {
@@ -122,7 +122,7 @@ class MenusView extends GetView<MenusController> {
               ),
               Expanded(
                   flex: 1,
-                  child: myBlueElevated(
+                  child: myPurpleElevated(
                     text: "Tambah Menu",
                     onPress: () => Get.toNamed(Routes.addMenus),
                   )),

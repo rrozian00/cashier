@@ -1,3 +1,4 @@
+import 'package:cashier/features/store/models/store_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -31,4 +32,34 @@ Future<String> getStoreId() async {
     }
   }
   return '';
+}
+
+Future<StoreModel?> getStore() async {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  final userId = auth.currentUser?.uid;
+  if (userId == null) return null;
+
+  // Cek apakah user adalah pemilik toko
+  final ownerStore = await firestore
+      .collection('stores')
+      .where('ownerId', isEqualTo: userId)
+      .get();
+
+  if (ownerStore.docs.isNotEmpty) {
+    return StoreModel.fromMap(ownerStore.docs.first.data());
+  } else {
+    // Jika bukan owner, cek apakah user adalah karyawan
+    final employeeStore = await firestore
+        .collection('stores')
+        .where('employees', arrayContains: userId)
+        .get();
+
+    if (employeeStore.docs.isNotEmpty) {
+      return StoreModel.fromMap(employeeStore.docs.first.data());
+    }
+  }
+
+  return null;
 }

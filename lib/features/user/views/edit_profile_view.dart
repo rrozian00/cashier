@@ -31,7 +31,7 @@ class EditProfileView extends GetView<ProfileController> {
               controller: controller.phone,
               label: "No HP",
             ),
-            myBlueElevated(
+            myPurpleElevated(
               text: "Simpan",
               onPress: () => controller.editProfile(),
             )

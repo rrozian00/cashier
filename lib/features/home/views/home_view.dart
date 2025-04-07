@@ -1,10 +1,9 @@
-import 'package:cashier/features/user/controllers/profile_controller.dart';
-import 'package:cashier/core/widgets/my_appbar.dart';
-import 'package:cashier/core/utils/rupiah_converter.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+
+import 'package:cashier/core/widgets/my_appbar.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -13,8 +12,6 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    final ProfileController cont = Get.find();
-
     return Scaffold(
       appBar: MyAppBar(
         icon: Icons.store,
@@ -24,7 +21,7 @@ class HomeView extends GetView<HomeController> {
             child: Obx(() => SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Text(
-                    "Hai, ${cont.name.value}",
+                    "Hai, ${controller.userData.value?.name}",
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       color: Colors.deepPurple,
@@ -59,10 +56,10 @@ class HomeView extends GetView<HomeController> {
                     ),
                   ),
                   Obx(() => Text(
-                        controller.storeNameFinal.value.isEmpty
+                        controller.storeName.isEmpty
                             ? "Loading..."
-                            : controller.storeNameFinal.value.toUpperCase(),
-                        style: TextStyle(
+                            : controller.storeName.value,
+                        style: GoogleFonts.pacifico(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ))
                 ],
@@ -88,24 +85,24 @@ class HomeView extends GetView<HomeController> {
             Expanded(
               child: RefreshIndicator(
                 triggerMode: RefreshIndicatorTriggerMode.anywhere,
-                onRefresh: () => controller.getStoreName(),
+                onRefresh: () async => controller.fetchData(),
                 child: ListView(
                   children: [
-                    Obx(() => MyCard(
-                          image: "assets/images/income.png",
-                          title: "Total Pendapatan Hari Ini",
-                          subtitle: rupiahConverterDouble(
-                              controller.totalIncomeToday.value),
-                          color: Colors.green[900],
-                        )),
-                    // SizedBox(height: 16),
-                    Obx(() => MyCard(
-                          image: 'assets/images/expenses.png',
-                          title: "Total Pengeluaran Hari Ini",
-                          subtitle: rupiahConverterDouble(
-                              controller.totalPengeluaranToday.value),
-                          color: Colors.red[700],
-                        )),
+                    // Obx(() => MyCard(
+                    //       image: "assets/images/income.png",
+                    //       title: "Total Pendapatan Hari Ini",
+                    //       subtitle: rupiahConverterDouble(
+                    //           controller.totalIncomeToday.value),
+                    //       color: Colors.green[900],
+                    //     )),
+                    // // SizedBox(height: 16),
+                    // Obx(() => MyCard(
+                    //       image: 'assets/images/expenses.png',
+                    //       title: "Total Pengeluaran Hari Ini",
+                    //       subtitle: rupiahConverterDouble(
+                    //           controller.totalPengeluaranToday.value),
+                    //       color: Colors.red[700],
+                    //     )),
                   ],
                 ),
               ),

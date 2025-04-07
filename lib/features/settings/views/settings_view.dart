@@ -1,14 +1,12 @@
+import 'package:cashier/features/user/controllers/profile_controller.dart';
 import 'package:cashier/routes/app_pages.dart';
 import 'package:cashier/core/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:google_fonts/google_fonts.dart';
 
-import '../controllers/settings_controller.dart';
-
-class SettingsView extends GetView<SettingsController> {
+class SettingsView extends GetView<ProfileController> {
   const SettingsView({super.key});
   @override
   Widget build(BuildContext context) {
@@ -22,16 +20,9 @@ class SettingsView extends GetView<SettingsController> {
             children: [
               _Listile(
                 onPress: () {
-                  Get.toNamed(Routes.profile);
-                },
-                title: "Profil Owner",
-                icon: Icons.person,
-              ),
-              _Listile(
-                onPress: () {
                   Get.toNamed(Routes.STORE);
                 },
-                title: " Profil Toko",
+                title: "Toko",
                 icon: Icons.store,
               ),
               _Listile(
@@ -45,7 +36,7 @@ class SettingsView extends GetView<SettingsController> {
                 onPress: () {
                   Get.toNamed(Routes.menus);
                 },
-                title: "Daftar Menu",
+                title: "Produk",
                 icon: Icons.receipt_outlined,
               ),
               _Listile(

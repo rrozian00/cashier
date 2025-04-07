@@ -131,7 +131,7 @@ class StoreController extends GetxController {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               myElevated(onPress: () => Get.back(), text: "Kembali"),
-              myBlueElevated(
+              myPurpleElevated(
                   onPress: () {
                     updateStore();
                     Get.back();

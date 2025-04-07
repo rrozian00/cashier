@@ -230,8 +230,8 @@ class OrderController extends GetxController {
   }
 
   void tampilkanStruk() {
-    String storeName = homeController.storeNameFinal.value;
-    String address = homeController.storeAddressFinal.value;
+    String storeName = homeController.storeName.value;
+    String address = homeController.storeAddress.value;
     String kasir = userName.value;
     debugPrint(
         "Isi Keranjang sebelum tampilkan struk: ${keranjangBelanja.toList()}");
@@ -434,8 +434,8 @@ class OrderController extends GetxController {
   }
 
   Future<void> printReceipt() async {
-    final storeName = homeController.storeNameFinal.value;
-    final storeAddress = homeController.storeAddressFinal.value;
+    final storeName = homeController.storeName.value;
+    final storeAddress = homeController.storeAddress.value;
 
     bool isConnected = await PrintBluetoothThermal.connectionStatus;
     if (!isConnected) {

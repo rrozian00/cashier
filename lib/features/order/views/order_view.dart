@@ -8,7 +8,6 @@ import 'package:cashier/core/utils/rupiah_converter.dart';
 import 'package:cashier/core/utils/scanner_page.dart';
 import 'package:cashier/core/widgets/my_appbar.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
-import 'package:cashier/features/home/controllers/home_controller.dart';
 import 'package:cashier/features/menu/models/menu_model.dart';
 
 import '../controllers/order_controller.dart';
@@ -18,21 +17,21 @@ class TransaksiView extends GetView<OrderController> {
 
   @override
   Widget build(BuildContext context) {
-    final HomeController home = Get.find<HomeController>();
+    // final HomeController home = Get.find<HomeController>();
     return Scaffold(
       appBar: MyAppBar(
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: Obx(() => Text(
-                  "-${home.storeNameFinal.value}-",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Colors.deepPurple),
-                )),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 20.0),
+        //     child: Obx(() => Text(
+        //           "-${home.storeNameFinal.value}-",
+        //           style: TextStyle(
+        //               fontWeight: FontWeight.bold,
+        //               fontSize: 16,
+        //               color: Colors.deepPurple),
+        //         )),
+        //   ),
+        // ],
         titleText: 'Pilih Menu',
         leading: IconButton(
           color: Colors.deepPurple,
@@ -49,6 +48,7 @@ class TransaksiView extends GetView<OrderController> {
         children: [
           // Keranjang Belanja
           Expanded(
+            flex: 10,
             child: Obx(() {
               if (controller.keranjangBelanja.isEmpty) {
                 return Center(
@@ -144,7 +144,7 @@ class TransaksiView extends GetView<OrderController> {
                         )
                       : Container(),
                   controller.keranjangBelanja.isNotEmpty
-                      ? myBlueElevated(
+                      ? myPurpleElevated(
                           onPress: () => Get.to(() => CheckOutView()),
                           child: Text(
                             "BAYAR",
@@ -159,46 +159,48 @@ class TransaksiView extends GetView<OrderController> {
             }),
           ),
           Divider(),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12.0,
-            ),
-            child: Expanded(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                myBlueElevated(
-                    text: "Produk List",
-                    onPress: () => Get.toNamed(Routes.productList)),
-                myBlueElevated(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.qr_code_scanner_rounded,
-                        color: Colors.white,
-                      ),
-                      SizedBox(width: 5),
-                      Text(
-                        "Scan Barcode",
-                        style: GoogleFonts.poppins(color: Colors.white),
-                      )
-                    ],
-                  ),
-                  onPress: () async {
-                    final result = await Get.to(ScannerPage());
-                    if (result != null) {
-                      controller.scannedBarcode.value =
-                          result; // Simpan hasil scan untuk order
-                      if (result != "-1") {
-                        controller.scannedBarcode.value = result;
-                        controller.tambahKeKeranjangByBarcode(result);
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  myPurpleElevated(
+                      text: "Produk List",
+                      onPress: () => Get.toNamed(Routes.productList)),
+                  myPurpleElevated(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.qr_code_scanner_rounded,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          "Scan Barcode",
+                          style: GoogleFonts.poppins(color: Colors.white),
+                        )
+                      ],
+                    ),
+                    onPress: () async {
+                      final result = await Get.to(ScannerPage());
+                      if (result != null) {
+                        controller.scannedBarcode.value =
+                            result; // Simpan hasil scan untuk order
+                        if (result != "-1") {
+                          controller.scannedBarcode.value = result;
+                          controller.tambahKeKeranjangByBarcode(result);
+                        }
                       }
-                    }
-                  },
-                ),
-              ],
-            )),
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),

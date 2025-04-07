@@ -1,10 +1,11 @@
 import 'package:cashier/core/widgets/my_alert_dialog.dart';
+import 'package:cashier/features/user/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:cashier/core/utils/get_user_id.dart';
+import 'package:cashier/core/utils/get_user_data.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cashier/core/widgets/my_text_field.dart';
 import 'package:cashier/features/bottom_navigation_bar/controllers/bottom_controller.dart';
@@ -16,15 +17,14 @@ class ProfileController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  var user = Rxn<User>();
+  var userData = Rxn<UserModel>();
 
   final isLoading = false.obs;
+  final isOwner = false.obs;
 
   final name = ''.obs;
-  final role = ''.obs;
   final phone = ''.obs;
   final address = ''.obs;
-  final photo = ''.obs;
 
   final oldPass = ''.obs;
   final newPass = ''.obs;
@@ -32,52 +32,39 @@ class ProfileController extends GetxController {
 
   // 🔹 Ambil data user dari Firestore
   void fetchUserProfile() async {
-    if (user.value == null) return;
+    userData.value = await getUserData();
+    if (userData.value == null) return;
 
     final doc = await getUserData();
     debugPrint(doc?.name);
-    if (doc != null) {
-      name.value = doc.name ?? '';
-      role.value = doc.role == 'owner' ? "Owner" : "Karyawan";
-      address.value = doc.address ?? '';
-      phone.value = doc.phoneNumber ?? '';
-      photo.value = doc.photo ?? "";
-    }
   }
-  // Future<void> pickImage() async {
-  //   final ImagePicker picker = ImagePicker();
-  //   final image = await picker.pickImage(source: ImageSource.gallery);
 
-  //   print(user.value!.uid);
-  //   if (image != null) {
-  //     await _db
-  //         .collection('users')
-  //         .doc(user.value!.uid)
-  //         .update({'photo': image.path});
-  //     fetchUserProfile();
-  //     Get.snackbar("Sukses", "Berhasil ubah foto profil");
-  //     update();
-  //   } else {
-  //     Get.snackbar("Gagal", "Error");
-  //     return;
-  //   }
-  // }
+  void getOwner() async {
+    userData.value = await getUserData();
+
+    debugPrint("getowner dipanggil");
+
+    if (userData.value == null) return;
+    if (userData.value?.role == "owner") {
+      isOwner.value = true;
+    } else {
+      isOwner.value = false;
+    }
+    debugPrint("isOwner on Profile:$isOwner");
+  }
 
   void editProfile() async {
     Get.dialog(MyAlertDialog(
         onConfirm: () async {
-          // Ambil data user yang ada
-          final userData = await getUserData();
-
-          if (userData == null || userData.id == null) {
+          if (userData.value == null) {
             Get.snackbar("Error", "Data user tidak ditemukan!");
             return;
           }
 
-          final idUser = userData.id;
+          final idUser = userData.value?.id;
 
           try {
-            if (role.value == "Owner") {
+            if (userData.value?.role == "owner") {
               Get.until(
                 (route) => Get.currentRoute == Routes.profile,
               );
@@ -87,16 +74,13 @@ class ProfileController extends GetxController {
             }
             isLoading.value = true;
             // Buat salinan data user dengan data baru langsung dari input
-            final updatedData = userData.copyWith(
+            final newData = userData.value?.copyWith(
               name: name.value,
               address: address.value,
               phoneNumber: phone.value,
             );
 
-            await _db
-                .collection("users")
-                .doc(idUser)
-                .update(updatedData.toMap());
+            await _db.collection("users").doc(idUser).update(newData!.toMap());
 
             Get.snackbar("Sukses", "Profil berhasil diperbarui.");
           } catch (e) {
@@ -120,13 +104,13 @@ class ProfileController extends GetxController {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              myElevated(
+              myGreenElevated(
                 text: "Batal",
                 onPress: () {
                   Get.back();
                 },
               ),
-              myElevated(
+              myRedElevated(
                 text: "Keluar",
                 onPress: () => logout(),
               )
@@ -146,9 +130,6 @@ class ProfileController extends GetxController {
       Get.delete<ExpenseController>();
       Get.delete<OrderController>();
       Get.delete<BottomController>();
-
-      user.value = null; // Hapus user yang login
-      role.value = ""; // Reset role agar tidak membawa data lama
 
       Get.offAllNamed(Routes.LOGIN); // Pindah ke halaman login
 
@@ -210,7 +191,7 @@ class ProfileController extends GetxController {
                   try {
                     Get.back();
                     isLoading.value = true;
-                    String email = user.value!.email!;
+                    String email = _auth.currentUser!.email!;
 
                     // 🔹 Minta ulang password sebelum update
                     await _auth.signInWithEmailAndPassword(
@@ -218,7 +199,7 @@ class ProfileController extends GetxController {
                       password: oldPass.value, // Ubah dengan password lama
                     );
 
-                    await user.value!.updatePassword(newPass.value);
+                    await _auth.currentUser?.updatePassword(newPass.value);
                     Get.snackbar("Sukses", "Password berhasil diubah");
                     clearC();
                   } on FirebaseAuthException catch (e) {
@@ -252,9 +233,7 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    user.bindStream(_auth.authStateChanges());
-    once(user, (user) {
-      if (user != null) fetchUserProfile();
-    });
+    fetchUserProfile();
+    getOwner();
   }
 }

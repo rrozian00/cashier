@@ -1,4 +1,5 @@
 import 'package:cashier/core/theme/colors.dart';
+import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cashier/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,15 @@ class ProfileView extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
+        leading: Obx(() => Visibility(
+              visible: controller.isOwner.value,
+              child: IconButton(
+                  onPressed: () => Get.toNamed(Routes.SETTINGS),
+                  icon: Icon(
+                    Icons.settings,
+                    color: purple,
+                  )),
+            )),
         titleText: "Profil",
         actions: [
           IconButton(
@@ -34,16 +44,16 @@ class ProfileView extends GetView<ProfileController> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Nama dan Role
-                    Obx(() => Text(
-                          controller.name.value.toUpperCase(),
-                          style: GoogleFonts.poppins(
-                              fontSize: 22, fontWeight: FontWeight.bold),
-                        )),
-                    Obx(() => Text(
-                          controller.role.value,
-                          style: GoogleFonts.poppins(
-                              fontSize: 18, color: Colors.grey),
-                        )),
+                    // Obx(() => Text(
+                    //       controller.userData.value?.name ?? '',
+                    //       style: GoogleFonts.poppins(
+                    //           fontSize: 22, fontWeight: FontWeight.bold),
+                    //     )),
+                    // Obx(() => Text(
+                    //       controller.userData.value?.role ?? '',
+                    //       style: GoogleFonts.poppins(
+                    //           fontSize: 18, color: Colors.grey),
+                    //     )),
 
                     SizedBox(height: 20),
 
@@ -51,21 +61,27 @@ class ProfileView extends GetView<ProfileController> {
                     Card(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12)),
-                      elevation: 2,
+                      elevation: 4,
                       child: Padding(
                         padding: const EdgeInsets.all(16),
                         child: Obx(() => Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                _buildProfileItem(Icons.email, "Email",
-                                    controller.user.value?.email ?? "-"),
+                                _buildProfileItem(Icons.person, "Nama",
+                                    controller.userData.value?.name ?? "-"),
                                 Divider(),
-                                _buildProfileItem(Icons.phone, "Telepon",
-                                    controller.phone.value),
+                                _buildProfileItem(Icons.email, "Email",
+                                    controller.userData.value?.email ?? "-"),
                                 Divider(),
                                 _buildProfileItem(Icons.location_on, "Alamat",
-                                    controller.address.value),
+                                    controller.userData.value?.address ?? '-'),
+                                Divider(),
+                                _buildProfileItem(
+                                    Icons.phone,
+                                    "Telepon",
+                                    controller.userData.value?.phoneNumber ??
+                                        '-'),
                               ],
                             )),
                       ),
@@ -74,11 +90,16 @@ class ProfileView extends GetView<ProfileController> {
                     SizedBox(height: 20),
 
                     // Tombol Aksi
-                    _buildActionButton(Icons.lock, "Ubah Password", purple,
-                        () => controller.changePassword()),
-                    SizedBox(height: 10),
-                    _buildActionButton(Icons.logout, "Logout", red,
-                        () => controller.showLogoutConfirm()),
+                    myPurpleElevated(
+                      onPress: () => controller.changePassword(),
+                      text: "Ubah Password",
+                    ),
+                    SizedBox(height: 20),
+
+                    myRedElevated(
+                      onPress: () => controller.showLogoutConfirm(),
+                      text: "Keluar",
+                    ),
                   ],
                 )
               : Center(
@@ -94,26 +115,6 @@ class ProfileView extends GetView<ProfileController> {
       title:
           Text(title, style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
       subtitle: Text(value, key: ValueKey(value), style: GoogleFonts.poppins()),
-    );
-  }
-
-  /// Widget untuk Tombol Aksi
-  Widget _buildActionButton(
-      IconData icon, String text, Color color, VoidCallback onTap) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 14),
-          backgroundColor: color,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-        icon: Icon(icon, color: Colors.white),
-        label: Text(text,
-            style: GoogleFonts.poppins(
-                fontSize: 16, fontWeight: FontWeight.bold, color: white)),
-        onPressed: onTap,
-      ),
     );
   }
 }

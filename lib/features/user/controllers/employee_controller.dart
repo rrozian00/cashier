@@ -1,5 +1,5 @@
 import 'package:cashier/core/utils/get_store_id.dart';
-import 'package:cashier/core/utils/get_user_id.dart';
+import 'package:cashier/core/utils/get_user_data.dart';
 import 'package:cashier/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

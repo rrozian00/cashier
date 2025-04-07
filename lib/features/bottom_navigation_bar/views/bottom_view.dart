@@ -3,7 +3,6 @@ import 'package:cashier/features/home/views/home_view.dart';
 import 'package:cashier/features/order/views/order_view.dart';
 import 'package:cashier/features/printer/views/printer_view.dart';
 import 'package:cashier/features/user/views/profile_view.dart';
-import 'package:cashier/features/settings/views/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -21,7 +20,7 @@ class BottomView extends GetView<BottomController> {
           HomeView(),
           TransaksiView(),
           PrinterView(),
-          SettingsView(),
+          ProfileView(),
         ];
       } else {
         pages = [
@@ -48,7 +47,7 @@ class BottomView extends GetView<BottomController> {
                   GButton(icon: Icons.home, text: "Beranda"),
                   GButton(icon: Icons.shopping_cart_rounded, text: "Keranjang"),
                   GButton(icon: Icons.print, text: "Printer"),
-                  GButton(icon: Icons.settings, text: "Pengaturan"),
+                  GButton(icon: Icons.person, text: "Profil"),
                 ]
               : [
                   GButton(icon: Icons.shopping_cart_rounded, text: "Keranjang"),

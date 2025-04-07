@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
   String? id;
+  String? storeId;
   String? email;
   String? name;
   String? address;
@@ -15,6 +16,7 @@ class UserModel {
 
   UserModel({
     this.id,
+    this.storeId,
     this.email,
     this.name,
     this.address,
@@ -57,6 +59,7 @@ class UserModel {
 
   UserModel copyWith({
     String? id,
+    String? storeId,
     String? email,
     String? name,
     String? address,
@@ -68,6 +71,7 @@ class UserModel {
   }) {
     return UserModel(
       id: id ?? this.id,
+      storeId: storeId ?? this.storeId,
       email: email ?? this.email,
       name: name ?? this.name,
       address: address ?? this.address,
@@ -82,6 +86,7 @@ class UserModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
+      'storeId': storeId,
       'email': email,
       'name': name,
       'address': address,
@@ -96,6 +101,7 @@ class UserModel {
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       id: map['id'] != null ? map['id'] as String : null,
+      storeId: map['storeId'] != null ? map['storeId'] as String : null,
       email: map['email'] != null ? map['email'] as String : null,
       name: map['name'] != null ? map['name'] as String : null,
       address: map['address'] != null ? map['address'] as String : null,
@@ -110,7 +116,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, name: $name, address: $address, salary: $salary, role: $role, phoneNumber: $phoneNumber, photo: $photo, createdAt: $createdAt)';
+    return 'UserModel(id: $id, storeId: $storeId, email: $email, name: $name, address: $address, salary: $salary, role: $role, phoneNumber: $phoneNumber, photo: $photo, createdAt: $createdAt)';
   }
 
   @override
@@ -118,6 +124,7 @@ class UserModel {
     if (identical(this, other)) return true;
 
     return other.id == id &&
+        other.storeId == storeId &&
         other.email == email &&
         other.name == name &&
         other.address == address &&
@@ -131,6 +138,7 @@ class UserModel {
   @override
   int get hashCode {
     return id.hashCode ^
+        storeId.hashCode ^
         email.hashCode ^
         name.hashCode ^
         address.hashCode ^

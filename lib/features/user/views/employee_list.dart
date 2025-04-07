@@ -63,7 +63,7 @@ class EmployeeListView extends GetView<EmployeeController> {
           },
         );
       }),
-      floatingActionButton: myBlueElevated(
+      floatingActionButton: myPurpleElevated(
           onPress: () => Get.toNamed(Routes.addEmployee),
           text: "Tambah Karyawan"),
     );

@@ -49,7 +49,7 @@ class AddEmployeeView extends GetView<EmployeeController> {
                   textInputType: TextInputType.phone,
                   hint: "Persentase Gaji"),
               SizedBox(height: 20),
-              myBlueElevated(
+              myPurpleElevated(
                   text: 'Simpan', onPress: () => controller.addEmployee()),
             ],
           ),

@@ -81,7 +81,7 @@ class EditMenusView extends GetView<MenusController> {
               ),
             ),
             const SizedBox(height: 25),
-            myBlueElevated(
+            myPurpleElevated(
               text: "Simpan",
               onPress: () => controller.editMenus(data!.id ?? ''),
             ),
