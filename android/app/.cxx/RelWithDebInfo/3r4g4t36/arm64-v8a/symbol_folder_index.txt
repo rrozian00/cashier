@@ -1,0 +1,1 @@
+/Users/ricky/cashier/cashier/build/app/intermediates/cxx/RelWithDebInfo/3r4g4t36/obj/arm64-v8a

@@ -1,0 +1,2 @@
+/Users/ricky/cashier/cashier/android/app/.cxx/Debug/5643s384/x86/CMakeFiles/edit_cache.dir
+/Users/ricky/cashier/cashier/android/app/.cxx/Debug/5643s384/x86/CMakeFiles/rebuild_cache.dir

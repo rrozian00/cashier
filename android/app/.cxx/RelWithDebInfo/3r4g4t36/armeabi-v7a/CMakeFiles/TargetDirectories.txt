@@ -1,0 +1,2 @@
+/Users/ricky/cashier/cashier/android/app/.cxx/RelWithDebInfo/3r4g4t36/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/ricky/cashier/cashier/android/app/.cxx/RelWithDebInfo/3r4g4t36/armeabi-v7a/CMakeFiles/rebuild_cache.dir
