@@ -18,7 +18,10 @@ class ProductList extends GetView<OrderController> {
           return Card(
             elevation: 4,
             child: ListTile(
-              onTap: () => controller.tambahKeKeranjang(data),
+              onTap: () {
+                controller.tambahKeKeranjang(data);
+                Get.back();
+              },
               title: Text(data.name ?? ''),
               subtitle: Text(data.barcode ?? ''),
             ),

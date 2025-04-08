@@ -1,10 +1,11 @@
+import 'package:cashier/features/order/views/check_out_view.dart';
+import 'package:get/get.dart';
+
 import 'package:cashier/features/menu/views/add_menus_view.dart';
 import 'package:cashier/features/menu/views/edit_menus_view.dart';
 import 'package:cashier/features/order/views/product_list.dart';
 import 'package:cashier/features/user/views/add_employee_view.dart';
 import 'package:cashier/features/user/views/edit_profile_view.dart';
-import 'package:get/get.dart';
-
 import 'package:cashier/features/user/views/employee_list.dart';
 
 import '../features/bottom_navigation_bar/bindings/bottom_binding.dart';
@@ -17,10 +18,10 @@ import '../features/login/bindings/login_binding.dart';
 import '../features/login/views/login_view.dart';
 import '../features/menu/bindings/menu_binding.dart';
 import '../features/menu/views/menus_view.dart';
-import '../features/order/bindings/order_binding.dart';
 import '../features/order/bindings/history_order_binding.dart';
-import '../features/order/views/history_order_view.dart';
 import '../features/order/bindings/input_manual_binding.dart';
+import '../features/order/bindings/order_binding.dart';
+import '../features/order/views/history_order_view.dart';
 import '../features/order/views/input_manual_view.dart';
 import '../features/order/views/order_view.dart';
 import '../features/printer/bindings/printer_binding.dart';
@@ -44,7 +45,7 @@ class AppPages {
 
   static final routes = [
     GetPage(
-      name: _Paths.HOME,
+      name: _Paths.home,
       page: () => HomeView(),
       binding: HomeBinding(),
     ),
@@ -54,9 +55,15 @@ class AppPages {
       binding: TransaksiBinding(),
     ),
     GetPage(
-        name: _Paths.productList,
-        page: () => ProductList(),
-        binding: TransaksiBinding()),
+      name: _Paths.productList,
+      page: () => ProductList(),
+      binding: TransaksiBinding(),
+    ),
+    GetPage(
+      name: _Paths.checkOut,
+      page: () => CheckOutView(),
+      binding: TransaksiBinding(),
+    ),
     GetPage(
       name: _Paths.BOTTOM,
       page: () => BottomView(),

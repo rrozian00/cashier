@@ -1,3 +1,4 @@
+import 'package:cashier/core/theme/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,7 +8,7 @@ import 'package:cashier/core/utils/get_store_id.dart';
 import 'package:cashier/core/utils/get_user_data.dart';
 import 'package:cashier/features/menu/models/product_model.dart';
 import 'package:cashier/features/order/function/show_receipt.dart';
-import 'package:cashier/features/order/order_model.dart';
+import 'package:cashier/features/order/models/order_model.dart';
 import 'package:cashier/features/store/models/store_model.dart';
 import 'package:cashier/features/user/models/user_model.dart';
 
@@ -75,11 +76,12 @@ class OrderController extends GetxController {
     jumlahBayar.value = 0;
   }
 
-  void getUser() async {
+  Future<void> getUser() async {
+    debugPrint("getUser on order dipanggil");
     userData.value = await getUserData();
   }
 
-  void getStore() async {
+  Future<void> getStore() async {
     storeData.value = await getStoreData();
   }
 
@@ -194,28 +196,31 @@ class OrderController extends GetxController {
       }
     }
 
-    ShowReceipt();
     hitungTotal();
+    Get.bottomSheet(
+      clipBehavior: Clip.hardEdge,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+      isScrollControlled: true,
+      backgroundColor: white,
+      FractionallySizedBox(heightFactor: 0.5, child: ShowReceipt()),
+    );
   }
 
   @override
   void onInit() {
     super.onInit();
-    // firebaseUser.bindStream(_auth.authStateChanges());
-    // ever(firebaseUser, (user) {
-    //   if (user != null) {
-    //     fetchUserStore(user.uid);
-    //   } else {
-    //     clearUserData();
-    //   }
-    // });
-
-    getUser();
-    getStore();
-    fetchProduct();
 
     // Auto-update kembalian ketika jumlahBayar atau totalHarga berubah
     ever(jumlahBayar, (_) => hitungTotal());
     ever(totalHarga, (_) => hitungTotal());
+  }
+
+  @override
+  void onReady() async {
+    super.onReady();
+
+    await getStore();
+    await fetchProduct();
+    await getUser();
   }
 }
