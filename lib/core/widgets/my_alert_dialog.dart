@@ -38,11 +38,11 @@ class MyAlertDialog extends GetView {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              myElevated(
+              myRedElevated(
                 text: "Batal",
                 onPress: onCancel ?? () => Get.back(),
               ),
-              myPurpleElevated(
+              myGreenElevated(
                 text: onConfirmText ?? "Simpan",
                 onPress: () {
                   onConfirm();

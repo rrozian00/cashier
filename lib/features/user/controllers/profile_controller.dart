@@ -80,6 +80,36 @@ class ProfileController extends GetxController {
     );
   }
 
+  Future<void> showEditProfile() async {
+    if (userData.value == null) {
+      return;
+    }
+    debugPrint("userData.nama di editProfil:${userData.value?.name}");
+
+    final idUser = userData.value?.id;
+
+    try {
+      isLoading.value = true;
+
+      Get.back();
+
+      final newData = userData.value?.copyWith(
+        name: name.value,
+        address: address.value,
+        phoneNumber: phone.value,
+      );
+
+      await firestore.collection("users").doc(idUser).update(newData!.toMap());
+
+      Get.snackbar("Sukses", "Profil berhasil diperbarui.");
+    } catch (e) {
+      Get.snackbar("Error", "Gagal memperbarui profil: $e");
+    } finally {
+      isLoading.value = false;
+      fetchUserProfile();
+    }
+  }
+
   // 🔹 Logout Pengguna
   Future<void> showChangeDialog() async {
     if (newPass.value.isEmpty) {

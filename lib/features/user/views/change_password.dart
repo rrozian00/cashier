@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:cashier/core/theme/colors.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cashier/core/widgets/my_text_field.dart';
 import 'package:cashier/features/user/controllers/profile_controller.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ChangePassword extends GetView<ProfileController> {
   const ChangePassword({super.key});

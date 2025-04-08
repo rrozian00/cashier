@@ -44,46 +44,13 @@ class EditProfileView extends GetView<ProfileController> {
                 text: "Batal",
                 onPress: () {
                   Get.back();
-                  controller.clearField();
                 },
               ),
-              myPurpleElevated(
+              myGreenElevated(
                 text: "Simpan",
                 onPress: () {
                   Get.dialog(MyAlertDialog(
-                      onConfirm: () async {
-                        if (controller.userData.value == null) {
-                          return;
-                        }
-                        debugPrint(
-                            "userData.nama di editProfil:${controller.userData.value?.name}");
-
-                        final idUser = controller.userData.value?.id;
-
-                        try {
-                          controller.isLoading.value = true;
-
-                          Get.back();
-
-                          final newData = controller.userData.value?.copyWith(
-                            name: controller.name.value,
-                            address: controller.address.value,
-                            phoneNumber: controller.phone.value,
-                          );
-
-                          await controller.firestore
-                              .collection("users")
-                              .doc(idUser)
-                              .update(newData!.toMap());
-
-                          Get.snackbar("Sukses", "Profil berhasil diperbarui.");
-                        } catch (e) {
-                          Get.snackbar("Error", "Gagal memperbarui profil: $e");
-                        } finally {
-                          controller.isLoading.value = false;
-                          controller.fetchUserProfile();
-                        }
-                      },
+                      onConfirm: () async => controller.showEditProfile(),
                       contentText: "Anda yakin akan menyimpan data?"));
                 },
               ),
