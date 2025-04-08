@@ -1,3 +1,4 @@
+import 'package:cashier/core/theme/colors.dart';
 import 'package:cashier/core/widgets/my_appbar.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cashier/core/widgets/no_data.dart';
@@ -48,11 +49,10 @@ class PrinterView extends GetView<PrinterController> {
                     )),
                 // Tombol Connect & Disconnect
                 Obx(() => controller.isConnected.value
-                    ? ElevatedButton(
-                        onPressed: controller.disconnectPrinter,
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red),
-                        child: Text("Putuskan"),
+                    ? myRedElevated(
+                        onPress: controller.disconnectPrinter,
+                        text: "Putuskan",
+                        // style: TextStyle(color: white),
                       )
                     : myElevated(
                         onPress: controller.connectToPrinter,
@@ -69,10 +69,10 @@ class PrinterView extends GetView<PrinterController> {
                                     ),
                                   ),
                                   SizedBox(width: 8),
-                                  Text("Menyambungkan..."),
+                                  Text("Menghubungkan..."),
                                 ],
                               )
-                            : Text("Sambungkan"),
+                            : Text("Hubungkan"),
                       )),
               ],
             ),
@@ -80,16 +80,39 @@ class PrinterView extends GetView<PrinterController> {
             SizedBox(height: 16),
 
             // List Printer
-            Obx(() => Expanded(
-                  child: controller.devices.isEmpty &&
-                          !controller.isScanning.value
-                      ? Center(
-                          child: noData(
-                              icon: Icons.print_disabled,
-                              title: "Tidak ada printer ditemukan.",
-                              message:
-                                  'Tekan tombol "Cari Printer", lalu "Sambungkan"'))
-                      : ListView.builder(
+            Obx(() {
+              if (controller.isConnected.isTrue) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.print_rounded,
+                      color: green,
+                      size: 100,
+                    ),
+                    Center(
+                      child: Text(
+                        "Terhubung dengan ${controller.selectedPrinter.value?.name}",
+                        style: TextStyle(color: green),
+                      ),
+                    ),
+                  ],
+                );
+              } else if (controller.devices.isEmpty) {
+                return Center(
+                  child: noData(
+                      icon: Icons.print_disabled_rounded,
+                      title: "Tidak ada Printer",
+                      message: 'Tekan tombol "Cari Printer"'),
+                );
+              } else {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.67,
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
                           itemCount: controller.devices.length,
                           itemBuilder: (context, index) {
                             final printer = controller.devices[index];
@@ -101,12 +124,6 @@ class PrinterView extends GetView<PrinterController> {
                                   child: ListTile(
                                     title: Text(printer.name),
                                     subtitle: Text(printer.macAdress),
-                                    // trailing:
-                                    //     controller.selectedPrinter.value ==
-                                    //             printer
-                                    //         ? Icon(Icons.radio_button_checked,
-                                    //             color: Colors.green)
-                                    //         : null,
                                     onTap: () {
                                       controller.selectedPrinter.value =
                                           printer;
@@ -115,7 +132,16 @@ class PrinterView extends GetView<PrinterController> {
                                 ));
                           },
                         ),
-                )),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Text('Silahkan pilih printer, lalu "Sambungkan"')
+                    ],
+                  ),
+                );
+              }
+            }),
 
             SizedBox(height: 16),
           ],

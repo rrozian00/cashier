@@ -32,7 +32,7 @@ class PrinterController extends GetxController {
           await PrintBluetoothThermal.pairedBluetooths;
       devices.value = results;
       debugPrint("Ditemukan ${devices.length} perangkat.");
-      Get.snackbar("Sukses", "Ditemukan ${devices.length} perangkat.");
+      // Get.snackbar("Sukses", "Ditemukan ${devices.length} perangkat.");
     } catch (e) {
       debugPrint("Gagal scan perangkat: $e");
     }
@@ -55,8 +55,8 @@ class PrinterController extends GetxController {
       if (success) {
         debugPrint(
             "Berhasil terhubung ke printer: ${selectedPrinter.value!.name}");
-        Get.snackbar("Sukses",
-            "Berhasil terhubung ke printer: ${selectedPrinter.value!.name}");
+        // Get.snackbar("Sukses",
+        //     "Berhasil terhubung ke printer: ${selectedPrinter.value!.name}");
       } else {
         debugPrint("Gagal terhubung ke printer.");
         Get.snackbar(

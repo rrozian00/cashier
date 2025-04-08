@@ -24,6 +24,7 @@ class TransaksiView extends GetView<OrderController> {
           color: red,
           onPressed: () {
             controller.cart.clear();
+            controller.totalHarga.value = 0;
           },
           icon: const Icon(Icons.refresh),
         ),
@@ -47,12 +48,12 @@ class TransaksiView extends GetView<OrderController> {
                           'assets/images/empty.png',
                           height: 70,
                         ),
-                        Text("Keranjang Kosong,",
+                        Text("Keranjang Kosong",
                             style: GoogleFonts.poppins(
                                 fontSize: 18,
                                 color: Colors.deepPurple,
                                 fontWeight: FontWeight.w500)),
-                        Text("Silahkan pilih Menu !",
+                        Text("Silahkan pilih Daftar Produk / Scan Barcode",
                             style: GoogleFonts.poppins(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),

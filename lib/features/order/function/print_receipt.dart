@@ -51,7 +51,7 @@ Future<void> printReceipt() async {
 
   // **3. Header Daftar Produk**
   bytes += generator.text(
-    "Produk  /Qty x Harga  Subtotal",
+    "Produk / Qty x Harga   Subtotal",
     styles: PosStyles(bold: true),
   );
   bytes += generator.text("--------------------------------");
