@@ -1,3 +1,4 @@
+import 'package:cashier/core/utils/get_store_id.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ class StoreController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+  final store = Rxn<StoreModel>(null);
   final name = "".obs;
   final address = "".obs;
   final phone = "".obs;
@@ -22,7 +24,7 @@ class StoreController extends GetxController {
     try {
       String uid = _firebaseAuth.currentUser!.uid;
       String storeId = _firestore.collection("stores").doc().id; // Buat ID unik
-      final createdAt = DateTime.now().toIso8601String();
+      final createdAt = Timestamp.now();
 
       final store = StoreModel(
         id: storeId, // Set ID secara eksplisit
@@ -35,16 +37,16 @@ class StoreController extends GetxController {
       );
 
       // Simpan store ke Firestore
-      await _firestore.collection("stores").doc(storeId).set(store.toJson());
+      await _firestore.collection("stores").doc(storeId).set(store.toMap());
 
       // Update storeId pada data user
       await _firestore
           .collection("users")
           .doc(uid)
           .update({"storeId": storeId});
+
       clearField();
       Get.back();
-      getStore();
       Get.snackbar("Sukses", "Store berhasil dibuat!");
     } catch (e) {
       Get.snackbar("Error", "Gagal membuat store: ${e.toString()}");
@@ -60,17 +62,10 @@ class StoreController extends GetxController {
 
   void updateStore() async {
     try {
-      final user = _firebaseAuth.currentUser;
-      if (user == null) return;
+      final storeId = await getStoreId();
 
-      final userDoc = await _firestore.collection('users').doc(user.uid).get();
-      final storeId = userDoc.data()?['storeId'];
-
-      if (storeId == null) return;
-
-      final update = StoreModel(
-        id: storeIds.value,
-        ownerId: ownerId.value,
+      final oldStore = store.value;
+      final update = oldStore?.copyWith(
         name: name.value,
         address: address.value,
         phone: phone.value,
@@ -79,12 +74,9 @@ class StoreController extends GetxController {
       await _firestore
           .collection("stores")
           .doc(storeId)
-          .update(update.toJson());
+          .update(update!.toMap());
 
-      storeName.value = name.value;
-      storeAddress.value = address.value;
-
-      getStore();
+      store.value = await getStoreData();
 
       Get.snackbar("Sukses", "Data toko berhasil diperbarui!");
     } catch (e) {
@@ -92,32 +84,10 @@ class StoreController extends GetxController {
     }
   }
 
-  final ownerId = ''.obs;
-  final storeIds = ''.obs;
-  final storeName = ''.obs;
-  final storeAddress = ''.obs;
-  final storePhone = ''.obs;
-
-  Future<void> getStore() async {
-    final user = _firebaseAuth.currentUser;
-    if (user == null) return;
-    final userId = user.uid;
-    ownerId.value = userId;
-
-    final userDoc = await _firestore.collection('users').doc(userId).get();
-    final storeIdDoc = userDoc.data()?['storeId'];
-
-    final store = await _firestore.collection("stores").doc(storeIdDoc).get();
-    storeIds.value = store.data()?['id'];
-    storeName.value = store.data()?['name'];
-    storeAddress.value = store.data()?['address'];
-    storePhone.value = store.data()?['phone'];
-  }
-
   void editDialog() {
-    name.value = storeName.value; // Isi dengan data toko saat ini
-    address.value = storeAddress.value;
-    phone.value = storePhone.value;
+    name.value = store.value?.name ?? '';
+    address.value = store.value?.address ?? '';
+    phone.value = store.value?.phone ?? '';
 
     Get.dialog(AlertDialog(
       title: Text("Edit Toko"),
@@ -144,9 +114,19 @@ class StoreController extends GetxController {
     ));
   }
 
+  // Future<void> fetchStore() async {
+  //   debugPrint("fetchsttore dpanggil");
+  //   store.value = await getStoreData();
+  // }
+
   @override
-  void onInit() {
-    getStore();
-    super.onInit();
+  void onReady() async {
+    super.onReady();
+    try {
+      store.value = await getStoreData();
+      debugPrint("store.value on storeController ${store.value}");
+    } catch (e, stack) {
+      debugPrint("ERROR getStoreData: $e\n$stack");
+    }
   }
 }

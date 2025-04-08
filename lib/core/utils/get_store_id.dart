@@ -1,6 +1,7 @@
 import 'package:cashier/features/store/models/store_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 Future<String> getStoreId() async {
@@ -40,12 +41,14 @@ Future<StoreModel?> getStoreData() async {
 
   final userId = auth.currentUser?.uid;
   if (userId == null) return null;
+  debugPrint("userId on getsoreData $userId");
 
   // Cek apakah user adalah pemilik toko
   final ownerStore = await firestore
       .collection('stores')
       .where('ownerId', isEqualTo: userId)
       .get();
+  debugPrint("ownerStore on getsoreData ${ownerStore.docs.first.data()}");
 
   if (ownerStore.docs.isNotEmpty) {
     return StoreModel.fromMap(ownerStore.docs.first.data());

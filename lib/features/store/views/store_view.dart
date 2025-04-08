@@ -27,7 +27,7 @@ class StoreView extends GetView<StoreController> {
         titleText: "Profil Toko",
       ),
       body: Obx(() {
-        if (controller.storeIds.isEmpty || controller.storeIds.value == '') {
+        if (controller.store.value == null) {
           return noData(
               icon: Icons.store,
               title: "Anda Belum Membuat Toko",
@@ -55,15 +55,15 @@ class StoreView extends GetView<StoreController> {
                     ),
                     myList(
                         icon: Icons.store,
-                        subtitle: controller.storeName.value,
+                        subtitle: controller.store.value?.name ?? '',
                         title: "Nama Toko"),
                     myList(
                         icon: Icons.location_on,
-                        subtitle: controller.storeAddress.value,
+                        subtitle: controller.store.value?.address ?? '',
                         title: "Alamat Toko"),
                     myList(
                         icon: Icons.phone_android,
-                        subtitle: controller.storePhone.value,
+                        subtitle: controller.store.value?.phone ?? '',
                         title: "No HP Toko"),
                   ],
                 ),
@@ -73,7 +73,7 @@ class StoreView extends GetView<StoreController> {
         }
       }),
       floatingActionButton: Obx(() => Visibility(
-            visible: controller.storeName.value.isEmpty,
+            visible: controller.store.value == null,
             child: ElevatedButton(
                 onPressed: () => Get.to(() => AddStoreView()),
                 child: Text("Tambah Toko")),

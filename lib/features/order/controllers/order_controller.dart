@@ -17,10 +17,10 @@ class OrderController extends GetxController {
 
   final storeData = Rxn<StoreModel>();
   final userData = Rxn<UserModel>();
+  var selectedProduct = Rxn<ProductModel>(); // Kembalikan selectedProduk
 
   final product = <ProductModel>[].obs;
   final cart = <Map<String, dynamic>>[].obs;
-  var selectedProduct = Rxn<ProductModel>(); // Kembalikan selectedProduk
 
   var isOwner = false.obs;
   var isEmployee = false.obs;
@@ -83,7 +83,10 @@ class OrderController extends GetxController {
   }
 
   Future<void> getStore() async {
+    debugPrint("getstore on order dipanggil");
     storeData.value = await getStoreData();
+    debugPrint("store data on order ${storeData.value}");
+    await fetchProduct();
   }
 
   Future<void> fetchProduct() async {
@@ -226,7 +229,7 @@ class OrderController extends GetxController {
     super.onReady();
 
     await getStore();
-    await fetchProduct();
     await getUser();
+    // await fetchProduct();
   }
 }

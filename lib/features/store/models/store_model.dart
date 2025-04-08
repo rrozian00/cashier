@@ -10,7 +10,7 @@ class StoreModel {
   String? address;
   String? phone;
   String? logoUrl;
-  String? createdAt;
+  Timestamp? createdAt;
   List<dynamic>? employees;
 
   StoreModel({
@@ -61,7 +61,7 @@ class StoreModel {
     String? address,
     String? phone,
     String? logoUrl,
-    String? createdAt,
+    Timestamp? createdAt,
     List<dynamic>? employees,
   }) {
     return StoreModel(
@@ -97,7 +97,8 @@ class StoreModel {
       address: map['address'] != null ? map['address'] as String : null,
       phone: map['phone'] != null ? map['phone'] as String : null,
       logoUrl: map['logoUrl'] != null ? map['logoUrl'] as String : null,
-      createdAt: map['createdAt'] != null ? map['createdAt'] as String : null,
+      createdAt:
+          map['createdAt'] != null ? map['createdAt'] as Timestamp : null,
       employees: map['employees'] != null
           ? List<dynamic>.from((map['employees'] as List<dynamic>))
           : null,

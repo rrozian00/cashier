@@ -17,7 +17,6 @@ class ProductList extends GetView<OrderController> {
             TextButton(
               onPressed: () {
                 controller.fetchProduct();
-                Get.snackbar("Sukses", "Berhasil Update Menu");
               },
               // child: Icon(
               //   Icons.refresh_rounded,
