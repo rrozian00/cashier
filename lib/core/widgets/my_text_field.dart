@@ -41,7 +41,11 @@ class MyTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textEditingController = TextEditingController(text: controller.value);
+    final textController = TextEditingController(text: controller.value);
+
+    // Sync awal saja
+    textController.selection =
+        TextSelection.collapsed(offset: controller.value.length);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
@@ -49,19 +53,22 @@ class MyTextField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Obx(() {
-            // ✅ Perbaikan: Menjaga posisi kursor
-            final cursorPosition = textEditingController.selection.baseOffset;
-            textEditingController.value = TextEditingValue(
-              text: controller.value,
-              selection: TextSelection.collapsed(
-                  offset: cursorPosition > controller.value.length
+            // Update textController tanpa bikin baru
+            if (textController.text != controller.value) {
+              final cursorPos = textController.selection.baseOffset;
+              textController.value = TextEditingValue(
+                text: controller.value,
+                selection: TextSelection.collapsed(
+                  offset: cursorPos > controller.value.length
                       ? controller.value.length
-                      : cursorPosition),
-            );
+                      : cursorPos,
+                ),
+              );
+            }
 
             return TextField(
               style: const TextStyle(fontSize: 14, color: Colors.black),
-              controller: textEditingController,
+              controller: textController,
               maxLength: max,
               maxLines: maxLines,
               obscureText: obscure,
@@ -71,8 +78,8 @@ class MyTextField extends StatelessWidget {
               readOnly: readOnly,
               onChanged: (value) => controller.value = value,
               decoration: InputDecoration(
-                suffix: suffixWidget,
-                suffixIcon: suffixIcon,
+                suffixIcon: suffixWidget ?? suffixIcon,
+                suffixText: suffix,
                 labelText: label,
                 labelStyle: GoogleFonts.montserrat(
                   fontSize: 14,
@@ -80,10 +87,7 @@ class MyTextField extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
                 hintText: hint,
-                suffixText: suffix,
                 filled: filled,
-
-                // floatingLabelStyle: TextStyle(fontSize: 12),
                 fillColor: fill ?? Colors.grey.shade200,
                 contentPadding:
                     const EdgeInsets.symmetric(vertical: 14, horizontal: 16),

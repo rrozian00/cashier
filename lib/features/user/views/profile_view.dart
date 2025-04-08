@@ -1,5 +1,7 @@
 import 'package:cashier/core/theme/colors.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
+import 'package:cashier/features/user/views/change_password.dart';
+import 'package:cashier/features/user/views/edit_profile_view.dart';
 import 'package:cashier/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,7 +31,13 @@ class ProfileView extends GetView<ProfileController> {
         actions: [
           IconButton(
               onPressed: () {
-                Get.toNamed(Routes.editProfile);
+                Get.bottomSheet(
+                    backgroundColor: white,
+                    isScrollControlled: true,
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(20))),
+                    EditProfileView());
               },
               icon: Icon(
                 Icons.edit_square,
@@ -37,74 +45,54 @@ class ProfileView extends GetView<ProfileController> {
               ))
         ],
       ),
-      body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Obx(() => controller.isLoading.isFalse
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Nama dan Role
-                    // Obx(() => Text(
-                    //       controller.userData.value?.name ?? '',
-                    //       style: GoogleFonts.poppins(
-                    //           fontSize: 22, fontWeight: FontWeight.bold),
-                    //     )),
-                    // Obx(() => Text(
-                    //       controller.userData.value?.role ?? '',
-                    //       style: GoogleFonts.poppins(
-                    //           fontSize: 18, color: Colors.grey),
-                    //     )),
-
-                    SizedBox(height: 20),
-
-                    // Informasi Pengguna dalam Card
-                    Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      elevation: 4,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Obx(() => Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                _buildProfileItem(Icons.person, "Nama",
-                                    controller.userData.value?.name ?? "-"),
-                                Divider(),
-                                _buildProfileItem(Icons.email, "Email",
-                                    controller.userData.value?.email ?? "-"),
-                                Divider(),
-                                _buildProfileItem(Icons.location_on, "Alamat",
-                                    controller.userData.value?.address ?? '-'),
-                                Divider(),
-                                _buildProfileItem(
-                                    Icons.phone,
-                                    "Telepon",
-                                    controller.userData.value?.phoneNumber ??
-                                        '-'),
-                              ],
-                            )),
-                      ),
+      body: Obx(() => controller.isLoading.isFalse
+          ? Padding(
+              padding: const EdgeInsets.all(16),
+              child: Obx(() => SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        _buildProfileItem(Icons.person, "Nama",
+                            controller.userData.value?.name ?? "-"),
+                        Divider(),
+                        _buildProfileItem(Icons.email, "Email",
+                            controller.userData.value?.email ?? "-"),
+                        Divider(),
+                        _buildProfileItem(Icons.location_on, "Alamat",
+                            controller.userData.value?.address ?? '-'),
+                        Divider(),
+                        _buildProfileItem(Icons.phone, "Telepon",
+                            controller.userData.value?.phoneNumber ?? '-'),
+                        Divider(),
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            myPurpleElevated(
+                              onPress: () => Get.bottomSheet(
+                                  backgroundColor: white,
+                                  isScrollControlled: true,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20)),
+                                  ),
+                                  ChangePassword()),
+                              text: "Ubah Password",
+                            ),
+                            myRedElevated(
+                              onPress: () => controller.showLogoutConfirm(),
+                              text: "Keluar",
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-
-                    SizedBox(height: 20),
-
-                    // Tombol Aksi
-                    myPurpleElevated(
-                      onPress: () => controller.changePassword(),
-                      text: "Ubah Password",
-                    ),
-                    SizedBox(height: 20),
-
-                    myRedElevated(
-                      onPress: () => controller.showLogoutConfirm(),
-                      text: "Keluar",
-                    ),
-                  ],
-                )
-              : Center(
-                  child: CircularProgressIndicator(),
-                ))),
+                  )),
+            )
+          : Center(
+              child: CircularProgressIndicator(),
+            )),
     );
   }
 

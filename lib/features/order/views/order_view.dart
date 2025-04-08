@@ -48,7 +48,7 @@ class TransaksiView extends GetView<OrderController> {
         children: [
           // Keranjang Belanja
           Expanded(
-            flex: 10,
+            flex: 4,
             child: Obx(() {
               if (controller.cart.isEmpty) {
                 return Center(

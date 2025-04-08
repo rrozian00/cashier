@@ -37,34 +37,36 @@ class StoreView extends GetView<StoreController> {
             padding: const EdgeInsets.all(8.0),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/images/store.png",
-                        color: purple,
-                        width: 100,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  myList(
-                      icon: Icons.store,
-                      subtitle: controller.storeName.value,
-                      title: "Nama Toko"),
-                  myList(
-                      icon: Icons.location_on,
-                      subtitle: controller.storeAddress.value,
-                      title: "Alamat Toko"),
-                  myList(
-                      icon: Icons.phone_android,
-                      subtitle: controller.storePhone.value,
-                      title: "No HP Toko"),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/images/store.png",
+                          color: purple,
+                          width: 100,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    myList(
+                        icon: Icons.store,
+                        subtitle: controller.storeName.value,
+                        title: "Nama Toko"),
+                    myList(
+                        icon: Icons.location_on,
+                        subtitle: controller.storeAddress.value,
+                        title: "Alamat Toko"),
+                    myList(
+                        icon: Icons.phone_android,
+                        subtitle: controller.storePhone.value,
+                        title: "No HP Toko"),
+                  ],
+                ),
               ),
             ),
           );
