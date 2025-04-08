@@ -1,3 +1,4 @@
+import 'package:cashier/core/theme/colors.dart';
 import 'package:cashier/core/utils/rupiah_converter.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cashier/features/order/controllers/order_controller.dart';
@@ -10,23 +11,30 @@ class CheckOutView extends GetView<OrderController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.jumlahBayar.value = 0;
+    controller.displayText.value = '';
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Obx(() {
           return Container(
-              height: 50,
-              width: 280,
+              height: 55,
+              width: 340,
               decoration: BoxDecoration(
                   border: Border.all(),
                   borderRadius: BorderRadius.circular(15)),
               child: Center(
                   child: Text(
-                "TOTAL:   ${rupiahConverter(controller.totalHarga.value)}",
+                "Total  ${rupiahConverter(controller.totalHarga.value)}",
                 style: GoogleFonts.poppins(
-                    fontSize: 20,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
-                    color: Colors.red),
+                    color: controller.jumlahBayar.value != 0 &&
+                            controller.jumlahBayar.value >=
+                                controller.totalHarga.value
+                        ? green
+                        : red),
               )));
         }),
       ),
@@ -35,14 +43,7 @@ class CheckOutView extends GetView<OrderController> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: Text(
-                  "Masukkan Jumlah Bayar",
-                  style: GoogleFonts.poppins(fontSize: 16),
-                ),
-              ),
-              // Layar tampilan angka
+              //Layar
               Container(
                 height: 150,
                 width: double.infinity,
@@ -120,15 +121,17 @@ class CheckOutView extends GetView<OrderController> {
       floatingActionButton: Obx(
         () => controller.jumlahBayar.value != 0 &&
                 controller.jumlahBayar.value >= controller.totalHarga.value
-            ? myElevated(
+            ? myGreenElevated(
                 child: Text("PROSES",
                     style: GoogleFonts.poppins(
-                        fontSize: 20, fontWeight: FontWeight.bold)),
+                        color: white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
                 onPress: () => controller.insertTransaksi(),
               )
-            : Text("Jumlah Pembayaran Kurang",
+            : Text("Masukkan jumlah pembayaran",
                 style: GoogleFonts.poppins(
-                    fontSize: 20, fontWeight: FontWeight.bold)),
+                    fontSize: 20, fontWeight: FontWeight.bold, color: red)),
       ),
     );
   }

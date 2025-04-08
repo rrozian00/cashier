@@ -111,3 +111,41 @@ Widget myGreenElevated({
     ),
   );
 }
+
+Widget myPurpleIconElevated({
+  required void Function()? onPress,
+  IconData? icon,
+  String? text,
+}) {
+  return GestureDetector(
+    onTap: onPress,
+    child: Container(
+      decoration: BoxDecoration(
+        color: purple,
+        border: Border.all(color: purple),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+        child: Row(
+          children: [
+            Icon(
+              icon ?? Icons.hourglass_empty,
+              color: white,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text(
+              text ?? '',
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}

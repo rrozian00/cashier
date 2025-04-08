@@ -51,7 +51,7 @@ Future<void> printReceipt() async {
 
   // **3. Header Daftar Produk**
   bytes += generator.text(
-    "Nama Produk  Qty  Harga Subtotal",
+    "Produk  /Qty x Harga  Subtotal",
     styles: PosStyles(bold: true),
   );
   bytes += generator.text("--------------------------------");
@@ -78,25 +78,25 @@ Future<void> printReceipt() async {
     bytes += generator.row([
       PosColumn(
           text: produk.name ?? '-',
-          width: 6,
+          width: 12,
           styles: PosStyles(align: PosAlign.left)),
-      PosColumn(
-          text: "$jumlah x",
-          width: 2,
-          styles: PosStyles(align: PosAlign.right)),
-      PosColumn(
-          text: rupiahConverter(hargaSatuan),
-          width: 4,
-          styles: PosStyles(align: PosAlign.right)),
+      // PosColumn(
+      //     text: "$jumlah x",
+      //     width: 2,
+      //     styles: PosStyles(align: PosAlign.right)),
+      // PosColumn(
+      //     text: rupiahConverter(hargaSatuan),
+      //     width: 6,
+      //     styles: PosStyles(align: PosAlign.right)),
     ]);
     bytes += generator.row([
       PosColumn(
-          text: "Subtotal:",
-          width: 8,
-          styles: PosStyles(align: PosAlign.right)),
+          text: "$jumlah x ${rupiahConverter(hargaSatuan)}",
+          width: 6,
+          styles: PosStyles(align: PosAlign.left)),
       PosColumn(
           text: rupiahConverter(subTotal),
-          width: 4,
+          width: 6,
           styles: PosStyles(align: PosAlign.right)),
     ]);
   }
@@ -106,7 +106,7 @@ Future<void> printReceipt() async {
   // **5. Total Harga, Bayar, dan Kembalian**
   bytes += generator.row([
     PosColumn(
-        text: "Total Harga:",
+        text: "Total :",
         width: 8,
         styles: PosStyles(align: PosAlign.right, bold: true)),
     PosColumn(
@@ -116,7 +116,7 @@ Future<void> printReceipt() async {
   ]);
   bytes += generator.row([
     PosColumn(
-        text: "Bayar:", width: 8, styles: PosStyles(align: PosAlign.right)),
+        text: "Bayar :", width: 8, styles: PosStyles(align: PosAlign.right)),
     PosColumn(
         text: rupiahConverter(controller.jumlahBayar.value),
         width: 4,
@@ -124,7 +124,7 @@ Future<void> printReceipt() async {
   ]);
   bytes += generator.row([
     PosColumn(
-        text: "Kembalian:",
+        text: "Kembali :",
         width: 8,
         styles: PosStyles(align: PosAlign.right, bold: true)),
     PosColumn(

@@ -24,6 +24,7 @@ class OrderController extends GetxController {
 
   var isOwner = false.obs;
   var isEmployee = false.obs;
+  final isLoading = false.obs;
 
   var totalHarga = 0.obs;
   var jumlahBayar = 0.obs;
@@ -96,6 +97,7 @@ class OrderController extends GetxController {
     final storeId = storeData.value?.id;
 
     try {
+      isLoading.value = true;
       final snapshot = await _firestore
           .collection('stores')
           .doc(storeId)
@@ -107,6 +109,8 @@ class OrderController extends GetxController {
           .toList());
     } catch (e) {
       debugPrint("Gagal mengambil fetchProduct: $e");
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -198,11 +202,13 @@ class OrderController extends GetxController {
 
     hitungTotal();
     Get.bottomSheet(
+      enableDrag: false,
+      isDismissible: false,
       clipBehavior: Clip.hardEdge,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
       isScrollControlled: true,
       backgroundColor: white,
-      FractionallySizedBox(heightFactor: 0.5, child: ShowReceipt()),
+      FractionallySizedBox(heightFactor: 0.75, child: ShowReceipt()),
     );
   }
 
