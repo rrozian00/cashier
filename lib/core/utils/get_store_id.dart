@@ -34,7 +34,7 @@ Future<String> getStoreId() async {
   return '';
 }
 
-Future<StoreModel?> getStore() async {
+Future<StoreModel?> getStoreData() async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
 

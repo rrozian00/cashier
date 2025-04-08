@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:cashier/core/utils/get_owner.dart';
-import 'package:cashier/features/menu/models/menu_model.dart';
+import 'package:cashier/features/menu/models/product_model.dart';
 
 class MenusController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -21,7 +21,7 @@ class MenusController extends GetxController {
   var image = ''.obs;
   var isLoading = false.obs;
 
-  final listMenu = <MenuModel>[].obs;
+  final listMenu = <ProductModel>[].obs;
 
   final TextEditingController produkIdC = TextEditingController();
   final TextEditingController nameC = TextEditingController();
@@ -62,7 +62,7 @@ class MenusController extends GetxController {
         .snapshots()
         .listen((snapshot) {
       listMenu.assignAll(snapshot.docs.map((doc) {
-        return MenuModel.fromMap(doc.data());
+        return ProductModel.fromMap(doc.data());
       }).toList());
     });
   }
@@ -93,13 +93,15 @@ class MenusController extends GetxController {
     }
     final docRef = _firestore.collection('stores/${storeId.value}/menus').doc();
 
-    final data = MenuModel(
+    final createdAt = DateTime.now().toIso8601String();
+
+    final data = ProductModel(
       id: docRef.id,
       barcode: produkIdC.text,
       name: name.value,
       price: priceC.text.replaceAll(RegExp(r'[^\d]'), ''),
       image: image.value,
-      createdAt: DateTime.now().toIso8601String(),
+      createdAt: createdAt,
     );
     await docRef.set(data.toMap());
     Get.back();
@@ -129,7 +131,7 @@ class MenusController extends GetxController {
       return;
     }
 
-    final oldData = MenuModel.fromMap(docSnapshot.data()!);
+    final oldData = ProductModel.fromMap(docSnapshot.data()!);
 
     // 🔹 Gunakan copyWith untuk update hanya field yang diubah
     final updatedData = oldData.copyWith(

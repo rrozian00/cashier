@@ -14,13 +14,17 @@ class ProductList extends GetView<OrderController> {
       ),
       body: ListView.builder(
         itemBuilder: (context, index) {
-          final data = controller.produk[index];
-          return ListTile(
-            title: Text(data.name ?? ''),
-            subtitle: Text(data.barcode ?? ''),
+          final data = controller.product[index];
+          return Card(
+            elevation: 4,
+            child: ListTile(
+              onTap: () => controller.tambahKeKeranjang(data),
+              title: Text(data.name ?? ''),
+              subtitle: Text(data.barcode ?? ''),
+            ),
           );
         },
-        itemCount: controller.produk.length,
+        itemCount: controller.product.length,
       ),
     );
   }

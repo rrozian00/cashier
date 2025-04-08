@@ -8,7 +8,7 @@ import 'package:cashier/core/utils/rupiah_converter.dart';
 import 'package:cashier/core/utils/scanner_page.dart';
 import 'package:cashier/core/widgets/my_appbar.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
-import 'package:cashier/features/menu/models/menu_model.dart';
+import 'package:cashier/features/menu/models/product_model.dart';
 
 import '../controllers/order_controller.dart';
 
@@ -36,7 +36,7 @@ class TransaksiView extends GetView<OrderController> {
         leading: IconButton(
           color: Colors.deepPurple,
           onPressed: () {
-            controller.fetchProduk();
+            controller.fetchProduct();
             Get.snackbar("Sukses", "Berhasil Update Menu");
           },
           icon: const Icon(Icons.refresh),
@@ -50,7 +50,7 @@ class TransaksiView extends GetView<OrderController> {
           Expanded(
             flex: 10,
             child: Obx(() {
-              if (controller.keranjangBelanja.isEmpty) {
+              if (controller.cart.isEmpty) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -73,10 +73,10 @@ class TransaksiView extends GetView<OrderController> {
                 );
               }
               return ListView.builder(
-                itemCount: controller.keranjangBelanja.length,
+                itemCount: controller.cart.length,
                 itemBuilder: (context, index) {
-                  final item = controller.keranjangBelanja[index];
-                  final produk = item['produk'] as MenuModel;
+                  final item = controller.cart[index];
+                  final produk = item['produk'] as ProductModel;
                   final jumlah = item['jumlah'] as int;
 
                   return Card(
@@ -143,7 +143,7 @@ class TransaksiView extends GetView<OrderController> {
                           ],
                         )
                       : Container(),
-                  controller.keranjangBelanja.isNotEmpty
+                  controller.cart.isNotEmpty
                       ? myPurpleElevated(
                           onPress: () => Get.to(() => CheckOutView()),
                           child: Text(
@@ -301,7 +301,7 @@ class CheckOutView extends GetView<OrderController> {
                     return myElevated(
                       onPress: () {
                         if (buttons[index] == 'C') {
-                          controller.onClear();
+                          controller.clearTap();
                         }
                         // else if (buttons[index] == 'OK') {
                         //   controller.insertTransaksi();

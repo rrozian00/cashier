@@ -13,7 +13,7 @@ class HomeController extends GetxController {
   void fetchData() async {
     userData.value = await getUserData();
 
-    final store = await getStore();
+    final store = await getStoreData();
     if (store == null) return;
 
     storeName.value = store.name ?? '';

@@ -4,7 +4,7 @@ import 'package:cashier/core/utils/rupiah_converter.dart';
 import 'package:cashier/core/widgets/my_appbar.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cashier/features/menu/controllers/menus_controller.dart';
-import 'package:cashier/features/menu/models/menu_model.dart';
+import 'package:cashier/features/menu/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +13,7 @@ class EditMenusView extends GetView<MenusController> {
 
   @override
   Widget build(BuildContext context) {
-    final data = Get.arguments['data'] as MenuModel?;
+    final data = Get.arguments['data'] as ProductModel?;
 
     controller.produkIdC.text = data?.barcode ?? '';
     controller.nameC.text = data?.name ?? '';

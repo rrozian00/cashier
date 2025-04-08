@@ -1,14 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class MenuModel {
+class ProductModel {
   String? id; // Ubah ke String agar sesuai dengan Firestore
   String? barcode;
   String? name;
   String? price;
   String? image;
   String? createdAt;
-  MenuModel({
+  ProductModel({
     this.id,
     this.barcode,
     this.name,
@@ -17,7 +17,7 @@ class MenuModel {
     this.createdAt,
   });
 
-  MenuModel copyWith({
+  ProductModel copyWith({
     String? id,
     String? barcode,
     String? name,
@@ -25,7 +25,7 @@ class MenuModel {
     String? image,
     String? createdAt,
   }) {
-    return MenuModel(
+    return ProductModel(
       id: id ?? this.id,
       barcode: barcode ?? this.barcode,
       name: name ?? this.name,
@@ -46,8 +46,8 @@ class MenuModel {
     };
   }
 
-  factory MenuModel.fromMap(Map<String, dynamic> map) {
-    return MenuModel(
+  factory ProductModel.fromMap(Map<String, dynamic> map) {
+    return ProductModel(
       id: map['id'] != null ? map['id'] as String : null,
       barcode: map['barcode'] != null ? map['barcode'] as String : null,
       name: map['name'] != null ? map['name'] as String : null,
@@ -59,16 +59,16 @@ class MenuModel {
 
   String toJson() => json.encode(toMap());
 
-  factory MenuModel.fromJson(String source) =>
-      MenuModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ProductModel.fromJson(String source) =>
+      ProductModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'MenuModel(id: $id, barcode: $barcode, name: $name, price: $price, image: $image, createdAt: $createdAt)';
+    return 'ProductModel(id: $id, barcode: $barcode, name: $name, price: $price, image: $image, createdAt: $createdAt)';
   }
 
   @override
-  bool operator ==(covariant MenuModel other) {
+  bool operator ==(covariant ProductModel other) {
     if (identical(this, other)) return true;
 
     return other.id == id &&
