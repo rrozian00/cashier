@@ -77,18 +77,6 @@ class OrderController extends GetxController {
     jumlahBayar.value = 0;
   }
 
-  Future<void> getUser() async {
-    debugPrint("getUser on order dipanggil");
-    userData.value = await getUserData();
-  }
-
-  Future<void> getStore() async {
-    debugPrint("getstore on order dipanggil");
-    storeData.value = await getStoreData();
-    debugPrint("store data on order ${storeData.value}");
-    await fetchProduct();
-  }
-
   Future<void> fetchProduct() async {
     product.clear();
 
@@ -227,9 +215,13 @@ class OrderController extends GetxController {
   @override
   void onReady() async {
     super.onReady();
+    try {
+      userData.value = await getUserData();
+      storeData.value = await getStoreData();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
 
-    await getStore();
-    await getUser();
-    // await fetchProduct();
+    await fetchProduct();
   }
 }

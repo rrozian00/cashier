@@ -122,11 +122,6 @@ class StoreController extends GetxController {
   @override
   void onReady() async {
     super.onReady();
-    try {
-      store.value = await getStoreData();
-      debugPrint("store.value on storeController ${store.value}");
-    } catch (e, stack) {
-      debugPrint("ERROR getStoreData: $e\n$stack");
-    }
+    store.value = await getStoreData();
   }
 }
