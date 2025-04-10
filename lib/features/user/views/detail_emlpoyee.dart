@@ -17,9 +17,10 @@ class DetailEmlpoyee extends GetView<EmployeeController> {
   @override
   Widget build(BuildContext context) {
     final data = controller.listEmployee[index];
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.5,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -28,7 +29,7 @@ class DetailEmlpoyee extends GetView<EmployeeController> {
             _buildTable(name: "Alamat", value: data.address),
             _buildTable(name: "Email", value: data.email),
             _buildTable(name: "No HP", value: data.phoneNumber),
-            _buildTable(name: "Gaji", value: data.salary),
+            _buildTable(name: "Gaji", value: "${data.salary} %"),
           ],
         ),
       ),

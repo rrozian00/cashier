@@ -12,6 +12,7 @@ class MyTextField extends StatelessWidget {
   final Widget? suffixWidget;
   final Widget? suffixIcon;
   final String? label;
+  final String? prefixText;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
   final bool obscure;
@@ -37,6 +38,7 @@ class MyTextField extends StatelessWidget {
     this.max,
     this.suffixWidget,
     this.maxLines = 1,
+    this.prefixText,
   });
 
   @override
@@ -78,6 +80,7 @@ class MyTextField extends StatelessWidget {
               readOnly: readOnly,
               onChanged: (value) => controller.value = value,
               decoration: InputDecoration(
+                prefixText: prefixText,
                 suffixIcon: suffixWidget ?? suffixIcon,
                 suffixText: suffix,
                 labelText: label,

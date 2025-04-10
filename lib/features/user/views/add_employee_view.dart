@@ -33,6 +33,7 @@ class AddEmployeeView extends GetView<EmployeeController> {
                   hint: "Email"),
               SizedBox(height: 10),
               MyTextField(
+                  obscure: true,
                   textCapitalization: TextCapitalization.none,
                   controller: controller.passwordC,
                   hint: "Password"),

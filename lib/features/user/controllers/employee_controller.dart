@@ -91,15 +91,13 @@ class EmployeeController extends GetxController {
         "employees": FieldValue.arrayUnion([employeeId])
       });
       // Get.offAllNamed(Routes.LOGIN);
-      Get.snackbar("Sukses", "Karyawan ${nameC.value} berhasil ditambahkan!");
+
       clearForm();
-      // Kembali ke halaman sebelumnya
+      await getEmployee();
     } on FirebaseAuthException catch (e) {
       debugPrint("Firebase Auth Error: ${e.message}");
-      Get.snackbar("Error", "Gagal membuat akun karyawan: ${e.message}");
     } on FirebaseException catch (e) {
       debugPrint("Firebase Error: ${e.message}");
-      Get.snackbar("Error", "Gagal menambahkan karyawan: ${e.message}");
     } catch (e) {
       debugPrint("Error: $e");
       Get.snackbar("Error", "Terjadi kesalahan, coba lagi.");
@@ -108,13 +106,15 @@ class EmployeeController extends GetxController {
     }
   }
 
-  void getEmployee() async {
-    final storeId = await getStoreId();
+  Future<void> getEmployee() async {
     debugPrint("Get Employee dipanggil");
+
+    final storeId = await getStoreId();
+    debugPrint("store ID=$storeId");
+
     final users = await getUserData();
     final userId = users?.id;
     debugPrint("UserID=$userId");
-    debugPrint("store ID=$storeId");
 
     // Jika storeId tetap null, user tidak memiliki store
     if (storeId.isEmpty) {
@@ -122,23 +122,54 @@ class EmployeeController extends GetxController {
       return;
     }
 
-    final storeDoc = await _firestore.collection('stores').doc(storeId).get();
-    final List<dynamic> employeeIdList =
-        storeDoc.data()?['employees'] as List<dynamic>? ?? [];
-    debugPrint("Employee=${employeeIdList.length}");
-    if (employeeIdList.isEmpty) {
-      listEmployee.value = [];
-      return;
+    try {
+      isLoading.value = true;
+      final storeDoc = await _firestore.collection('stores').doc(storeId).get();
+      final List<dynamic> employeeIdList =
+          storeDoc.data()?['employees'] as List<dynamic>? ?? [];
+      debugPrint("Employee=${employeeIdList.length}");
+      if (employeeIdList.isEmpty) {
+        listEmployee.value = [];
+        return;
+      }
+
+      final employeeQuery = await _firestore
+          .collection('users')
+          .where(FieldPath.documentId, whereIn: employeeIdList)
+          .get();
+
+      listEmployee.value = employeeQuery.docs
+          .map((doc) => UserModel.fromJson(doc.data()))
+          .toList();
+    } catch (e) {
+      debugPrint("eror update employe: $e");
+    } finally {
+      isLoading.value = false;
     }
+  }
 
-    final employeeQuery = await _firestore
-        .collection('users')
-        .where(FieldPath.documentId, whereIn: employeeIdList)
-        .get();
+  Future<void> delete(String id) async {
+    try {
+      Get.back();
+      await _firestore.collection("users").doc(id).delete();
+      await getEmployee();
+    } catch (e) {
+      debugPrint("gagal hapus karyawan: $e");
+    }
+  }
 
-    listEmployee.value = employeeQuery.docs
-        .map((doc) => UserModel.fromJson(doc.data()))
-        .toList();
+  Future<void> edit(UserModel data) async {
+    final newData = data.copyWith(
+      name: nameC.value,
+      address: addressC.value,
+      phoneNumber: phoneC.value,
+      salary: salaryC.value,
+    );
+
+    await _firestore.collection("users").doc(data.id).update(newData.toMap());
+
+    Get.back();
+    await getEmployee();
   }
 
   void clearForm() {
@@ -147,11 +178,13 @@ class EmployeeController extends GetxController {
     phoneC.value = '';
     passwordC.value = '';
     photoC.value = '';
+    addressC.value = '';
+    salaryC.value = '';
   }
 
   @override
-  void onInit() {
-    getEmployee();
-    super.onInit();
+  void onReady() async {
+    super.onReady();
+    await getEmployee();
   }
 }

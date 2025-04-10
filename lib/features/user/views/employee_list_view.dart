@@ -5,6 +5,7 @@ import 'package:cashier/core/widgets/no_data.dart';
 import 'package:cashier/features/user/controllers/employee_controller.dart';
 import 'package:cashier/features/user/views/add_employee_view.dart';
 import 'package:cashier/features/user/views/detail_emlpoyee.dart';
+import 'package:cashier/features/user/views/edit_employee.dart';
 import 'package:cashier/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,12 @@ class EmployeeListView extends GetView<EmployeeController> {
         titleText: "Daftar Karyawan",
       ),
       body: Obx(() {
+        if (controller.isLoading.isTrue) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
         if (controller.listEmployee.isEmpty) {
           return noData(
               title: "Tidak ada data Karyawan",
@@ -63,23 +70,66 @@ class EmployeeListView extends GetView<EmployeeController> {
                             child: ListTile(
                               onTap: () {
                                 Get.bottomSheet(
-                                    clipBehavior: Clip.hardEdge,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
+                                    backgroundColor: white,
+                                    isScrollControlled: true,
                                     DetailEmlpoyee(index: index));
                               },
                               trailing: Wrap(
                                 children: [
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Get.bottomSheet(
+                                          backgroundColor: white,
+                                          enableDrag: true,
+                                          isScrollControlled: true,
+                                          EditEmployee(
+                                            index: index,
+                                          ));
+                                    },
                                     icon: Icon(
                                       Icons.edit,
                                       color: blue,
                                     ),
                                   ),
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Get.dialog(AlertDialog(
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              "Hapus",
+                                              style: TextStyle(fontSize: 23),
+                                            ),
+                                            SizedBox(
+                                              height: 25,
+                                            ),
+                                            Text(
+                                                "Apakah anda yakin akan menghapus ${data.name} ?"),
+                                            SizedBox(
+                                              height: 25,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                myGreenElevated(
+                                                    width: 110,
+                                                    text: "Batal",
+                                                    onPress: () => Get.back()),
+                                                myRedElevated(
+                                                    width: 110,
+                                                    text: "Hapus",
+                                                    onPress: () async {
+                                                      await controller
+                                                          .delete(data.id!);
+                                                    }),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ));
+                                    },
                                     icon: Icon(
                                       Icons.delete,
                                       color: red,
@@ -88,7 +138,10 @@ class EmployeeListView extends GetView<EmployeeController> {
                                 ],
                               ),
                               title: myText(data.name ?? ''),
-                              subtitle: myText(data.email ?? ''),
+                              subtitle: Text(
+                                data.email ?? '',
+                                style: TextStyle(color: red),
+                              ),
                             ),
                           ),
                         ),
