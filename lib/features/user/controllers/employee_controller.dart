@@ -11,6 +11,9 @@ import 'package:cashier/features/user/models/user_model.dart';
 class EmployeeController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  final listEmployee = <UserModel>[].obs;
+
   var isLoading = false.obs;
 
   final nameC = ''.obs;
@@ -87,7 +90,7 @@ class EmployeeController extends GetxController {
       await _firestore.collection('stores').doc(storeId).update({
         "employees": FieldValue.arrayUnion([employeeId])
       });
-      Get.offAllNamed(Routes.LOGIN);
+      // Get.offAllNamed(Routes.LOGIN);
       Get.snackbar("Sukses", "Karyawan ${nameC.value} berhasil ditambahkan!");
       clearForm();
       // Kembali ke halaman sebelumnya
@@ -104,8 +107,6 @@ class EmployeeController extends GetxController {
       isLoading.value = false;
     }
   }
-
-  final listEmployee = [].obs;
 
   void getEmployee() async {
     final storeId = await getStoreId();
@@ -141,22 +142,12 @@ class EmployeeController extends GetxController {
   }
 
   void clearForm() {
-    //   nameC.clear();
-    //   emailC.clear();
-    //   phoneC.clear();
-    //   passwordC.clear();
-    //   photoC.clear();
+    nameC.value = '';
+    emailC.value = '';
+    phoneC.value = '';
+    passwordC.value = '';
+    photoC.value = '';
   }
-
-  // @override
-  // void onClose() {
-  //   nameC.dispose();
-  //   emailC.dispose();
-  //   phoneC.dispose();
-  //   passwordC.dispose();
-  //   photoC.dispose();
-  //   super.onClose();
-  // }
 
   @override
   void onInit() {

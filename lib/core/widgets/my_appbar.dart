@@ -1,10 +1,10 @@
+import 'package:cashier/core/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({
     super.key,
-    this.icon,
     this.title,
     this.titleText,
     this.leading,
@@ -12,7 +12,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   final String? titleText;
-  final IconData? icon;
   final Widget? title;
   final Widget? leading;
   final List<Widget>? actions;
@@ -20,15 +19,38 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        shadowColor: Colors.black,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.white, Colors.white, Colors.red[200]!],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+        backgroundColor: white,
+        shadowColor: black,
+        elevation: 5,
+        flexibleSpace: Stack(
+          children: [
+            // Background polos
+            Container(color: white),
+
+            Positioned(
+              bottom: -50,
+              right: -50,
+              child: Container(
+                margin: const EdgeInsets.all(16),
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle, color: purple.withAlpha(50)),
+              ),
             ),
-          ),
+
+            Positioned(
+              left: -50,
+              bottom: -50,
+              child: Container(
+                margin: const EdgeInsets.all(16),
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle, color: purple.withAlpha(50)),
+              ),
+            ),
+          ],
         ),
         title: title ??
             Text(
@@ -36,7 +58,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               style: GoogleFonts.jetBrainsMono(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.deepPurple,
+                color: purple,
               ),
             ),
         actions: actions,

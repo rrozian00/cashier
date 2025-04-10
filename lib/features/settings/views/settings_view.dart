@@ -1,3 +1,4 @@
+import 'package:cashier/core/theme/colors.dart';
 import 'package:cashier/features/user/controllers/profile_controller.dart';
 import 'package:cashier/routes/app_pages.dart';
 import 'package:cashier/core/widgets/my_appbar.dart';
@@ -15,7 +16,7 @@ class SettingsView extends GetView<ProfileController> {
           titleText: 'Pengaturan',
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.only(top: 10.0),
           child: ListView(
             children: [
               _Listile(
@@ -81,26 +82,34 @@ class _Listile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3.0),
+      padding: const EdgeInsets.only(
+        top: 10,
+        left: 10.0,
+        right: 5,
+      ),
       child: Container(
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
+            border: Border.all(color: grey),
             borderRadius: BorderRadius.circular(15)),
         // color: Colors.black,
         child: ListTile(
           trailing: Icon(
+            color: grey,
             Icons.navigate_next_rounded,
-            size: 40,
+            size: 35,
           ),
           onTap: onPress,
           contentPadding: EdgeInsets.all(6),
           leading: CircleAvatar(
-            backgroundColor: Colors.grey[200],
-            child: Icon(icon),
+            backgroundColor: grey.withAlpha(120),
+            child: Icon(
+              icon,
+              color: purple,
+            ),
           ),
           title: Text(
             title ?? "-",
-            style: GoogleFonts.jetBrainsMono(color: Colors.deepPurple),
+            style: GoogleFonts.jetBrainsMono(color: brown),
           ),
         ),
       ),

@@ -1,4 +1,6 @@
+import 'package:cashier/core/theme/colors.dart';
 import 'package:cashier/core/utils/get_store_id.dart';
+import 'package:cashier/core/widgets/home_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cashier/core/widgets/my_text_field.dart';
 import 'package:cashier/features/store/models/store_model.dart';
+import 'package:path/path.dart';
 
 class StoreController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -84,34 +87,47 @@ class StoreController extends GetxController {
     }
   }
 
-  void editDialog() {
+  void editDialog(BuildContext context) {
     name.value = store.value?.name ?? '';
     address.value = store.value?.address ?? '';
     phone.value = store.value?.phone ?? '';
 
-    Get.dialog(AlertDialog(
-      title: Text("Edit Toko"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          MyTextField(controller: name, label: "Nama Toko"),
-          MyTextField(controller: address, label: "Alamat Toko"),
-          MyTextField(controller: phone, label: "No HP Toko"),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+    Get.bottomSheet(
+      backgroundColor: white,
+      Container(
+        height: MediaQuery.of(context).size.height * 0.7,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              myElevated(onPress: () => Get.back(), text: "Kembali"),
-              myPurpleElevated(
-                  onPress: () {
-                    updateStore();
-                    Get.back();
-                  },
-                  text: "Simpan"),
+              homeIndocator(),
+              MyTextField(controller: name, label: "Nama Toko"),
+              MyTextField(controller: address, label: "Alamat Toko"),
+              MyTextField(controller: phone, label: "No HP Toko"),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  myRedElevated(onPress: () => Get.back(), text: "Kembali"),
+                  myGreenElevated(
+                      onPress: () {
+                        updateStore();
+                        Get.back();
+                      },
+                      text: "Simpan"),
+                ],
+              ),
+              SizedBox(
+                height: 40,
+              )
             ],
-          )
-        ],
+          ),
+        ),
       ),
-    ));
+    );
   }
 
   // Future<void> fetchStore() async {

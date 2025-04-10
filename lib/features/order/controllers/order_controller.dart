@@ -151,7 +151,7 @@ class OrderController extends GetxController {
         : 0;
   }
 
-  void insertTransaksi() async {
+  void insertOrder() async {
     final storeId = storeData.value?.id;
     if (storeId == null) {
       debugPrint("StoreId belum ditemukan di inserTransaksi");
@@ -163,32 +163,35 @@ class OrderController extends GetxController {
       return;
     }
 
-    final createdAt = DateTime.now().toIso8601String();
+    final createdAt = Timestamp.now();
 
-    for (var item in cart) {
-      final produk = item['produk'] as ProductModel;
-      final jumlah = item['jumlah'] as int;
-      final totalHargaProduk = int.tryParse(produk.price ?? '0')! * jumlah;
+    final docRef =
+        _firestore.collection('stores').doc(storeId).collection('orders').doc();
 
-      final model = OrderModel(
-        name: produk.name,
-        quantity: jumlah.toString(),
-        price: produk.price,
-        total: totalHargaProduk.toString(),
-        payment: jumlahBayar.value.toString(),
-        refund: kembalian.value.toString(),
-        createdAt: createdAt,
-      );
+    final model = OrderModel(
+      id: docRef.id,
+      payment: jumlahBayar.value.toString(),
+      products: cart.map((e) {
+        final produk = e['produk'] as ProductModel;
+        final jumlah = e['jumlah'] as int;
 
-      try {
-        await _firestore
-            .collection('stores')
-            .doc(storeId)
-            .collection('orders')
-            .add(model.toJson());
-      } catch (e) {
-        Get.snackbar("Error", "Gagal menyimpan transaksi: $e");
-      }
+        return ProductModel(
+          id: produk.id,
+          barcode: produk.barcode,
+          name: produk.name,
+          price: produk.price,
+          quantity: jumlah.toString(),
+        );
+      }).toList(),
+      refund: kembalian.value.toString(),
+      total: totalHarga.value.toString(),
+      createdAt: createdAt,
+    );
+
+    try {
+      await docRef.set(model.toMap());
+    } catch (e) {
+      Get.snackbar("Error", "Gagal menyimpan transaksi: $e");
     }
 
     hitungTotal();

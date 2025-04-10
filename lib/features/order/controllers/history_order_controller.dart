@@ -1,139 +1,121 @@
-// controllers/history_order_controller.dart
-import 'package:cashier/features/expense/models/expense_model.dart';
-import 'package:cashier/features/order/models/order_model.dart';
+import 'package:cashier/features/user/controllers/employee_controller.dart';
+import 'package:cashier/features/user/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import 'package:cashier/core/utils/get_store_id.dart';
+import 'package:cashier/features/order/models/order_model.dart';
+
 class HistoryOrderController extends GetxController {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final employeeController = Get.find<EmployeeController>();
+
+  final listEmployee = <UserModel>[].obs;
+  var storeId = ''.obs;
+
+  final isLoading = false.obs;
 
   var totalPenjualanHariIni = 0.0.obs;
   var totalProfitHariIni = 0.0.obs;
-  var storeId = ''.obs;
 
   var orderList = <OrderModel>[].obs;
-  var filteredOrderList = <OrderModel>[].obs;
-  var expenseList = <ExpenseModel>[].obs;
-  var filteredExpenseList = <ExpenseModel>[].obs;
 
-  var filteredTotalPenjualan = 0.0.obs;
-  var filteredTotalSalary = 0.0.obs;
-  var filteredTotalExpense = 0.0.obs;
-  var filteredTotalProfit = 0.0.obs;
+  var totalPenjualan = 0.0.obs;
+  var totalSalary = 0.0.obs;
+  var totalExpense = 0.0.obs;
+  var totalProfit = 0.0.obs;
 
   var selectedDateRange = Rx<DateTimeRange?>(null);
   var formattedDateRange = Rx<String?>(null);
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchStoreId();
-  }
+  // DateRangePicker
+  Future<void> pickDateRange(BuildContext context) async {
+    final DateTimeRange? picked = await showDateRangePicker(
+      context: context,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+      initialDateRange: selectedDateRange.value,
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: Colors.blue,
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          ),
+          child: child!,
+        );
+      },
+    );
 
-  Future<void> fetchStoreId() async {
-    final user = _firebaseAuth.currentUser;
-    if (user == null) return;
-    final userDoc = await _firestore.collection('users').doc(user.uid).get();
-    final fetchedStoreId = userDoc.data()?['storeId'];
+    if (picked != null && picked != selectedDateRange.value) {
+      selectedDateRange.value = picked;
+      formattedDateRange.value =
+          '${DateFormat('dd/MM/yyyy').format(picked.start)} - ${DateFormat('dd/MM/yyyy').format(picked.end)}';
 
-    if (fetchedStoreId != null) {
-      storeId.value = fetchedStoreId;
-      fetchOrder();
-      fetchExpense();
+      await fetchOrder();
+      updateCalculations();
     }
   }
 
-  void fetchOrder() {
+  Future<void> fetchOrder() async {
     if (storeId.isEmpty) return;
-    _firestore
-        .collection("stores")
-        .doc(storeId.value)
-        .collection("orders")
-        .snapshots()
-        .listen((snapshot) {
-      orderList.assignAll(
-          snapshot.docs.map((doc) => OrderModel.fromJson(doc.data())).toList());
-      applyFilters();
-    });
-  }
+    debugPrint("isi storeId ${storeId.value}");
 
-  void fetchExpense() {
-    if (storeId.isEmpty) return;
-    _firestore
-        .collection("stores")
-        .doc(storeId.value)
-        .collection("expenses")
-        .snapshots()
-        .listen((snapshot) {
-      expenseList.assignAll(snapshot.docs
-          .map((doc) => ExpenseModel.fromJson(doc.data()))
-          .toList());
-      applyFilters();
-    });
-  }
+    try {
+      isLoading.value = true;
+      final start = selectedDateRange.value!.start;
+      debugPrint("isi start ${start.toString()}");
+      debugPrint("ts:${Timestamp.fromDate(start)}");
 
-  void applyFilters() {
-    if (selectedDateRange.value == null) {
-      filteredOrderList.assignAll(orderList);
-      filteredExpenseList.assignAll(expenseList);
-    } else {
-      filterDataByDateRange(selectedDateRange.value!);
+      final end = selectedDateRange.value!.end;
+      final endPlusOne = end.add(const Duration(days: 1));
+
+      final querySnap = await _firestore
+          .collection("stores")
+          .doc(storeId.value)
+          .collection("orders")
+          .where("createdAt", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+          .where("createdAt",
+              isLessThanOrEqualTo: Timestamp.fromDate(endPlusOne))
+          .get();
+      orderList.value =
+          querySnap.docs.map((e) => OrderModel.fromMap(e.data())).toList();
+      debugPrint("isi orderlist ${orderList.length}");
+    } catch (e) {
+      debugPrint("eror fetch order: $e");
+    } finally {
+      isLoading.value = false;
     }
-    updateCalculations();
-  }
-
-  void filterDataByDateRange(DateTimeRange selectedRange) {
-    final startDate = selectedRange.start;
-    final endDate = selectedRange.end;
-
-    filteredOrderList.assignAll(orderList.where((transaksi) {
-      try {
-        final transaksiDate = DateTime.parse(transaksi.createdAt ?? "");
-        return transaksiDate.isAfter(startDate.subtract(Duration(days: 1))) &&
-            transaksiDate.isBefore(endDate.add(Duration(days: 1)));
-      } catch (e) {
-        return false;
-      }
-    }).toList());
-
-    filteredExpenseList.assignAll(expenseList.where((expense) {
-      try {
-        final expenseDate = DateFormat('dd-MM-yyyy').parse(expense.date ?? '');
-        return expenseDate.isAfter(startDate.subtract(Duration(days: 1))) &&
-            expenseDate.isBefore(endDate.add(Duration(days: 1)));
-      } catch (e) {
-        return false;
-      }
-    }).toList());
   }
 
   void updateCalculations() {
-    filteredTotalPenjualan.value = filteredOrderList.fold(
+    listEmployee.value = employeeController.listEmployee;
+
+    totalPenjualan.value = orderList.fold(
       0,
-      (sum, transaksi) => sum + double.tryParse(transaksi.total ?? '0')!,
+      (sum1, transaksi) => sum1 + double.tryParse(transaksi.total ?? '0')!,
     );
 
-//Perhitungan gaji
-    filteredTotalSalary.value = filteredOrderList.fold(0.0,
-        (sum, tran) => sum + (double.tryParse(tran.total ?? '0') ?? 0) * 0.27);
-
-    filteredTotalExpense.value = filteredExpenseList.fold(
+    totalSalary.value = listEmployee.fold<double>(
       0.0,
-      (sum, expense) => sum + (double.tryParse(expense.pay ?? '0') ?? 0),
+      (sum1, e) =>
+          sum1 +
+          ((totalPenjualan.value * (int.tryParse(e.salary ?? '0') ?? 0)) / 100),
     );
 
-    filteredTotalProfit.value = filteredTotalPenjualan.value -
-        filteredTotalSalary.value -
-        filteredTotalExpense.value;
+    totalProfit.value =
+        totalPenjualan.value - totalSalary.value - totalExpense.value;
   }
 
   void resetDateRangeAndData() {
     selectedDateRange.value = null;
     formattedDateRange.value = null;
-    applyFilters();
+  }
+
+  @override
+  void onReady() async {
+    super.onReady();
+    storeId.value = await getStoreId();
   }
 }

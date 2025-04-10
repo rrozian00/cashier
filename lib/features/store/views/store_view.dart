@@ -17,11 +17,13 @@ class StoreView extends GetView<StoreController> {
     return Scaffold(
       appBar: MyAppBar(
         actions: [
-          IconButton(
-              onPressed: () => controller.editDialog(),
-              icon: Icon(
-                Icons.edit,
-                color: blue,
+          TextButton(
+              onPressed: () => controller.editDialog(context),
+              child: Text(
+                "Edit",
+                style: TextStyle(
+                  color: blue,
+                ),
               ))
         ],
         titleText: "Profil Toko",
@@ -102,7 +104,7 @@ class StoreView extends GetView<StoreController> {
           ),
           title: Text(
             title,
-            style: GoogleFonts.poppins(color: red, fontSize: 12),
+            style: GoogleFonts.poppins(color: oldGrey, fontSize: 12),
           ),
         ),
         Divider()

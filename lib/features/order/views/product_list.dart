@@ -24,7 +24,7 @@ class ProductList extends GetView<OrderController> {
               // ),
               child: Text(
                 "Refresh",
-                style: TextStyle(color: green),
+                style: TextStyle(color: blue),
               ),
             )
           ],

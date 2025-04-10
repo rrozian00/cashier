@@ -1,3 +1,5 @@
+import 'package:cashier/core/theme/colors.dart';
+import 'package:cashier/core/utils/rupiah_converter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,7 +16,6 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-        icon: Icons.store,
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -24,7 +25,7 @@ class HomeView extends GetView<HomeController> {
                     "Hai, ${controller.userData.value?.name}",
                     style: GoogleFonts.poppins(
                       fontSize: 16,
-                      color: Colors.deepPurple,
+                      color: purple,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -47,20 +48,27 @@ class HomeView extends GetView<HomeController> {
               child: Row(
                 children: [
                   AnimatedContainer(
-                    duration: Duration(milliseconds: 800),
-                    curve: Curves.easeInOut,
-                    child: Image.asset(
-                      color: Colors.deepPurple,
-                      'assets/icons/icon.png',
-                      height: 70,
-                    ),
-                  ),
+                      duration: Duration(milliseconds: 800),
+                      curve: Curves.easeInOut,
+                      child: Icon(
+                        Icons.store,
+                        size: 70,
+                        color: oldRed,
+                      )
+                      // Image.asset(
+                      //   color: oldRed,
+                      //   'assets/icons/icon.png',
+                      //   height: 70,
+                      // ),
+                      ),
                   Obx(() => Text(
                         controller.storeName.isEmpty
                             ? "Loading..."
                             : controller.storeName.value,
                         style: GoogleFonts.pacifico(
-                            fontSize: 30, fontWeight: FontWeight.bold),
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: oldRed),
                       ))
                 ],
               ),
@@ -73,7 +81,7 @@ class HomeView extends GetView<HomeController> {
               child: Text(
                 DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(DateTime.now()),
                 style: GoogleFonts.poppins(
-                  color: Colors.blue[900],
+                  color: blue,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -88,21 +96,21 @@ class HomeView extends GetView<HomeController> {
                 onRefresh: () async => controller.fetchData(),
                 child: ListView(
                   children: [
-                    // Obx(() => MyCard(
-                    //       image: "assets/images/income.png",
-                    //       title: "Total Pendapatan Hari Ini",
-                    //       subtitle: rupiahConverterDouble(
-                    //           controller.totalIncomeToday.value),
-                    //       color: Colors.green[900],
-                    //     )),
-                    // // SizedBox(height: 16),
-                    // Obx(() => MyCard(
-                    //       image: 'assets/images/expenses.png',
-                    //       title: "Total Pengeluaran Hari Ini",
-                    //       subtitle: rupiahConverterDouble(
-                    //           controller.totalPengeluaranToday.value),
-                    //       color: Colors.red[700],
-                    //     )),
+                    Obx(() => MyCard(
+                          image: "assets/images/income.png",
+                          title: "Total Pendapatan Hari Ini",
+                          subtitle: rupiahConverterDouble(
+                              controller.totalIncomeToday.value),
+                          color: green,
+                        )),
+                    // SizedBox(height: 16),
+                    Obx(() => MyCard(
+                          image: 'assets/images/expenses.png',
+                          title: "Total Pengeluaran Hari Ini",
+                          subtitle: rupiahConverterDouble(
+                              controller.totalPengeluaranToday.value),
+                          color: red,
+                        )),
                   ],
                 ),
               ),
@@ -160,7 +168,7 @@ class MyCard extends StatelessWidget {
                   Text(
                     title ?? '-',
                     style: GoogleFonts.montserrat(
-                      color: Colors.black,
+                      color: black,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),

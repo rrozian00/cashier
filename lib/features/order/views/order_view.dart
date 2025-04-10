@@ -18,17 +18,16 @@ class TransaksiView extends GetView<OrderController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(
-        titleText: 'Pilih Produk',
-        leading: IconButton(
-          color: red,
+      appBar: MyAppBar(titleText: 'Pilih Produk', actions: [
+        IconButton(
+          color: blue,
           onPressed: () {
             controller.cart.clear();
             controller.totalHarga.value = 0;
           },
           icon: const Icon(Icons.refresh),
         ),
-      ),
+      ]),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(

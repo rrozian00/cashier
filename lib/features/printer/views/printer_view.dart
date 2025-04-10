@@ -14,99 +14,48 @@ class PrinterView extends GetView<PrinterController> {
     controller.isConnected.value;
     return Scaffold(
       appBar: MyAppBar(
-        title: Text("Printers"),
+        titleText: "Printer",
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Tombol Scan
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: Obx(
+        () {
+          if (controller.isConnected.isTrue) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Obx(() => myElevated(
-                      onPress: controller.isScanning.value
-                          ? null
-                          : controller.scanDevices, // Disable saat scanning
-                      child: controller.isScanning.value
-                          ? Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.black,
-                                    strokeWidth: 2,
-                                  ),
-                                ),
-                                SizedBox(width: 8),
-                                Text("Mencari..."),
-                              ],
-                            )
-                          : Text("Cari Printer"),
-                    )),
-                // Tombol Connect & Disconnect
-                Obx(() => controller.isConnected.value
-                    ? myRedElevated(
-                        onPress: controller.disconnectPrinter,
-                        text: "Putuskan",
-                        // style: TextStyle(color: white),
-                      )
-                    : myElevated(
-                        onPress: controller.connectToPrinter,
-                        child: controller.isLoading.value
-                            ? Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.black,
-                                      strokeWidth: 2,
-                                    ),
-                                  ),
-                                  SizedBox(width: 8),
-                                  Text("Menghubungkan..."),
-                                ],
-                              )
-                            : Text("Hubungkan"),
-                      )),
+                Icon(
+                  Icons.print_rounded,
+                  color: green,
+                  size: 100,
+                ),
+                Center(
+                  child: Text(
+                    "Terhubung dengan ${controller.selectedPrinter.value?.name}",
+                    style: TextStyle(color: green),
+                  ),
+                ),
               ],
-            ),
+            );
+          }
 
-            SizedBox(height: 16),
+          if (controller.devices.isEmpty) {
+            return Center(
+              child: noData(
+                  icon: Icons.print_disabled_rounded,
+                  title: "Tidak ada Printer",
+                  message: 'Tekan tombol "Cari Printer"'),
+            );
+          }
 
-            // List Printer
-            Obx(() {
-              if (controller.isConnected.isTrue) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.print_rounded,
-                      color: green,
-                      size: 100,
-                    ),
-                    Center(
-                      child: Text(
-                        "Terhubung dengan ${controller.selectedPrinter.value?.name}",
-                        style: TextStyle(color: green),
-                      ),
-                    ),
-                  ],
-                );
-              } else if (controller.devices.isEmpty) {
-                return Center(
-                  child: noData(
-                      icon: Icons.print_disabled_rounded,
-                      title: "Tidak ada Printer",
-                      message: 'Tekan tombol "Cari Printer"'),
-                );
-              } else {
-                return SizedBox(
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 16),
+
+                // List Printer
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.67,
                   width: double.infinity,
                   child: Column(
@@ -117,6 +66,7 @@ class PrinterView extends GetView<PrinterController> {
                           itemBuilder: (context, index) {
                             final printer = controller.devices[index];
                             return Obx(() => Card(
+                                  elevation: 4,
                                   color: controller.selectedPrinter.value ==
                                           printer
                                       ? Colors.greenAccent
@@ -136,16 +86,72 @@ class PrinterView extends GetView<PrinterController> {
                       SizedBox(
                         height: 30,
                       ),
-                      Text('Silahkan pilih printer, lalu "Sambungkan"')
+                      Text('Silahkan pilih Printer, lalu "Hubungkan"')
                     ],
                   ),
-                );
-              }
-            }),
+                ),
 
-            SizedBox(height: 16),
-          ],
-        ),
+                SizedBox(height: 16),
+              ],
+            ),
+          );
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: // Tombol Scan
+          Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Obx(() => myElevated(
+                onPress: controller.isScanning.value
+                    ? null
+                    : controller.scanDevices, // Disable saat scanning
+                child: controller.isScanning.value
+                    ? Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.black,
+                              strokeWidth: 2,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Text("Mencari..."),
+                        ],
+                      )
+                    : Text("Cari Printer"),
+              )),
+          // Tombol Connect & Disconnect
+          Obx(() => controller.isConnected.value
+              ? myRedElevated(
+                  onPress: controller.disconnectPrinter,
+                  text: "Putuskan",
+                  // style: TextStyle(color: white),
+                )
+              : myElevated(
+                  onPress: controller.connectToPrinter,
+                  child: controller.isLoading.value
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.black,
+                                strokeWidth: 2,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Text("Menghubungkan..."),
+                          ],
+                        )
+                      : Text("Hubungkan"),
+                )),
+        ],
       ),
     );
   }

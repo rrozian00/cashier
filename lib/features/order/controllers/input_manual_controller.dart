@@ -10,8 +10,9 @@ class InputManualController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  var tanggalInput = ''.obs;
+  var inputDate = ''.obs;
   var total = ''.obs;
+  final storeId = ''.obs;
 
   final TextEditingController totalC = TextEditingController();
 
@@ -27,30 +28,19 @@ class InputManualController extends GetxController {
   }
 
   void clearFields() {
-    tanggalInput.value = '';
+    inputDate.value = '';
     total.value = '';
     totalC.clear();
   }
 
   bool _isValid() {
-    if (tanggalInput.value.trim().isEmpty || total.value.trim().isEmpty) {
+    if (inputDate.value.trim().isEmpty || total.value.trim().isEmpty) {
       Get.snackbar("Gagal", "Lengkapi semua data",
           snackPosition: SnackPosition.BOTTOM);
       return false;
     }
     return true;
   }
-
-  String _convertToIsoString(String date) {
-    try {
-      final DateTime parsedDate = DateFormat('dd-MM-yyyy').parse(date);
-      return parsedDate.toIso8601String();
-    } catch (e) {
-      return '';
-    }
-  }
-
-  final storeId = ''.obs;
 
   Future<void> getId() async {
     final userId = _auth.currentUser!.uid;
@@ -61,26 +51,23 @@ class InputManualController extends GetxController {
   Future<void> save() async {
     if (!_isValid()) return;
     await getId();
+    final dateFormat = DateFormat("dd-MM-yyyy");
+    final inputDateParsed = dateFormat.parse(inputDate.value);
 
-    final isoDate = _convertToIsoString(tanggalInput.value);
-
-    final data = OrderModel(
-      name: "Input Manual",
-      payment: "-",
-      price: total.value,
-      quantity: "1",
-      refund: "-",
-      createdAt: isoDate,
-      total: total.value,
-    );
-
+    final createdAt = Timestamp.fromDate(inputDateParsed);
     try {
-      // Simpan ke Firestore
-      await _firestore
+      final docRef = _firestore
           .collection('stores')
           .doc(storeId.value)
           .collection('orders')
-          .add(data.toJson());
+          .doc();
+
+      final data = OrderModel(
+        id: docRef.id,
+        total: total.value,
+        createdAt: createdAt,
+      );
+      await docRef.set(data.toMap());
 
       Get.snackbar("Sukses", "Data Berhasil disimpan",
           snackPosition: SnackPosition.BOTTOM);

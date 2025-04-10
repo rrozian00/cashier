@@ -1,3 +1,4 @@
+import 'package:cashier/core/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,7 +15,7 @@ Widget noData({
         Icon(
           icon,
           size: 80,
-          color: Colors.grey.shade400,
+          color: grey,
         ),
         const SizedBox(height: 10),
         Text(

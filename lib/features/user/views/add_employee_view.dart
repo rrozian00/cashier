@@ -1,3 +1,4 @@
+import 'package:cashier/core/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -62,6 +63,6 @@ class AddEmployeeView extends GetView<EmployeeController> {
 Widget myText(String text) {
   return Text(
     text,
-    style: GoogleFonts.poppins(color: Colors.purple),
+    style: GoogleFonts.poppins(color: purple),
   );
 }

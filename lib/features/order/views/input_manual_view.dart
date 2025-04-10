@@ -25,7 +25,7 @@ class InputManualView extends GetView<InputManualController> {
               () => TextField(
                 readOnly: true,
                 controller: TextEditingController(
-                  text: controller.tanggalInput.value,
+                  text: controller.inputDate.value,
                 ),
                 decoration: InputDecoration(
                   labelText: "Tanggal Penjualan",
@@ -43,7 +43,7 @@ class InputManualView extends GetView<InputManualController> {
                   );
 
                   if (selectedDate != null) {
-                    controller.tanggalInput.value =
+                    controller.inputDate.value =
                         "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
                   }
                 },
@@ -66,42 +66,6 @@ class InputManualView extends GetView<InputManualController> {
                 controller.total.value = parsedValue.toString();
               },
             ),
-            // SizedBox(height: 10),
-            // TextField(
-            //   controller: controller.salaryController,
-            //   keyboardType: TextInputType.number,
-            //   textInputAction: TextInputAction.next,
-            //   onChanged: (value) {
-            //     String rawValue =
-            //         value.replaceAll('.', '').replaceAll('Rp ', '');
-            //     int parsedValue = int.tryParse(rawValue) ?? 0;
-            //     controller.salary.value = parsedValue.toString();
-            //   },
-            //   decoration: InputDecoration(
-            //     labelText: "Gaji Karyawan",
-            //     border: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(15),
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(height: 10),
-            // TextField(
-            //   controller: controller.capitalController,
-            //   keyboardType: TextInputType.number,
-            //   textInputAction: TextInputAction.next,
-            //   onChanged: (value) {
-            //     String rawValue =
-            //         value.replaceAll('.', '').replaceAll('Rp ', '');
-            //     int parsedValue = int.tryParse(rawValue) ?? 0;
-            //     controller.capital.value = parsedValue.toString();
-            //   },
-            //   decoration: InputDecoration(
-            //     labelText: "Total Modal",
-            //     border: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(15),
-            //     ),
-            //   ),
-            // ),
             SizedBox(
               height: 15,
             ),

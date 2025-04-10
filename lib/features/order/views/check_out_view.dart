@@ -127,7 +127,7 @@ class CheckOutView extends GetView<OrderController> {
                         color: white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold)),
-                onPress: () => controller.insertTransaksi(),
+                onPress: () => controller.insertOrder(),
               )
             : Text("Masukkan jumlah pembayaran",
                 style: GoogleFonts.poppins(

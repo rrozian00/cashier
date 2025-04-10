@@ -7,6 +7,7 @@ class ProductModel {
   String? name;
   String? price;
   String? image;
+  String? quantity;
   String? createdAt;
   ProductModel({
     this.id,
@@ -14,6 +15,7 @@ class ProductModel {
     this.name,
     this.price,
     this.image,
+    this.quantity,
     this.createdAt,
   });
 
@@ -23,6 +25,7 @@ class ProductModel {
     String? name,
     String? price,
     String? image,
+    String? quantity,
     String? createdAt,
   }) {
     return ProductModel(
@@ -31,6 +34,7 @@ class ProductModel {
       name: name ?? this.name,
       price: price ?? this.price,
       image: image ?? this.image,
+      quantity: quantity ?? this.quantity,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -42,6 +46,7 @@ class ProductModel {
       'name': name,
       'price': price,
       'image': image,
+      'quantity': quantity,
       'createdAt': createdAt,
     };
   }
@@ -53,6 +58,7 @@ class ProductModel {
       name: map['name'] != null ? map['name'] as String : null,
       price: map['price'] != null ? map['price'] as String : null,
       image: map['image'] != null ? map['image'] as String : null,
+      quantity: map['quantity'] != null ? map['quantity'] as String : null,
       createdAt: map['createdAt'] != null ? map['createdAt'] as String : null,
     );
   }
@@ -64,7 +70,7 @@ class ProductModel {
 
   @override
   String toString() {
-    return 'ProductModel(id: $id, barcode: $barcode, name: $name, price: $price, image: $image, createdAt: $createdAt)';
+    return 'ProductModel(id: $id, barcode: $barcode, name: $name, price: $price, image: $image, quantity: $quantity, createdAt: $createdAt)';
   }
 
   @override
@@ -76,6 +82,7 @@ class ProductModel {
         other.name == name &&
         other.price == price &&
         other.image == image &&
+        other.quantity == quantity &&
         other.createdAt == createdAt;
   }
 
@@ -86,6 +93,7 @@ class ProductModel {
         name.hashCode ^
         price.hashCode ^
         image.hashCode ^
+        quantity.hashCode ^
         createdAt.hashCode;
   }
 }

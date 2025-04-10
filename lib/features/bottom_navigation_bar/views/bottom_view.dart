@@ -1,3 +1,4 @@
+import 'package:cashier/core/theme/colors.dart';
 import 'package:cashier/features/bottom_navigation_bar/controllers/bottom_controller.dart';
 import 'package:cashier/features/home/views/home_view.dart';
 import 'package:cashier/features/order/views/order_view.dart';
@@ -40,8 +41,8 @@ class BottomView extends GetView<BottomController> {
               const EdgeInsets.only(right: 10, left: 10, bottom: 35, top: 10),
           tabBorderRadius: 15,
           // backgroundColor: Colors.grey[100]!,
-          color: Colors.grey[400],
-          activeColor: Colors.deepPurple,
+          color: grey,
+          activeColor: purple,
           tabs: controller.role.value == 'owner' || arg == 'owner'
               ? [
                   GButton(icon: Icons.home, text: "Beranda"),

@@ -24,12 +24,12 @@ class ProfileView extends GetView<ProfileController> {
                   onPressed: () => Get.toNamed(Routes.SETTINGS),
                   icon: Icon(
                     Icons.settings,
-                    color: purple,
+                    color: blue,
                   )),
             )),
         titleText: "Profil",
         actions: [
-          IconButton(
+          TextButton(
               onPressed: () {
                 Get.bottomSheet(
                     backgroundColor: white,
@@ -39,9 +39,11 @@ class ProfileView extends GetView<ProfileController> {
                             BorderRadius.vertical(top: Radius.circular(20))),
                     EditProfileView());
               },
-              icon: Icon(
-                Icons.edit_square,
-                color: purple,
+              child: Text(
+                "Edit Profil",
+                style: TextStyle(
+                  color: blue,
+                ),
               ))
         ],
       ),

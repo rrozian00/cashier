@@ -4,10 +4,11 @@ import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cashier/core/widgets/no_data.dart';
 import 'package:cashier/features/user/controllers/employee_controller.dart';
 import 'package:cashier/features/user/views/add_employee_view.dart';
-import 'package:cashier/features/user/models/user_model.dart';
+import 'package:cashier/features/user/views/detail_emlpoyee.dart';
 import 'package:cashier/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EmployeeListView extends GetView<EmployeeController> {
   const EmployeeListView({super.key});
@@ -27,37 +28,61 @@ class EmployeeListView extends GetView<EmployeeController> {
         return ListView.builder(
           itemCount: controller.listEmployee.length,
           itemBuilder: (context, index) {
-            final data = controller.listEmployee[index] as UserModel;
+            final data = controller.listEmployee[index];
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Card(
-                borderOnForeground: true,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(color: purple),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: ListTile(
-                  trailing: Wrap(
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.blue,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ],
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "${index + 1}",
+                    style: GoogleFonts.roboto(
+                      color: blue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  title: myText(data.name ?? ''),
-                  subtitle: myText(data.email ?? ''),
-                ),
+                  SizedBox(width: 5),
+                  Flexible(
+                    child: Card(
+                      elevation: 4,
+                      borderOnForeground: true,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: grey),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: ListTile(
+                        onTap: () {
+                          Get.bottomSheet(
+                              clipBehavior: Clip.hardEdge,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25)),
+                              DetailEmlpoyee(index: index));
+                        },
+                        trailing: Wrap(
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.edit,
+                                color: blue,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.delete,
+                                color: red,
+                              ),
+                            ),
+                          ],
+                        ),
+                        title: myText(data.name ?? ''),
+                        subtitle: myText(data.email ?? ''),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           },
