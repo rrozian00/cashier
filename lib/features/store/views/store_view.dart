@@ -1,11 +1,12 @@
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/widgets/my_appbar.dart';
-import 'package:cashier/core/widgets/my_text_field.dart';
-import 'package:cashier/core/widgets/no_data.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:cashier/core/theme/colors.dart';
+import 'package:cashier/core/widgets/my_appbar.dart';
+import 'package:cashier/core/widgets/my_elevated.dart';
+import 'package:cashier/core/widgets/no_data.dart';
+import 'package:cashier/routes/app_pages.dart';
 
 import '../controllers/store_controller.dart';
 
@@ -20,7 +21,7 @@ class StoreView extends GetView<StoreController> {
           TextButton(
               onPressed: () => controller.editDialog(context),
               child: Text(
-                "Edit",
+                "Ubah Toko",
                 style: TextStyle(
                   color: blue,
                 ),
@@ -74,11 +75,14 @@ class StoreView extends GetView<StoreController> {
           );
         }
       }),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Obx(() => Visibility(
             visible: controller.store.value == null,
-            child: ElevatedButton(
-                onPressed: () => Get.to(() => AddStoreView()),
-                child: Text("Tambah Toko")),
+            child: myPurpleElevated(
+                width: 180,
+                height: 45,
+                onPress: () => Get.toNamed(Routes.addStore),
+                text: "Tambah Toko"),
           )),
     );
   }
@@ -109,69 +113,6 @@ class StoreView extends GetView<StoreController> {
         ),
         Divider()
       ],
-    );
-  }
-}
-
-class AddStoreView extends GetView<StoreController> {
-  const AddStoreView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Tambah Toko")),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Nama Toko
-            MyTextField(
-              label: "Nama Toko",
-              controller: controller.name,
-            ),
-
-            SizedBox(height: 10),
-
-            // Alamat
-            MyTextField(controller: controller.address, label: "Alamat"),
-
-            SizedBox(height: 10),
-
-            // Nomor HP
-            MyTextField(
-              label: "No HP",
-              controller: controller.phone,
-              textInputType: TextInputType.phone,
-            ),
-
-            SizedBox(height: 10),
-
-            // Logo URL
-            MyTextField(
-              label: "Logo",
-              controller: controller.logoUrl,
-            ),
-
-            SizedBox(height: 20),
-
-            // Tombol Simpan
-            Obx(() {
-              return controller.isLoading.value
-                  ? Center(child: CircularProgressIndicator()) // Loading
-                  : SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          controller.addStore();
-                        },
-                        child: Text("Simpan"),
-                      ),
-                    );
-            }),
-          ],
-        ),
-      ),
     );
   }
 }

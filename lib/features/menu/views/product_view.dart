@@ -8,12 +8,12 @@ import 'package:cashier/core/widgets/no_data.dart';
 import 'package:cashier/core/utils/rupiah_converter.dart';
 import 'package:cashier/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-import '../controllers/menus_controller.dart';
+import '../controllers/product_controller.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MenusView extends GetView<MenusController> {
-  const MenusView({super.key});
+class ProductView extends GetView<ProductController> {
+  const ProductView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,12 @@ class MenusView extends GetView<MenusController> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
-                flex: 15,
+                  flex: 1,
+                  child: SizedBox(
+                    height: 20,
+                  )),
+              Expanded(
+                flex: 50,
                 child: ListView.builder(
                   itemCount: controller.listMenu.length,
                   itemBuilder: (context, index) {
@@ -40,35 +45,47 @@ class MenusView extends GetView<MenusController> {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10.0, vertical: 3),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
+                      child: Card(
+                        // decoration: BoxDecoration(
+                        //   border: Border.all(color: grey),
+                        //   borderRadius: BorderRadius.circular(15),
+                        // ),
+
+                        elevation: 3, borderOnForeground: true,
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide(color: grey),
+                            borderRadius: BorderRadius.circular(15)),
                         child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.grey[300],
-                            child:
-                                barang.image != null && barang.image!.isNotEmpty
-                                    ? ClipOval(
-                                        child: Image.file(
-                                          File(barang.image!),
-                                          height: 50,
-                                          width: 50,
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            return Image.asset(
-                                              'assets/icons/icon.png',
-                                              fit: BoxFit.cover,
-                                            );
-                                          },
-                                        ),
-                                      )
-                                    : Image.asset(
-                                        'assets/icons/icon.png',
-                                        fit: BoxFit.cover,
-                                      ),
+                          // leading: CircleAvatar(
+                          //   backgroundColor: Colors.grey[300],
+                          //   child:
+                          //       barang.image != null && barang.image!.isNotEmpty
+                          //           ? ClipOval(
+                          //               child: Image.file(
+                          //                 File(barang.image!),
+                          //                 height: 50,
+                          //                 width: 50,
+                          //                 fit: BoxFit.cover,
+                          //                 errorBuilder:
+                          //                     (context, error, stackTrace) {
+                          //                   return Image.asset(
+                          //                     'assets/icons/icon.png',
+                          //                     fit: BoxFit.cover,
+                          //                   );
+                          //                 },
+                          //               ),
+                          //             )
+                          //           : Image.asset(
+                          //               'assets/icons/icon.png',
+                          //               fit: BoxFit.cover,
+                          //             ),
+                          // ),
+                          leading: Text(
+                            "${index + 1}",
+                            style: GoogleFonts.roboto(
+                                color: blue,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
                           ),
                           title: Text(
                             barang.name ?? '-',
@@ -120,12 +137,12 @@ class MenusView extends GetView<MenusController> {
                   },
                 ),
               ),
-              Expanded(
-                  flex: 1,
-                  child: myPurpleElevated(
-                    text: "Tambah Menu",
-                    onPress: () => Get.toNamed(Routes.addMenus),
-                  )),
+              myPurpleElevated(
+                height: 45,
+                width: 180,
+                text: "Tambah Produk",
+                onPress: () => Get.toNamed(Routes.addMenus),
+              ),
             ],
           );
         }),

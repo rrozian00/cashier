@@ -32,10 +32,14 @@ Widget myPurpleElevated({
   required void Function()? onPress,
   Widget? child,
   String? text,
+  double? width,
+  double? height,
 }) {
   return GestureDetector(
     onTap: onPress,
     child: Container(
+      width: width,
+      height: height,
       decoration: BoxDecoration(
         color: purple,
         border: Border.all(color: purple),
@@ -43,14 +47,16 @@ Widget myPurpleElevated({
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-        child: child ??
-            Text(
-              text ?? '',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                color: Colors.white,
+        child: Center(
+          child: child ??
+              Text(
+                text ?? '',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
               ),
-            ),
+        ),
       ),
     ),
   );
@@ -60,10 +66,12 @@ Widget myRedElevated({
   required void Function()? onPress,
   Widget? child,
   String? text,
+  double? width,
 }) {
   return GestureDetector(
     onTap: onPress,
     child: Container(
+      width: width,
       decoration: BoxDecoration(
         color: red,
         border: Border.all(color: red),
@@ -71,14 +79,16 @@ Widget myRedElevated({
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-        child: child ??
-            Text(
-              text ?? '',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                color: Colors.white,
+        child: Center(
+          child: child ??
+              Text(
+                text ?? '',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
               ),
-            ),
+        ),
       ),
     ),
   );
@@ -88,10 +98,12 @@ Widget myGreenElevated({
   required void Function()? onPress,
   Widget? child,
   String? text,
+  double? width,
 }) {
   return GestureDetector(
     onTap: onPress,
     child: Container(
+      width: width,
       decoration: BoxDecoration(
         color: green,
         border: Border.all(color: green),
@@ -99,14 +111,16 @@ Widget myGreenElevated({
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-        child: child ??
-            Text(
-              text ?? '',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                color: Colors.white,
+        child: Center(
+          child: child ??
+              Text(
+                text ?? '',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
               ),
-            ),
+        ),
       ),
     ),
   );

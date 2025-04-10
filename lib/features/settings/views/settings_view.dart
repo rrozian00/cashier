@@ -21,7 +21,7 @@ class SettingsView extends GetView<ProfileController> {
             children: [
               _Listile(
                 onPress: () {
-                  Get.toNamed(Routes.STORE);
+                  Get.toNamed(Routes.store);
                 },
                 title: "Toko",
                 icon: Icons.store,

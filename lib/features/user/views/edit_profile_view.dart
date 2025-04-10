@@ -1,9 +1,12 @@
+import 'package:cashier/core/theme/colors.dart';
+import 'package:cashier/core/widgets/home_indicator.dart';
 import 'package:cashier/core/widgets/my_alert_dialog.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cashier/core/widgets/my_text_field.dart';
 import 'package:cashier/features/user/controllers/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EditProfileView extends GetView<ProfileController> {
   const EditProfileView({super.key});
@@ -21,6 +24,14 @@ class EditProfileView extends GetView<ProfileController> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          homeIndocator(),
+          Text(
+            "Ubah Profil",
+            style: GoogleFonts.poppins(color: purple, fontSize: 18),
+          ),
+          SizedBox(
+            height: 15,
+          ),
           MyTextField(
             controller: controller.name,
             label: "Nama",

@@ -19,7 +19,7 @@ class DetailEmlpoyee extends GetView<EmployeeController> {
     final data = controller.listEmployee[index];
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -40,6 +40,8 @@ class DetailEmlpoyee extends GetView<EmployeeController> {
     String? value,
   }) {
     return Table(
+      // border: TableBorder.all(color: black, width: 15),
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       columnWidths: {
         0: FlexColumnWidth(1),
         1: FlexColumnWidth(3),
@@ -61,6 +63,12 @@ class DetailEmlpoyee extends GetView<EmployeeController> {
               color: purple,
             ),
           ),
+        ]),
+        TableRow(children: [
+          // SizedBox(height: 12),
+          // SizedBox(height: 12),
+          Divider(),
+          Divider(),
         ]),
       ],
     );

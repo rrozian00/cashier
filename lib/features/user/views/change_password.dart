@@ -1,3 +1,4 @@
+import 'package:cashier/core/widgets/home_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,6 +19,7 @@ class ChangePassword extends GetView<ProfileController> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            homeIndocator(),
             Text(
               "Ubah Password",
               style: GoogleFonts.poppins(fontSize: 20, color: purple),
@@ -43,6 +45,7 @@ class ChangePassword extends GetView<ProfileController> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 myRedElevated(
+                  width: 150,
                   text: "Batal",
                   onPress: () async {
                     Get.back();
@@ -50,6 +53,7 @@ class ChangePassword extends GetView<ProfileController> {
                   },
                 ),
                 myGreenElevated(
+                  width: 150,
                   text: "Simpan",
                   onPress: () async {
                     controller.showChangeDialog();

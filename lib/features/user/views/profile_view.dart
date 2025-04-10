@@ -72,17 +72,19 @@ class ProfileView extends GetView<ProfileController> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             myPurpleElevated(
+                              width: 170,
                               onPress: () => Get.bottomSheet(
                                   backgroundColor: white,
                                   isScrollControlled: true,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(20)),
+                                        top: Radius.circular(30)),
                                   ),
                                   ChangePassword()),
                               text: "Ubah Password",
                             ),
                             myRedElevated(
+                              width: 170,
                               onPress: () => controller.showLogoutConfirm(),
                               text: "Keluar",
                             ),

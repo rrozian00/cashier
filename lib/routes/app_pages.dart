@@ -1,12 +1,13 @@
 import 'package:cashier/features/order/views/check_out_view.dart';
+import 'package:cashier/features/store/views/add_store_view.dart';
 import 'package:get/get.dart';
 
-import 'package:cashier/features/menu/views/add_menus_view.dart';
-import 'package:cashier/features/menu/views/edit_menus_view.dart';
+import 'package:cashier/features/menu/views/add_product_view.dart';
+import 'package:cashier/features/menu/views/edit_product_view.dart';
 import 'package:cashier/features/order/views/product_list.dart';
 import 'package:cashier/features/user/views/add_employee_view.dart';
 import 'package:cashier/features/user/views/edit_profile_view.dart';
-import 'package:cashier/features/user/views/employee_list.dart';
+import 'package:cashier/features/user/views/employee_list_view.dart';
 
 import '../features/bottom_navigation_bar/bindings/bottom_binding.dart';
 import '../features/bottom_navigation_bar/views/bottom_view.dart';
@@ -17,7 +18,7 @@ import '../features/home/views/home_view.dart';
 import '../features/login/bindings/login_binding.dart';
 import '../features/login/views/login_view.dart';
 import '../features/menu/bindings/menu_binding.dart';
-import '../features/menu/views/menus_view.dart';
+import '../features/menu/views/product_view.dart';
 import '../features/order/bindings/history_order_binding.dart';
 import '../features/order/bindings/input_manual_binding.dart';
 import '../features/order/bindings/order_binding.dart';
@@ -71,17 +72,17 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.menus,
-      page: () => const MenusView(),
+      page: () => const ProductView(),
       binding: MenuBinding(),
     ),
     GetPage(
       name: _Paths.addMenus,
-      page: () => const AddMenusView(),
+      page: () => const AddProductView(),
       binding: MenuBinding(),
     ),
     GetPage(
       name: _Paths.editMenus,
-      page: () => const EditMenusView(),
+      page: () => const EditProductView(),
       binding: MenuBinding(),
     ),
     GetPage(
@@ -130,8 +131,13 @@ class AppPages {
       binding: ProfileBinding(),
     ),
     GetPage(
-      name: _Paths.STORE,
+      name: _Paths.store,
       page: () => const StoreView(),
+      binding: StoreBinding(),
+    ),
+    GetPage(
+      name: _Paths.addStore,
+      page: () => const AddStoreView(),
       binding: StoreBinding(),
     ),
     GetPage(

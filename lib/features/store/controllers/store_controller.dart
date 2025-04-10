@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cashier/core/widgets/my_text_field.dart';
 import 'package:cashier/features/store/models/store_model.dart';
-import 'package:path/path.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StoreController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -93,26 +93,35 @@ class StoreController extends GetxController {
     phone.value = store.value?.phone ?? '';
 
     Get.bottomSheet(
+      isScrollControlled: true,
       backgroundColor: white,
-      Container(
-        height: MediaQuery.of(context).size.height * 0.7,
+      SizedBox(
+        height: MediaQuery.of(context).size.height * 0.5,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               homeIndocator(),
+              Text(
+                "Ubah Toko",
+                style: GoogleFonts.poppins(color: purple, fontSize: 18),
+              ),
+              SizedBox(height: 15),
               MyTextField(controller: name, label: "Nama Toko"),
               MyTextField(controller: address, label: "Alamat Toko"),
               MyTextField(controller: phone, label: "No HP Toko"),
-              SizedBox(
-                height: 30,
-              ),
+              SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  myRedElevated(onPress: () => Get.back(), text: "Kembali"),
+                  myRedElevated(
+                    width: 150,
+                    onPress: () => Get.back(),
+                    text: "Kembali",
+                  ),
                   myGreenElevated(
+                      width: 150,
                       onPress: () {
                         updateStore();
                         Get.back();

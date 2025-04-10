@@ -2,7 +2,7 @@ import 'package:cashier/features/home/controllers/home_controller.dart';
 import 'package:cashier/features/expense/controllers/expense_controller.dart';
 import 'package:cashier/features/order/controllers/history_order_controller.dart';
 import 'package:cashier/features/login/controllers/login_controller.dart';
-import 'package:cashier/features/menu/controllers/menus_controller.dart';
+import 'package:cashier/features/menu/controllers/product_controller.dart';
 import 'package:cashier/features/order/controllers/order_controller.dart';
 import 'package:cashier/features/printer/controllers/printer_controller.dart';
 import 'package:cashier/features/user/controllers/profile_controller.dart';
@@ -22,7 +22,7 @@ class BottomBinding extends Bindings {
     Get.lazyPut<LoginController>(() => LoginController());
     Get.lazyPut<HomeController>(() => HomeController());
     Get.lazyPut<SettingsController>(() => SettingsController());
-    Get.lazyPut<MenusController>(() => MenusController());
+    Get.lazyPut<ProductController>(() => ProductController());
     Get.lazyPut<ProfileController>(() => ProfileController());
     Get.lazyPut<PrinterController>(() => PrinterController());
   }

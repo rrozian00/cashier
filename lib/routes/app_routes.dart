@@ -22,7 +22,8 @@ abstract class Routes {
   static const LOGIN = _Paths.LOGIN;
   static const profile = _Paths.profile;
   static const editProfile = _Paths.editProfile;
-  static const STORE = _Paths.STORE;
+  static const store = _Paths.store;
+  static const addStore = _Paths.addStore;
   static const employee = _Paths.employee;
   static const addEmployee = _Paths.addEmployee;
 }
@@ -48,7 +49,8 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const profile = '/profile';
   static const editProfile = '/edit-profile';
-  static const STORE = '/store';
+  static const store = '/store';
+  static const addStore = '/add-store';
   static const employee = '/employee';
   static const addEmployee = '/add-employee';
 }

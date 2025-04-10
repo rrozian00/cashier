@@ -1,3 +1,4 @@
+import 'package:cashier/core/theme/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:cashier/features/expense/controllers/expense_controller.dart';
 import 'package:cashier/features/order/controllers/order_controller.dart';
 import 'package:cashier/features/user/models/user_model.dart';
 import 'package:cashier/routes/app_pages.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProfileController extends GetxController {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -52,11 +54,19 @@ class ProfileController extends GetxController {
   }
 
   void showLogoutConfirm() {
+    final tStyle = GoogleFonts.poppins(
+      color: purple,
+    );
+
     Get.defaultDialog(
+      titleStyle: tStyle,
       title: "Keluar",
       content: Column(
         children: [
-          Text("Apakah anda yakin akan keluar?"),
+          Text(
+            "Apakah anda yakin akan keluar?",
+            style: tStyle,
+          ),
           SizedBox(
             height: 25,
           ),
@@ -64,12 +74,14 @@ class ProfileController extends GetxController {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               myGreenElevated(
+                width: 110,
                 text: "Batal",
                 onPress: () {
                   Get.back();
                 },
               ),
               myRedElevated(
+                width: 110,
                 text: "Keluar",
                 onPress: () => logout(),
               )

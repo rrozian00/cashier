@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:cashier/core/utils/get_owner.dart';
 import 'package:cashier/features/menu/models/product_model.dart';
 
-class MenusController extends GetxController {
+class ProductController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final ImagePicker _picker = ImagePicker();
 
