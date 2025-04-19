@@ -1,16 +1,18 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:cashier/core/theme/colors.dart';
+import 'package:cashier/core/utils/rupiah_converter.dart';
 import 'package:cashier/core/widgets/my_alert_dialog.dart';
 import 'package:cashier/core/widgets/my_appbar.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cashier/core/widgets/no_data.dart';
-import 'package:cashier/core/utils/rupiah_converter.dart';
 import 'package:cashier/routes/app_pages.dart';
-import 'package:flutter/material.dart';
+
 import '../controllers/product_controller.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ProductView extends GetView<ProductController> {
   const ProductView({super.key});
@@ -19,7 +21,7 @@ class ProductView extends GetView<ProductController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-        titleText: "Daftar Produk",
+        titleText: "Produk",
       ),
       body: SafeArea(
         child: Obx(() {
@@ -56,37 +58,37 @@ class ProductView extends GetView<ProductController> {
                             side: BorderSide(color: grey),
                             borderRadius: BorderRadius.circular(15)),
                         child: ListTile(
-                          // leading: CircleAvatar(
-                          //   backgroundColor: Colors.grey[300],
-                          //   child:
-                          //       barang.image != null && barang.image!.isNotEmpty
-                          //           ? ClipOval(
-                          //               child: Image.file(
-                          //                 File(barang.image!),
-                          //                 height: 50,
-                          //                 width: 50,
-                          //                 fit: BoxFit.cover,
-                          //                 errorBuilder:
-                          //                     (context, error, stackTrace) {
-                          //                   return Image.asset(
-                          //                     'assets/icons/icon.png',
-                          //                     fit: BoxFit.cover,
-                          //                   );
-                          //                 },
-                          //               ),
-                          //             )
-                          //           : Image.asset(
-                          //               'assets/icons/icon.png',
-                          //               fit: BoxFit.cover,
-                          //             ),
-                          // ),
-                          leading: Text(
-                            "${index + 1}",
-                            style: GoogleFonts.roboto(
-                                color: blue,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.grey[300],
+                            child:
+                                barang.image != null && barang.image!.isNotEmpty
+                                    ? ClipOval(
+                                        child: Image.file(
+                                          File(barang.image!),
+                                          height: 50,
+                                          width: 50,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Image.asset(
+                                              'assets/icons/icon.png',
+                                              fit: BoxFit.cover,
+                                            );
+                                          },
+                                        ),
+                                      )
+                                    : Image.asset(
+                                        'assets/icons/icon.png',
+                                        fit: BoxFit.cover,
+                                      ),
                           ),
+                          // leading: Text(
+                          //   "${index + 1}",
+                          //   style: GoogleFonts.roboto(
+                          //       color: blue,
+                          //       fontSize: 18,
+                          //       fontWeight: FontWeight.bold),
+                          // ),
                           title: Text(
                             barang.name ?? '-',
                             style: GoogleFonts.poppins(

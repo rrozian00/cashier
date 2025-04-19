@@ -1,3 +1,4 @@
+import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cashier/features/expense/models/expense_model.dart';
 import 'package:cashier/core/widgets/my_date_picker.dart';
@@ -64,7 +65,7 @@ class ExpenseController extends GetxController {
 
     if (!isValid()) return;
 
-    final createdAt = DateTime.now().toIso8601String();
+    final createdAt = Timestamp.now();
     final data = ExpenseModel(
       date: date.value,
       pay: pay.value,
@@ -76,7 +77,7 @@ class ExpenseController extends GetxController {
           .collection('stores')
           .doc(storeId)
           .collection('expenses')
-          .add(data.toJson());
+          .add(data.toMap());
 
       Get.back();
       fetchExpense();
@@ -99,14 +100,14 @@ class ExpenseController extends GetxController {
         .get();
 
     listExpense.assignAll(snapshot.docs.map((doc) {
-      return ExpenseModel.fromJson(doc.data());
+      return ExpenseModel.fromMap(doc.data());
     }).toList());
   }
 
   void total() {
     totalPengeluaranHariIni.value = listExpense.fold(
       0,
-      (sum, expense) => sum + (double.tryParse(expense.pay ?? "0") ?? 0.0),
+      (summ, expense) => summ + (double.tryParse(expense.pay ?? "0") ?? 0.0),
     );
   }
 
@@ -116,41 +117,68 @@ class ExpenseController extends GetxController {
   }
 
   void addDialog() {
-    Get.defaultDialog(
-      title: "Tambah Belanja",
-      content: Column(
-        children: [
-          MyDatePicker(
-            labelText: "Tanggal",
-            controller: dateC,
-            onDateSelected: (value) => date.value = value,
-          ),
-          SizedBox(height: 8),
-          TextField(
-            keyboardType: TextInputType.number,
-            controller: payC,
-            onChanged: (value) {
-              String rawValue = value.replaceAll(RegExp(r'[^\d]'), '');
-              int parseValue = int.tryParse(rawValue) ?? 0;
-
-              pay.value = parseValue.toString();
-              payC.text = rupiahConverter(parseValue);
-              payC.selection =
-                  TextSelection.collapsed(offset: payC.text.length);
-            },
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+    Get.dialog(
+      Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 30.0),
+                child: Text(
+                  "Tambah Pengeluaran",
+                  style: TextStyle(fontSize: 25),
+                ),
               ),
-              label: Text("Total Belanja"),
-            ),
+              MyDatePicker(
+                labelText: "Tanggal",
+                controller: dateC,
+                onDateSelected: (value) => date.value = value,
+              ),
+              SizedBox(height: 8),
+              TextField(
+                keyboardType: TextInputType.number,
+                controller: payC,
+                onChanged: (value) {
+                  String rawValue = value.replaceAll(RegExp(r'[^\d]'), '');
+                  int parseValue = int.tryParse(rawValue) ?? 0;
+
+                  pay.value = parseValue.toString();
+                  payC.text = rupiahConverter(parseValue);
+                  payC.selection =
+                      TextSelection.collapsed(offset: payC.text.length);
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  label: Text("Total Belanja"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 25.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    myRedElevated(
+                      text: "Batal",
+                      onPress: () {
+                        Get.back();
+                        clearField();
+                      },
+                    ),
+                    myGreenElevated(
+                      text: "Simpan",
+                      onPress: () => insertExpense(),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
-        ],
+        ),
       ),
-      onConfirm: insertExpense,
-      textConfirm: "Simpan",
-      onCancel: clearField,
-      textCancel: "Batal",
     );
   }
 }

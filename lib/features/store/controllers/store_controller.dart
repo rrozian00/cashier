@@ -102,7 +102,7 @@ class StoreController extends GetxController {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              homeIndocator(),
+              homeIndicator(),
               Text(
                 "Ubah Toko",
                 style: GoogleFonts.poppins(color: purple, fontSize: 18),

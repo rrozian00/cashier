@@ -71,6 +71,7 @@ Widget myRedElevated({
   return GestureDetector(
     onTap: onPress,
     child: Container(
+      height: 45,
       width: width,
       decoration: BoxDecoration(
         color: red,
@@ -99,10 +100,12 @@ Widget myGreenElevated({
   Widget? child,
   String? text,
   double? width,
+  double? height,
 }) {
   return GestureDetector(
     onTap: onPress,
     child: Container(
+      height: height ?? 45,
       width: width,
       decoration: BoxDecoration(
         color: green,

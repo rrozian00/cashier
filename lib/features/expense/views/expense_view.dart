@@ -53,8 +53,11 @@ class ExpenseView extends GetView<ExpenseController> {
           },
         );
       }),
-      floatingActionButton:
-          myElevated(onPress: () => controller.addDialog(), text: "Tambah"),
+      floatingActionButton: myPurpleElevated(
+          height: 45,
+          width: 180,
+          onPress: () => controller.addDialog(),
+          text: "Tambah"),
     );
   }
 }

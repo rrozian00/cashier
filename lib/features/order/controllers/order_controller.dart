@@ -1,13 +1,14 @@
-import 'package:cashier/core/theme/colors.dart';
+import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import 'package:cashier/core/theme/colors.dart';
 import 'package:cashier/core/utils/get_store_id.dart';
 import 'package:cashier/core/utils/get_user_data.dart';
 import 'package:cashier/features/menu/models/product_model.dart';
-import 'package:cashier/features/order/function/show_receipt.dart';
+import 'package:cashier/features/order/utils/show_receipt.dart';
 import 'package:cashier/features/order/models/order_model.dart';
 import 'package:cashier/features/store/models/store_model.dart';
 import 'package:cashier/features/user/models/user_model.dart';
@@ -36,15 +37,20 @@ class OrderController extends GetxController {
 
   final bayarController = TextEditingController(); // Kembalikan bayarController
 
-  void tambahKeKeranjangByBarcode(String barcode) {
+  void addCartByBarcode(String barcode) {
     // Cari produk berdasarkan barcode
     var item = product.firstWhereOrNull((menu) => menu.barcode == barcode);
 
     if (item != null) {
-      tambahKeKeranjang(item);
+      addCart(item);
     } else {
       Get.snackbar("Error", "Produk tidak ditemukan");
     }
+  }
+
+  void clearCart() {
+    cart.clear();
+    totalHarga.value = 0;
   }
 
   void onNumberPressed(String number) {
@@ -77,35 +83,57 @@ class OrderController extends GetxController {
     jumlahBayar.value = 0;
   }
 
-  Future<void> fetchProduct() async {
-    product.clear();
+  void addValueCart(ProductModel item, int currentJumlah) {
+    final TextEditingController productC =
+        TextEditingController(text: currentJumlah.toString());
 
-    if (storeData.value == null) {
-      Get.snackbar("Error", "Toko belum ditemukan");
-      return;
-    }
+    Get.dialog(Dialog(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text("Masukkan jumlah", style: TextStyle(fontSize: 16)),
+            const SizedBox(height: 10),
+            TextField(
+              keyboardType: TextInputType.number,
+              controller: productC,
+              decoration: InputDecoration(
+                hintText: "Contoh: 5",
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: purple),
+                    borderRadius: BorderRadius.circular(15)),
+              ),
+            ),
+            const SizedBox(height: 16),
+            myGreenElevated(
+              text: "Simpan",
+              onPress: () {
+                int jumlah = int.tryParse(productC.text) ?? 1;
 
-    final storeId = storeData.value?.id;
+                // Cek apakah produk sudah ada di keranjang
 
-    try {
-      isLoading.value = true;
-      final snapshot = await _firestore
-          .collection('stores')
-          .doc(storeId)
-          .collection('menus')
-          .get();
+                for (var el in cart) {
+                  if (el['produk'] == item) {
+                    if (jumlah != 0) {
+                      el['jumlah'] = jumlah;
+                    }
+                    break;
+                  }
+                }
 
-      product.assignAll(snapshot.docs
-          .map((doc) => ProductModel.fromMap(doc.data()))
-          .toList());
-    } catch (e) {
-      debugPrint("Gagal mengambil fetchProduct: $e");
-    } finally {
-      isLoading.value = false;
-    }
+                cart.refresh();
+                hitungTotal();
+                Get.back();
+              },
+            )
+          ],
+        ),
+      ),
+    ));
   }
 
-  void tambahKeKeranjang(ProductModel item) {
+  void addCart(ProductModel item) {
     bool productExist = cart.any((el) => el['produk'] == item);
     if (productExist) {
       for (var el in cart) {
@@ -121,7 +149,7 @@ class OrderController extends GetxController {
     hitungTotal();
   }
 
-  void hapusDariKeranjang(ProductModel item) {
+  void removeCart(ProductModel item) {
     for (var el in cart) {
       if (el['produk'] == item) {
         if (el['jumlah'] > 1) {
@@ -133,6 +161,12 @@ class OrderController extends GetxController {
       }
     }
     cart.refresh(); // Tambahkan ini agar UI diperbarui
+    hitungTotal();
+  }
+
+  void deleteCart(ProductModel item) {
+    cart.removeWhere((el) => el['produk'] == item);
+    cart.refresh();
     hitungTotal();
   }
 
@@ -224,7 +258,5 @@ class OrderController extends GetxController {
     } catch (e) {
       debugPrint(e.toString());
     }
-
-    await fetchProduct();
   }
 }

@@ -24,7 +24,7 @@ class EditProfileView extends GetView<ProfileController> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          homeIndocator(),
+          homeIndicator(),
           Text(
             "Ubah Profil",
             style: GoogleFonts.poppins(color: purple, fontSize: 18),

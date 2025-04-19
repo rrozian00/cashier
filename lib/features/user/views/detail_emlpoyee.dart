@@ -24,7 +24,7 @@ class DetailEmlpoyee extends GetView<EmployeeController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            homeIndocator(),
+            homeIndicator(),
             _buildTable(name: "Nama", value: data.name),
             _buildTable(name: "Alamat", value: data.address),
             _buildTable(name: "Email", value: data.email),

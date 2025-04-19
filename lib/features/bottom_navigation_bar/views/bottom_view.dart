@@ -1,12 +1,13 @@
+import 'package:cashier/features/settings/views/settings_view.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+
 import 'package:cashier/core/theme/colors.dart';
 import 'package:cashier/features/bottom_navigation_bar/controllers/bottom_controller.dart';
 import 'package:cashier/features/home/views/home_view.dart';
 import 'package:cashier/features/order/views/order_view.dart';
-import 'package:cashier/features/printer/views/printer_view.dart';
 import 'package:cashier/features/user/views/profile_view.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
 class BottomView extends GetView<BottomController> {
   BottomView({super.key});
@@ -19,14 +20,14 @@ class BottomView extends GetView<BottomController> {
       if (controller.role.value == 'owner' || arg == 'owner') {
         pages = [
           HomeView(),
-          TransaksiView(),
-          PrinterView(),
-          ProfileView(),
+          OrderView(),
+          // PrinterView(),
+          SettingsView(),
         ];
       } else {
         pages = [
-          TransaksiView(),
-          PrinterView(),
+          OrderView(),
+          // PrinterView(),
           ProfileView(),
         ];
       }
@@ -34,6 +35,7 @@ class BottomView extends GetView<BottomController> {
       return Scaffold(
         body: pages[controller.selectedIndex.value],
         bottomNavigationBar: GNav(
+          backgroundColor: softGrey,
           curve: Curves.bounceIn,
           // tabBorder: Border.all(),
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -47,12 +49,12 @@ class BottomView extends GetView<BottomController> {
               ? [
                   GButton(icon: Icons.home, text: "Beranda"),
                   GButton(icon: Icons.shopping_cart_rounded, text: "Keranjang"),
-                  GButton(icon: Icons.print, text: "Printer"),
-                  GButton(icon: Icons.person, text: "Profil"),
+                  // GButton(icon: Icons.print, text: "Printer"),
+                  GButton(icon: Icons.settings, text: "Pengaturan"),
                 ]
               : [
                   GButton(icon: Icons.shopping_cart_rounded, text: "Keranjang"),
-                  GButton(icon: Icons.print, text: "Printer"),
+                  // GButton(icon: Icons.print, text: "Printer"),
                   GButton(icon: Icons.person, text: "Profil"),
                 ],
           selectedIndex: controller.selectedIndex.value,

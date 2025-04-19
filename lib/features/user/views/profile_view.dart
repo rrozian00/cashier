@@ -1,13 +1,12 @@
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/widgets/my_elevated.dart';
-import 'package:cashier/features/user/views/change_password.dart';
-import 'package:cashier/features/user/views/edit_profile_view.dart';
-import 'package:cashier/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:cashier/core/theme/colors.dart';
 import 'package:cashier/core/widgets/my_appbar.dart';
+import 'package:cashier/core/widgets/my_elevated.dart';
+import 'package:cashier/features/user/views/change_password.dart';
+import 'package:cashier/features/user/views/edit_profile_view.dart';
 
 import '../controllers/profile_controller.dart';
 
@@ -17,16 +16,17 @@ class ProfileView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: softGrey,
       appBar: MyAppBar(
-        leading: Obx(() => Visibility(
-              visible: controller.isOwner.value,
-              child: IconButton(
-                  onPressed: () => Get.toNamed(Routes.SETTINGS),
-                  icon: Icon(
-                    Icons.settings,
-                    color: blue,
-                  )),
-            )),
+        // leading: Obx(() => Visibility(
+        //       visible: controller.isOwner.value,
+        //       child: IconButton(
+        //           onPressed: () => Get.toNamed(Routes.settings),
+        //           icon: Icon(
+        //             Icons.settings,
+        //             color: blue,
+        //           )),
+        //     )),
         titleText: "Profil",
         actions: [
           TextButton(

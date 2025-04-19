@@ -1,3 +1,4 @@
+import 'package:cashier/features/order/bindings/product_list_binding.dart';
 import 'package:cashier/features/order/views/check_out_view.dart';
 import 'package:cashier/features/store/views/add_store_view.dart';
 import 'package:get/get.dart';
@@ -42,7 +43,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.LOGIN;
+  // static const INITIAL = Routes.productList;
 
   static final routes = [
     GetPage(
@@ -52,13 +53,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.order,
-      page: () => TransaksiView(),
+      page: () => OrderView(),
       binding: TransaksiBinding(),
     ),
     GetPage(
       name: _Paths.productList,
       page: () => ProductList(),
-      binding: TransaksiBinding(),
+      binding: ProductListBinding(),
     ),
     GetPage(
       name: _Paths.checkOut,
@@ -66,7 +67,7 @@ class AppPages {
       binding: TransaksiBinding(),
     ),
     GetPage(
-      name: _Paths.BOTTOM,
+      name: _Paths.bottom,
       page: () => BottomView(),
       binding: BottomBinding(),
     ),
@@ -86,7 +87,7 @@ class AppPages {
       binding: MenuBinding(),
     ),
     GetPage(
-      name: _Paths.SETTINGS,
+      name: _Paths.settings,
       page: () => const SettingsView(),
       binding: SettingsBinding(),
     ),
@@ -116,7 +117,7 @@ class AppPages {
       binding: InputManualBinding(),
     ),
     GetPage(
-      name: _Paths.LOGIN,
+      name: _Paths.login,
       page: () => const LoginView(),
       binding: LoginBinding(),
     ),

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cashier/core/theme/colors.dart';
 import 'package:cashier/core/utils/rupiah_converter.dart';
 import 'package:cashier/core/widgets/my_appbar.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
@@ -29,13 +30,27 @@ class EditProductView extends GetView<ProductController> {
         child: Column(
           children: [
             Obx(() => controller.image.value.isNotEmpty
-                ? Image.file(File(controller.image.value), height: 100)
+                ? Container(
+                    height: Get.height / 4,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: grey,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.file(
+                        File(controller.image.value),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
                 : Container()),
+            SizedBox(height: 12),
             myElevated(
               onPress: controller.pickImage,
               child: const Text('Pilih Gambar'),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 12),
             TextField(
               readOnly: true,
               keyboardType: TextInputType.number,

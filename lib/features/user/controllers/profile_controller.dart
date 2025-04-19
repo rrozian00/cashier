@@ -169,7 +169,7 @@ class ProfileController extends GetxController {
         Get.delete<OrderController>();
         Get.delete<BottomController>();
 
-        Get.offAllNamed(Routes.LOGIN); // Pindah ke halaman login
+        Get.offAllNamed(Routes.login); // Pindah ke halaman login
 
         Get.snackbar("Sukses", "Berhasil logout!");
       } catch (e) {
@@ -187,7 +187,7 @@ class ProfileController extends GetxController {
       Get.delete<OrderController>();
       Get.delete<BottomController>();
 
-      Get.offAllNamed(Routes.LOGIN); // Pindah ke halaman login
+      Get.offAllNamed(Routes.bottom); // Pindah ke halaman login
 
       Get.snackbar("Sukses", "Berhasil logout!");
     } catch (e) {

@@ -64,7 +64,7 @@ class LoginController extends GetxController {
       await _firestore.collection('users').doc(uid).set(data.toJson());
 
       user.value = userCredential.user;
-      Get.offAllNamed(Routes.LOGIN);
+      Get.offAllNamed(Routes.login);
       Get.snackbar(
           "Sukses", "Anda telah berhasil membuat akun, silahkan login!");
     } on FirebaseAuthException catch (e) {
@@ -112,7 +112,7 @@ class LoginController extends GetxController {
       role.value = userData.data()?['role'] ?? 'karyawan';
 
       // Navigasi ke halaman sesuai role
-      Get.offAllNamed(Routes.BOTTOM, arguments: role.value);
+      Get.offAllNamed(Routes.bottom, arguments: role.value);
 
       Get.snackbar("Sukses",
           "Berhasil login sebagai ${role.value == 'owner' ? 'Owner' : 'Karyawan'}!");
@@ -148,7 +148,7 @@ class LoginController extends GetxController {
       if (userData.exists) {
         role.value = userData['role'];
       } else {
-        // Get.snackbar("Error", "Akun tidak ditemukan!");
+        debugPrint("Akun tidak ditemukan!");
         await _firebaseAuth.signOut();
       }
     }

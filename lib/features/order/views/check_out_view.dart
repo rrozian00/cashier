@@ -122,11 +122,8 @@ class CheckOutView extends GetView<OrderController> {
         () => controller.jumlahBayar.value != 0 &&
                 controller.jumlahBayar.value >= controller.totalHarga.value
             ? myGreenElevated(
-                child: Text("PROSES",
-                    style: GoogleFonts.poppins(
-                        color: white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
+                width: 180,
+                text: "PROSES",
                 onPress: () => controller.insertOrder(),
               )
             : Text("Masukkan jumlah pembayaran",

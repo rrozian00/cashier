@@ -19,7 +19,7 @@ class ChangePassword extends GetView<ProfileController> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            homeIndocator(),
+            homeIndicator(),
             Text(
               "Ubah Password",
               style: GoogleFonts.poppins(fontSize: 20, color: purple),

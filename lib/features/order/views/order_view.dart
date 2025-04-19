@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:cashier/features/order/controllers/product_list_controller.dart';
+import 'package:cashier/features/order/views/product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,19 +16,17 @@ import 'package:cashier/routes/app_pages.dart';
 
 import '../controllers/order_controller.dart';
 
-class TransaksiView extends GetView<OrderController> {
-  const TransaksiView({super.key});
+class OrderView extends GetView<OrderController> {
+  const OrderView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: softGrey,
       appBar: MyAppBar(titleText: 'Pilih Produk', actions: [
         IconButton(
           color: blue,
-          onPressed: () {
-            controller.cart.clear();
-            controller.totalHarga.value = 0;
-          },
+          onPressed: () => controller.clearCart(),
           icon: const Icon(Icons.refresh),
         ),
       ]),
@@ -67,42 +69,127 @@ class TransaksiView extends GetView<OrderController> {
                     final produk = item['produk'] as ProductModel;
                     final jumlah = item['jumlah'] as int;
 
-                    return Card(
-                      elevation: 4,
-                      color: Colors.grey[200],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                    return Dismissible(
+                      confirmDismiss: (direction) async {
+                        return await Get.dialog(
+                          Dialog(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'Konfirmasi',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: purple,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 30),
+                                  const Text(
+                                    'Yakin ingin menghapus produk ini dari keranjang?',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 30),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      myGreenElevated(
+                                        width: 120,
+                                        onPress: () => Get.back(result: false),
+                                        text: 'Batal',
+                                      ),
+                                      myRedElevated(
+                                        width: 120,
+                                        onPress: () => Get.back(result: true),
+                                        text: 'Hapus',
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      key: Key(produk.id ?? UniqueKey().toString()),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(15)),
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: const Icon(Icons.delete, color: Colors.white),
                       ),
-                      child: ListTile(
-                        leading: Image.asset(
-                          'assets/icons/icon.png',
-                          color: Colors.black,
+                      onDismissed: (direction) {
+                        controller
+                            .deleteCart(produk); // ganti sesuai fungsi hapusmu
+                      },
+                      child: Card(
+                        elevation: 4,
+                        color: white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
-                        title: Text(
-                          produk.name ?? 'Nama Produk',
-                          style: GoogleFonts.poppins(
-                              color: Colors.deepPurple,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          '${rupiahConverter(int.tryParse(produk.price ?? '') ?? 0)} x $jumlah pcs',
-                          style: GoogleFonts.poppins(color: Colors.black),
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
+                        child: Stack(
                           children: [
-                            IconButton(
-                              icon: const Icon(Icons.remove_rounded,
-                                  color: Colors.black),
-                              onPressed: () =>
-                                  controller.hapusDariKeranjang(produk),
+                            ListTile(
+                              onTap: () =>
+                                  controller.addValueCart(produk, jumlah),
+                              leading: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: Image.file(File(produk.image ?? ""))),
+                              title: Text(
+                                produk.name ?? 'Nama Produk',
+                                style: GoogleFonts.poppins(
+                                    color: purple, fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                rupiahConverter(
+                                    int.tryParse(produk.price ?? '') ?? 0),
+                                style: GoogleFonts.poppins(color: Colors.black),
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon:
+                                        Icon(Icons.remove_rounded, color: red),
+                                    onPressed: () =>
+                                        controller.removeCart(produk),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.add_rounded, color: green),
+                                    onPressed: () => controller.addCart(produk),
+                                  ),
+                                ],
+                              ),
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.add_rounded,
-                                  color: Colors.black),
-                              onPressed: () =>
-                                  controller.tambahKeKeranjang(produk),
-                            ),
+                            Positioned(
+                                top: 6,
+                                left: 10,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.pink,
+                                  ),
+                                  height: 30,
+                                  width: 30,
+                                  child: Center(
+                                    child: Text(
+                                      jumlah.toString(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: white,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                )),
                           ],
                         ),
                       ),
@@ -158,7 +245,14 @@ class TransaksiView extends GetView<OrderController> {
                     myPurpleIconElevated(
                         icon: Icons.list,
                         text: "Daftar Produk",
-                        onPress: () => Get.toNamed(Routes.productList)),
+                        onPress: () {
+                          Get.put(ProductListController());
+                          Get.bottomSheet(
+                            backgroundColor: white,
+                            clipBehavior: Clip.hardEdge,
+                            ProductList(),
+                          );
+                        }),
                     myPurpleIconElevated(
                         onPress: () async {
                           final result = await Get.to(ScannerPage());
@@ -167,7 +261,7 @@ class TransaksiView extends GetView<OrderController> {
                             controller.scannedBarcode.value = result;
                             if (result != "-1") {
                               controller.scannedBarcode.value = result;
-                              controller.tambahKeKeranjangByBarcode(result);
+                              controller.addCartByBarcode(result);
                             }
                           }
                         },

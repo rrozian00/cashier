@@ -12,59 +12,79 @@ class SettingsView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MyAppBar(
-          titleText: 'Pengaturan',
+      backgroundColor: softGrey,
+      appBar: MyAppBar(
+        titleText: 'Pengaturan',
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 10.0),
+        child: ListView(
+          children: [
+            _Listile(
+              onPress: () {
+                Get.toNamed(Routes.profile);
+              },
+              title: "Profil",
+              icon: Icons.person,
+            ),
+            _Listile(
+              onPress: () {
+                Get.toNamed(Routes.store);
+              },
+              title: "Toko",
+              icon: Icons.store,
+            ),
+            _Listile(
+              onPress: () {
+                Get.toNamed(Routes.employee);
+              },
+              title: "Karyawan",
+              icon: Icons.person_outline_rounded,
+            ),
+            _Listile(
+              onPress: () {
+                Get.toNamed(Routes.menus);
+              },
+              title: "Produk",
+              icon: Icons.receipt_outlined,
+            ),
+            _Listile(
+              onPress: () {
+                Get.toNamed(Routes.EXPENSE);
+              },
+              title: "Pengeluaran",
+              icon: Icons.shopping_cart,
+            ),
+            _Listile(
+              onPress: () {
+                Get.toNamed(Routes.PRINTER);
+              },
+              title: "Printer",
+              icon: Icons.print,
+            ),
+            _Listile(
+              onPress: () {
+                Get.toNamed(Routes.INPUT_MANUAL);
+              },
+              title: "Input Manual",
+              icon: Icons.checklist_rounded,
+            ),
+            _Listile(
+              onPress: () {
+                Get.toNamed(Routes.HISTORY_ORDER);
+              },
+              title: "Riwayat",
+              icon: Icons.history_toggle_off_rounded,
+            ),
+          ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: ListView(
-            children: [
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.store);
-                },
-                title: "Toko",
-                icon: Icons.store,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.employee);
-                },
-                title: "Karyawan",
-                icon: Icons.person_outline_rounded,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.menus);
-                },
-                title: "Produk",
-                icon: Icons.receipt_outlined,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.EXPENSE);
-                },
-                title: "Pengeluaran",
-                icon: Icons.shopping_cart,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.INPUT_MANUAL);
-                },
-                title: "Input Manual",
-                icon: Icons.checklist_rounded,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.HISTORY_ORDER);
-                },
-                title: "Riwayat",
-                icon: Icons.history_toggle_off_rounded,
-              ),
-              Text("version: v.1, db.version: 1"),
-            ],
-          ),
-        ));
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
+      floatingActionButton: Text(
+        "v.2.0.0",
+        style: TextStyle(color: oldGrey),
+      ),
+    );
   }
 }
 
@@ -83,25 +103,28 @@ class _Listile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: 10,
+        top: 5,
         left: 10.0,
         right: 5,
       ),
       child: Container(
         decoration: BoxDecoration(
-            border: Border.all(color: grey),
+            color: white,
+            // border: Border.all(color: grey),
             borderRadius: BorderRadius.circular(15)),
         // color: Colors.black,
         child: ListTile(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           trailing: Icon(
             color: grey,
             Icons.navigate_next_rounded,
             size: 35,
           ),
           onTap: onPress,
-          contentPadding: EdgeInsets.all(6),
+          contentPadding: EdgeInsets.symmetric(horizontal: 10),
           leading: CircleAvatar(
-            backgroundColor: grey.withAlpha(120),
+            backgroundColor: purple.withAlpha(50),
             child: Icon(
               icon,
               color: purple,

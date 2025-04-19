@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cashier/core/utils/rupiah_converter.dart';
 import 'package:cashier/features/menu/models/product_model.dart';
 import 'package:cashier/features/order/controllers/order_controller.dart';
-import 'package:cashier/features/order/function/print_receipt.dart';
+import 'package:cashier/features/order/utils/print_receipt.dart';
 
 class ShowReceipt extends GetView<OrderController> {
   const ShowReceipt({super.key});

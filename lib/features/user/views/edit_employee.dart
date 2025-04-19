@@ -31,7 +31,7 @@ class EditEmployee extends GetView<EmployeeController> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            homeIndocator(),
+            homeIndicator(),
             Text(
               "Edit Karyawan",
               style: GoogleFonts.roboto(color: purple, fontSize: 16),
