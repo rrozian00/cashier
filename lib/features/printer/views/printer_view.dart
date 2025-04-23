@@ -13,6 +13,7 @@ class PrinterView extends GetView<PrinterController> {
   Widget build(BuildContext context) {
     controller.isConnected.value;
     return Scaffold(
+      backgroundColor: softGrey,
       appBar: MyAppBar(
         titleText: "Printer",
       ),
@@ -103,6 +104,7 @@ class PrinterView extends GetView<PrinterController> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Obx(() => myElevated(
+                height: 50,
                 onPress: controller.isScanning.value
                     ? null
                     : controller.scanDevices, // Disable saat scanning
@@ -113,8 +115,7 @@ class PrinterView extends GetView<PrinterController> {
                           SizedBox(
                             width: 20,
                             height: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.black,
+                            child: CircularProgressIndicator.adaptive(
                               strokeWidth: 2,
                             ),
                           ),
@@ -124,6 +125,7 @@ class PrinterView extends GetView<PrinterController> {
                       )
                     : Text("Cari Printer"),
               )),
+
           // Tombol Connect & Disconnect
           Obx(() => controller.isConnected.value
               ? myRedElevated(
@@ -132,6 +134,7 @@ class PrinterView extends GetView<PrinterController> {
                   // style: TextStyle(color: white),
                 )
               : myElevated(
+                  height: 50,
                   onPress: controller.connectToPrinter,
                   child: controller.isLoading.value
                       ? Row(
@@ -140,8 +143,7 @@ class PrinterView extends GetView<PrinterController> {
                             SizedBox(
                               width: 20,
                               height: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.black,
+                              child: CircularProgressIndicator.adaptive(
                                 strokeWidth: 2,
                               ),
                             ),

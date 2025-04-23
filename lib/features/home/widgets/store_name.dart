@@ -18,7 +18,7 @@ class StoreName extends GetView<HomeController> {
               duration: Duration(milliseconds: 800),
               curve: Curves.easeInOut,
               child: Icon(
-                Icons.store,
+                Icons.store_rounded,
                 size: 70,
                 color: oldRed,
               )),
@@ -26,7 +26,6 @@ class StoreName extends GetView<HomeController> {
                 controller.storeName.isEmpty
                     ? "Loading..."
                     : "${GetUtils.capitalize(controller.storeName.value)}",
-                // : "abdjhasvjhfvasjlhvfljhavsfljhavljshfvaljhvfjhavljfhvajhvfjavsefhvajshvefse",
                 style: GoogleFonts.pacifico(
                     fontSize: 30, fontWeight: FontWeight.bold, color: oldRed),
               ))

@@ -1,68 +1,110 @@
-import 'package:cashier/core/widgets/home_indicator.dart';
+import 'package:cashier/features/user/blocs/auth/auth_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:cashier/core/theme/colors.dart';
+import 'package:cashier/core/widgets/home_indicator.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cashier/core/widgets/my_text_field.dart';
-import 'package:cashier/features/user/controllers/profile_controller.dart';
 
-class ChangePassword extends GetView<ProfileController> {
-  const ChangePassword({super.key});
+class ChangePasswordView extends StatefulWidget {
+  const ChangePasswordView({super.key});
+
+  @override
+  State<ChangePasswordView> createState() => _ChangePasswordViewState();
+}
+
+class _ChangePasswordViewState extends State<ChangePasswordView> {
+  final TextEditingController email = TextEditingController();
+
+  final TextEditingController oldPass = TextEditingController();
+
+  final TextEditingController newPass = TextEditingController();
+
+  final TextEditingController newPassAgain = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            homeIndicator(),
-            Text(
-              "Ubah Password",
-              style: GoogleFonts.poppins(fontSize: 20, color: purple),
-            ),
-            SizedBox(height: 20),
-            MyTextField(
-              label: "Password Lama",
-              controller: controller.oldPass,
-              obscure: true,
-            ),
-            MyTextField(
-              label: "Password Baru",
-              controller: controller.newPass,
-              obscure: true,
-            ),
-            MyTextField(
-              label: "Ulangi Password Baru",
-              controller: controller.reNewPass,
-              obscure: true,
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                myRedElevated(
-                  width: 150,
-                  text: "Batal",
-                  onPress: () async {
-                    Get.back();
-                    controller.clearC();
-                  },
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthLoadingState) {
+          return Get.back();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: softGrey,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
+          child: Column(
+            children: [
+              homeIndicator(),
+              Expanded(
+                child: ListView(
+                  children: [
+                    Center(
+                      child: Text(
+                        "Ubah Password",
+                        style: GoogleFonts.poppins(fontSize: 20, color: purple),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    MyText(
+                      textCapitalization: TextCapitalization.none,
+                      textInputType: TextInputType.emailAddress,
+                      label: "Email",
+                      hint: "Email",
+                      controller: email,
+                    ),
+                    MyText(
+                      label: "Password Lama",
+                      hint: "Password Lama",
+                      controller: oldPass,
+                      obscure: true,
+                    ),
+                    MyText(
+                      label: "Password Baru",
+                      hint: "Password Baru",
+                      controller: newPass,
+                      obscure: true,
+                    ),
+                    MyText(
+                      label: "Ulangi Password Baru",
+                      hint: "Ulangi Password Baru",
+                      controller: newPassAgain,
+                      obscure: true,
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        myRedElevated(
+                          width: 150,
+                          text: "Batal",
+                          onPress: () async {
+                            Get.back();
+                          },
+                        ),
+                        myGreenElevated(
+                          width: 150,
+                          text: "Simpan",
+                          onPress: () {
+                            context.read<AuthBloc>().add(ChangePasswordPressed(
+                                  email: email.text,
+                                  oldPass: oldPass.text,
+                                  newPass: newPass.text,
+                                ));
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 40),
+                  ],
                 ),
-                myGreenElevated(
-                  width: 150,
-                  text: "Simpan",
-                  onPress: () async {
-                    controller.showChangeDialog();
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 40),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

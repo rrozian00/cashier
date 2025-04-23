@@ -1,7 +1,7 @@
-import 'package:cashier/features/order/controllers/product_list_controller.dart';
+import 'package:cashier/features/product/controllers/product_list_controller.dart';
 import 'package:get/get.dart';
 
-import 'package:cashier/features/menu/controllers/product_controller.dart';
+import 'package:cashier/features/product/controllers/product_controller.dart';
 
 import '../controllers/order_controller.dart';
 

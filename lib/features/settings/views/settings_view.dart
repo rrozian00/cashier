@@ -1,5 +1,4 @@
 import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/features/user/controllers/profile_controller.dart';
 import 'package:cashier/routes/app_pages.dart';
 import 'package:cashier/core/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SettingsView extends GetView<ProfileController> {
+class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
   @override
   Widget build(BuildContext context) {
@@ -16,67 +15,69 @@ class SettingsView extends GetView<ProfileController> {
       appBar: MyAppBar(
         titleText: 'Pengaturan',
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 10.0),
-        child: ListView(
-          children: [
-            _Listile(
-              onPress: () {
-                Get.toNamed(Routes.profile);
-              },
-              title: "Profil",
-              icon: Icons.person,
-            ),
-            _Listile(
-              onPress: () {
-                Get.toNamed(Routes.store);
-              },
-              title: "Toko",
-              icon: Icons.store,
-            ),
-            _Listile(
-              onPress: () {
-                Get.toNamed(Routes.employee);
-              },
-              title: "Karyawan",
-              icon: Icons.person_outline_rounded,
-            ),
-            _Listile(
-              onPress: () {
-                Get.toNamed(Routes.menus);
-              },
-              title: "Produk",
-              icon: Icons.receipt_outlined,
-            ),
-            _Listile(
-              onPress: () {
-                Get.toNamed(Routes.EXPENSE);
-              },
-              title: "Pengeluaran",
-              icon: Icons.shopping_cart,
-            ),
-            _Listile(
-              onPress: () {
-                Get.toNamed(Routes.PRINTER);
-              },
-              title: "Printer",
-              icon: Icons.print,
-            ),
-            _Listile(
-              onPress: () {
-                Get.toNamed(Routes.INPUT_MANUAL);
-              },
-              title: "Input Manual",
-              icon: Icons.checklist_rounded,
-            ),
-            _Listile(
-              onPress: () {
-                Get.toNamed(Routes.HISTORY_ORDER);
-              },
-              title: "Riwayat",
-              icon: Icons.history_toggle_off_rounded,
-            ),
-          ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: ListView(
+            children: [
+              _Listile(
+                onPress: () {
+                  Get.toNamed(Routes.profile);
+                },
+                title: "Profil",
+                icon: Icons.person,
+              ),
+              _Listile(
+                onPress: () {
+                  Get.toNamed(Routes.store);
+                },
+                title: "Toko",
+                icon: Icons.store,
+              ),
+              _Listile(
+                onPress: () {
+                  Get.toNamed(Routes.employee);
+                },
+                title: "Karyawan",
+                icon: Icons.person_outline_rounded,
+              ),
+              _Listile(
+                onPress: () {
+                  Get.toNamed(Routes.menus);
+                },
+                title: "Produk",
+                icon: Icons.receipt_outlined,
+              ),
+              _Listile(
+                onPress: () {
+                  Get.toNamed(Routes.expense);
+                },
+                title: "Pengeluaran",
+                icon: Icons.shopping_cart,
+              ),
+              _Listile(
+                onPress: () {
+                  Get.toNamed(Routes.printer);
+                },
+                title: "Printer",
+                icon: Icons.print,
+              ),
+              _Listile(
+                onPress: () {
+                  Get.toNamed(Routes.inputManual);
+                },
+                title: "Input Manual",
+                icon: Icons.checklist_rounded,
+              ),
+              _Listile(
+                onPress: () {
+                  Get.toNamed(Routes.historyOrder);
+                },
+                title: "Riwayat",
+                icon: Icons.history_toggle_off_rounded,
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
@@ -132,7 +133,7 @@ class _Listile extends StatelessWidget {
           ),
           title: Text(
             title ?? "-",
-            style: GoogleFonts.jetBrainsMono(color: brown),
+            style: GoogleFonts.jetBrainsMono(color: black),
           ),
         ),
       ),

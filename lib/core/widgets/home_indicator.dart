@@ -6,7 +6,7 @@ Widget homeIndicator() {
       child: Column(
     children: [
       SizedBox(
-        height: 10,
+        height: 5,
       ),
       Container(
         width: 140,

@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -5,12 +6,14 @@ class MyDatePicker extends StatelessWidget {
   final String labelText;
   final TextEditingController controller;
   final Function(String) onDateSelected;
+  final String? Function(String?)? validator;
 
   const MyDatePicker({
     super.key,
     required this.labelText,
     required this.controller,
     required this.onDateSelected,
+    this.validator,
   });
 
   @override
@@ -38,11 +41,12 @@ class MyDatePicker extends StatelessWidget {
         }
       },
       child: AbsorbPointer(
-        child: TextField(
+        child: TextFormField(
+          validator: validator,
           controller: controller,
           decoration: InputDecoration(
             labelText: labelText,
-            border: OutlineInputBorder(),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
             suffixIcon: Icon(Icons.calendar_today),
           ),
         ),

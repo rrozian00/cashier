@@ -1,77 +1,130 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cashier/features/user/blocs/auth/auth_bloc.dart';
+import 'package:cashier/routes/app_pages.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:cashier/core/theme/colors.dart';
 import 'package:cashier/core/widgets/home_indicator.dart';
 import 'package:cashier/core/widgets/my_alert_dialog.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cashier/core/widgets/my_text_field.dart';
-import 'package:cashier/features/user/controllers/profile_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:cashier/features/user/blocs/register/register_bloc.dart';
+import 'package:cashier/features/user/models/user_model.dart';
 
-class EditProfileView extends GetView<ProfileController> {
-  const EditProfileView({super.key});
+class EditProfileView extends StatefulWidget {
+  final UserModel user;
+
+  const EditProfileView({super.key, required this.user});
+
+  @override
+  State<EditProfileView> createState() => _EditProfileViewState();
+}
+
+class _EditProfileViewState extends State<EditProfileView> {
+  late TextEditingController nameC;
+  late TextEditingController addressC;
+  late TextEditingController phoneNumberC;
+
+  @override
+  void initState() {
+    super.initState();
+    nameC = TextEditingController(text: widget.user.name ?? '');
+    addressC = TextEditingController(text: widget.user.address ?? '');
+    phoneNumberC = TextEditingController(text: widget.user.phoneNumber ?? '');
+  }
+
+  @override
+  void dispose() {
+    nameC.dispose();
+    addressC.dispose();
+    phoneNumberC.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    controller.name.value = controller.userData.value?.name ?? '';
-    controller.address.value = controller.userData.value?.address ?? '';
-    controller.phone.value = controller.userData.value?.phoneNumber ?? '';
-
-    debugPrint("isi name.value=${controller.name.value}");
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          homeIndicator(),
-          Text(
-            "Ubah Profil",
-            style: GoogleFonts.poppins(color: purple, fontSize: 18),
+    return BlocConsumer<RegisterBloc, RegisterState>(
+      listener: (context, state) {
+        if (state is EditSuccessState) {
+          //  Navigator.popUntil(
+          //         context, (route) => route.settings.name == Routes.profile)
+          Get.back();
+          context.read<AuthBloc>().add(AuthCheckStatusEvent());
+        }
+      },
+      builder: (context, state) {
+        if (state is RegisterLoadingState) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return Scaffold(
+          backgroundColor: softGrey,
+          resizeToAvoidBottomInset: true,
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
+            child: Column(
+              children: [
+                homeIndicator(),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      Center(
+                        child: Text(
+                          "Ubah Profil",
+                          style:
+                              GoogleFonts.poppins(color: purple, fontSize: 18),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      MyText(controller: nameC, hint: "Nama", label: "Nama"),
+                      MyText(
+                          controller: addressC,
+                          label: "Alamat",
+                          hint: "Alamat"),
+                      MyText(
+                        textInputType: TextInputType.number,
+                        controller: phoneNumberC,
+                        label: "No HP",
+                        hint: "No HP",
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          myRedElevated(
+                            text: "Batal",
+                            onPress: () => Get.back(),
+                          ),
+                          myGreenElevated(
+                            text: "Simpan",
+                            onPress: () {
+                              Get.dialog(MyAlertDialog(
+                                onConfirm: () {
+                                  context.read<RegisterBloc>().add(
+                                        EditRequestedEvent(
+                                          name: nameC.text,
+                                          address: addressC.text,
+                                          phone: phoneNumberC.text,
+                                        ),
+                                      );
+                                },
+                                contentText: "Anda yakin akan menyimpan data?",
+                              ));
+                            },
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 40)
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-          SizedBox(
-            height: 15,
-          ),
-          MyTextField(
-            controller: controller.name,
-            label: "Nama",
-          ),
-          MyTextField(
-            controller: controller.address,
-            label: "Alamat",
-          ),
-          MyTextField(
-            textInputType: TextInputType.number,
-            controller: controller.phone,
-            label: "No HP",
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              myRedElevated(
-                text: "Batal",
-                onPress: () {
-                  Get.back();
-                },
-              ),
-              myGreenElevated(
-                text: "Simpan",
-                onPress: () {
-                  Get.dialog(MyAlertDialog(
-                      onConfirm: () async => controller.showEditProfile(),
-                      contentText: "Anda yakin akan menyimpan data?"));
-                },
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 40,
-          )
-        ],
-      ),
+        );
+      },
     );
   }
 }

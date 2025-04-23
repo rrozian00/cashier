@@ -1,4 +1,3 @@
-import 'package:cashier/features/user/controllers/employee_controller.dart';
 import 'package:cashier/features/user/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import 'package:cashier/features/order/models/order_model.dart';
 
 class HistoryOrderController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final employeeController = Get.find<EmployeeController>();
 
   final listEmployee = <UserModel>[].obs;
   var storeId = ''.obs;
@@ -90,7 +88,7 @@ class HistoryOrderController extends GetxController {
   }
 
   void updateCalculations() {
-    listEmployee.value = employeeController.listEmployee;
+    // listEmployee.value = employeeController.listEmployee;
 
     totalPenjualan.value = orderList.fold(
       0,

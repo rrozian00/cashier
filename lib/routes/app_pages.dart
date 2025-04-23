@@ -1,25 +1,22 @@
-import 'package:cashier/features/order/bindings/product_list_binding.dart';
-import 'package:cashier/features/order/views/check_out_view.dart';
-import 'package:cashier/features/store/views/add_store_view.dart';
 import 'package:get/get.dart';
 
-import 'package:cashier/features/menu/views/add_product_view.dart';
-import 'package:cashier/features/menu/views/edit_product_view.dart';
-import 'package:cashier/features/order/views/product_list.dart';
-import 'package:cashier/features/user/views/add_employee_view.dart';
-import 'package:cashier/features/user/views/edit_profile_view.dart';
-import 'package:cashier/features/user/views/employee_list_view.dart';
+import 'package:cashier/core/splash_screen/splash_screen.dart';
+import 'package:cashier/features/order/bindings/product_list_binding.dart';
+import 'package:cashier/features/order/views/check_out_view.dart';
+import 'package:cashier/features/product/views/product_list.dart';
+import 'package:cashier/features/product/views/add_product_view.dart';
+import 'package:cashier/features/product/views/edit_product_view.dart';
+import 'package:cashier/features/store/views/add_store_view.dart';
+import 'package:cashier/features/user/blocs/employee/view/add_employee_view.dart';
+import 'package:cashier/features/user/blocs/employee/view/employee_list_view.dart';
+import 'package:cashier/features/user/views/register_view.dart';
 
 import '../features/bottom_navigation_bar/bindings/bottom_binding.dart';
 import '../features/bottom_navigation_bar/views/bottom_view.dart';
-import '../features/expense/bindings/expense_binding.dart';
+
 import '../features/expense/views/expense_view.dart';
 import '../features/home/bindings/home_binding.dart';
 import '../features/home/views/home_view.dart';
-import '../features/login/bindings/login_binding.dart';
-import '../features/login/views/login_view.dart';
-import '../features/menu/bindings/menu_binding.dart';
-import '../features/menu/views/product_view.dart';
 import '../features/order/bindings/history_order_binding.dart';
 import '../features/order/bindings/input_manual_binding.dart';
 import '../features/order/bindings/order_binding.dart';
@@ -28,14 +25,13 @@ import '../features/order/views/input_manual_view.dart';
 import '../features/order/views/order_view.dart';
 import '../features/printer/bindings/printer_binding.dart';
 import '../features/printer/views/printer_view.dart';
-import '../features/rekapan/bindings/rekapan_binding.dart';
-import '../features/rekapan/views/rekapan_view.dart';
+import '../features/product/bindings/product_binding.dart';
+import '../features/product/views/product_view.dart';
 import '../features/settings/bindings/settings_binding.dart';
 import '../features/settings/views/settings_view.dart';
 import '../features/store/bindings/store_binding.dart';
 import '../features/store/views/store_view.dart';
-import '../features/user/bindings/add_employee_binding.dart';
-import '../features/user/bindings/profile_binding.dart';
+import '../features/user/views/login_view.dart';
 import '../features/user/views/profile_view.dart';
 
 part 'app_routes.dart';
@@ -43,9 +39,13 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  // static const INITIAL = Routes.productList;
+  static const initial = Routes.splash;
 
   static final routes = [
+    GetPage(
+      name: _Paths.splash,
+      page: () => SplashScreen(),
+    ),
     GetPage(
       name: _Paths.home,
       page: () => HomeView(),
@@ -74,17 +74,17 @@ class AppPages {
     GetPage(
       name: _Paths.menus,
       page: () => const ProductView(),
-      binding: MenuBinding(),
+      binding: ProductBinding(),
     ),
     GetPage(
       name: _Paths.addMenus,
       page: () => const AddProductView(),
-      binding: MenuBinding(),
+      binding: ProductBinding(),
     ),
     GetPage(
       name: _Paths.editMenus,
       page: () => const EditProductView(),
-      binding: MenuBinding(),
+      binding: ProductBinding(),
     ),
     GetPage(
       name: _Paths.settings,
@@ -92,45 +92,41 @@ class AppPages {
       binding: SettingsBinding(),
     ),
     GetPage(
-      name: _Paths.HISTORY_ORDER,
+      name: _Paths.historyOrder,
       page: () => HistoryOrderView(),
       binding: RiwayatBinding(),
     ),
     GetPage(
-      name: _Paths.EXPENSE,
+      name: _Paths.expense,
       page: () => const ExpenseView(),
-      binding: PengeluaranBinding(),
+      // binding: PengeluaranBinding(),
     ),
     GetPage(
-      name: _Paths.PRINTER,
+      name: _Paths.printer,
       page: () => const PrinterView(),
       binding: PrinterBinding(),
     ),
     GetPage(
-      name: _Paths.RECAP,
-      page: () => const RekapanView(),
-      binding: RekapanBinding(),
-    ),
-    GetPage(
-      name: _Paths.INPUT_MANUAL,
+      name: _Paths.inputManual,
       page: () => const InputManualView(),
       binding: InputManualBinding(),
     ),
-    GetPage(
-      name: _Paths.login,
-      page: () => const LoginView(),
-      binding: LoginBinding(),
-    ),
+    GetPage(name: _Paths.login, page: () => LoginView(), children: [
+      GetPage(
+        name: _Paths.register,
+        page: () => RegisterView(),
+      )
+    ]),
     GetPage(
       name: _Paths.profile,
       page: () => const ProfileView(),
-      binding: ProfileBinding(),
+      // binding: ProfileBinding(),
     ),
-    GetPage(
-      name: _Paths.editProfile,
-      page: () => const EditProfileView(),
-      binding: ProfileBinding(),
-    ),
+    // GetPage(
+    //   name: _Paths.editProfile,
+    //   page: () => EditProfileView(),
+    //   // binding: ProfileBinding(),
+    // ),
     GetPage(
       name: _Paths.store,
       page: () => const StoreView(),
@@ -144,12 +140,10 @@ class AppPages {
     GetPage(
       name: _Paths.employee,
       page: () => const EmployeeListView(),
-      binding: AddEmployeeBinding(),
     ),
     GetPage(
       name: _Paths.addEmployee,
-      page: () => const AddEmployeeView(),
-      binding: AddEmployeeBinding(),
+      page: () => AddEmployeeView(),
     ),
   ];
 }

@@ -1,20 +1,21 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
-  String? id;
-  String? storeId;
-  String? email;
-  String? name;
-  String? address;
-  String? salary;
-  String? role;
-  String? phoneNumber;
-  String? photo;
-  String? createdAt;
+  final String? id;
+  final String? storeId;
+  final String? email;
+  final String? name;
+  final String? address;
+  final String? salary;
+  final String? role;
+  final String? phoneNumber;
+  final String? photo;
+  final Timestamp? createdAt;
 
-  UserModel({
+  const UserModel({
     this.id,
     this.storeId,
     this.email,
@@ -27,36 +28,6 @@ class UserModel {
     this.createdAt,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'email': email,
-      'name': name,
-      'address': address,
-      'salary': salary,
-      'role': role,
-      'phoneNumber': phoneNumber,
-      'photo': photo,
-      'createdAt': createdAt ?? FieldValue.serverTimestamp(),
-    };
-  }
-
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      id: json['id'],
-      email: json['email'],
-      name: json['name'],
-      address: json['address'],
-      salary: json['salary'],
-      role: json['role'],
-      phoneNumber: json['phoneNumber'],
-      photo: json['photo'],
-      createdAt: json['createdAt'] is Timestamp
-          ? (json['createdAt'] as Timestamp).toDate().toIso8601String()
-          : json['createdAt'],
-    );
-  }
-
   UserModel copyWith({
     String? id,
     String? storeId,
@@ -67,7 +38,7 @@ class UserModel {
     String? role,
     String? phoneNumber,
     String? photo,
-    String? createdAt,
+    Timestamp? createdAt,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -110,9 +81,15 @@ class UserModel {
       phoneNumber:
           map['phoneNumber'] != null ? map['phoneNumber'] as String : null,
       photo: map['photo'] != null ? map['photo'] as String : null,
-      createdAt: map['createdAt'] != null ? map['createdAt'] as String : null,
+      createdAt:
+          map['createdAt'] != null ? map['createdAt'] as Timestamp : null,
     );
   }
+
+  String toJson() => json.encode(toMap());
+
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {

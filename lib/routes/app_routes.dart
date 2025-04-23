@@ -3,6 +3,7 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
+  static const splash = _Paths.splash;
   static const home = _Paths.home;
   static const order = _Paths.order;
   static const checkOut = _Paths.checkOut;
@@ -12,13 +13,12 @@ abstract class Routes {
   static const addMenus = _Paths.addMenus;
   static const editMenus = _Paths.editMenus;
   static const settings = _Paths.settings;
-  static const HISTORY_ORDER = _Paths.HISTORY_ORDER;
-  static const SHOP = _Paths.SHOP;
-  static const EXPENSE = _Paths.EXPENSE;
-  static const HISTORY_EXPENSE = _Paths.HISTORY_EXPENSE;
-  static const PRINTER = _Paths.PRINTER;
-  static const RECAP = _Paths.RECAP;
-  static const INPUT_MANUAL = _Paths.INPUT_MANUAL;
+  static const historyOrder = _Paths.historyOrder;
+  static const expense = _Paths.expense;
+  static const historyExpense = _Paths.historyExpense;
+  static const printer = _Paths.printer;
+  static const register = _Paths.register;
+  static const inputManual = _Paths.inputManual;
   static const login = _Paths.login;
   static const profile = _Paths.profile;
   static const editProfile = _Paths.editProfile;
@@ -31,6 +31,7 @@ abstract class Routes {
 abstract class _Paths {
   _Paths._();
   static const home = '/home';
+  static const splash = '/splash';
   static const order = '/order';
   static const checkOut = '/check-out';
   static const productList = '/product-list';
@@ -39,13 +40,12 @@ abstract class _Paths {
   static const addMenus = '/add-menus';
   static const editMenus = '/edit-menus';
   static const settings = '/settings';
-  static const HISTORY_ORDER = '/history_order';
-  static const SHOP = '/shop';
-  static const EXPENSE = '/expense';
-  static const HISTORY_EXPENSE = '/history-expense';
-  static const PRINTER = '/printer';
-  static const RECAP = '/recap';
-  static const INPUT_MANUAL = '/input-manual';
+  static const historyOrder = '/history_order';
+  static const expense = '/expense';
+  static const historyExpense = '/history-expense';
+  static const printer = '/printer';
+  static const register = '/register';
+  static const inputManual = '/input-manual';
   static const login = '/login';
   static const profile = '/profile';
   static const editProfile = '/edit-profile';

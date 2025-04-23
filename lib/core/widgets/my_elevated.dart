@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget myElevated({
+  double? width,
+  double? height,
   required void Function()? onPress,
   Widget? child,
   String? text,
@@ -10,19 +12,23 @@ Widget myElevated({
   return GestureDetector(
     onTap: onPress,
     child: Container(
+      width: width,
+      height: height ?? 50,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           border: Border.all(color: Colors.black)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-        child: child ??
-            Text(
-              text ?? '',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                color: Colors.black,
+        child: Center(
+          child: child ??
+              Text(
+                text ?? '',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
               ),
-            ),
+        ),
       ),
     ),
   );
@@ -39,7 +45,7 @@ Widget myPurpleElevated({
     onTap: onPress,
     child: Container(
       width: width,
-      height: height,
+      height: height ?? 50,
       decoration: BoxDecoration(
         color: purple,
         border: Border.all(color: purple),
@@ -67,15 +73,16 @@ Widget myRedElevated({
   Widget? child,
   String? text,
   double? width,
+  Color? color,
 }) {
   return GestureDetector(
     onTap: onPress,
     child: Container(
-      height: 45,
+      height: 50,
       width: width,
       decoration: BoxDecoration(
-        color: red,
-        border: Border.all(color: red),
+        color: color ?? red,
+        border: Border.all(color: color ?? red),
         borderRadius: BorderRadius.circular(15),
       ),
       child: Padding(
@@ -101,15 +108,16 @@ Widget myGreenElevated({
   String? text,
   double? width,
   double? height,
+  Color? color,
 }) {
   return GestureDetector(
     onTap: onPress,
     child: Container(
-      height: height ?? 45,
+      height: height ?? 50,
       width: width,
       decoration: BoxDecoration(
-        color: green,
-        border: Border.all(color: green),
+        color: color ?? green,
+        border: Border.all(color: color ?? green),
         borderRadius: BorderRadius.circular(15),
       ),
       child: Padding(
@@ -137,6 +145,7 @@ Widget myPurpleIconElevated({
   return GestureDetector(
     onTap: onPress,
     child: Container(
+      height: 50,
       decoration: BoxDecoration(
         color: purple,
         border: Border.all(color: purple),

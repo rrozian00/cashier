@@ -114,3 +114,64 @@ class MyTextField extends StatelessWidget {
     );
   }
 }
+
+class MyText extends StatelessWidget {
+  const MyText({
+    super.key,
+    required this.controller,
+    required this.label,
+    this.hint,
+    this.obscure,
+    this.textInputType,
+    this.textCapitalization,
+    this.textInputAction,
+    this.validator,
+    this.color,
+    this.filled,
+    this.suffix,
+  });
+
+  final TextEditingController controller;
+  final String label;
+  final String? hint;
+  final bool? obscure;
+  final TextInputType? textInputType;
+  final TextCapitalization? textCapitalization;
+  final TextInputAction? textInputAction;
+  final String? Function(String?)? validator;
+  final bool? filled;
+  final Color? color;
+  final String? suffix;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.montserrat(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        SizedBox(height: 10),
+        TextFormField(
+            validator: validator,
+            textCapitalization: textCapitalization ?? TextCapitalization.words,
+            obscureText: obscure ?? false,
+            textInputAction: textInputAction ?? TextInputAction.next,
+            controller: controller,
+            keyboardType: textInputType,
+            decoration: InputDecoration(
+                suffixText: suffix,
+                fillColor: color ?? white,
+                filled: filled ?? true,
+                hintText: hint,
+                border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(15)))),
+        SizedBox(height: 10),
+      ],
+    );
+  }
+}

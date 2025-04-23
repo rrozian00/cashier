@@ -1,10 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import 'package:cashier/core/utils/auth_checker.dart';
-import 'package:cashier/features/bottom_navigation_bar/controllers/bottom_controller.dart';
+import 'package:cashier/core/utils/app_providers.dart';
+
 import 'package:cashier/firebase_options.dart';
 
 import 'routes/app_pages.dart';
@@ -14,9 +15,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  Get.put(BottomController());
+
   await initializeDateFormatting('id_ID', null).then((_) {
-    runApp(MyApp());
+    runApp(const MyApp());
   });
 }
 
@@ -25,11 +26,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      // debugShowCheckedModeBanner: false,
-      title: "Application",
-      home: AuthChecker(),
-      getPages: AppPages.routes,
+    return MultiBlocProvider(
+      providers: appProviders,
+      child: GetMaterialApp(
+        title: "Cashier",
+        initialRoute: AppPages.initial,
+        getPages: AppPages.routes,
+      ),
     );
   }
 }

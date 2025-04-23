@@ -99,40 +99,42 @@ class StoreController extends GetxController {
         height: MediaQuery.of(context).size.height * 0.5,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              homeIndicator(),
-              Text(
-                "Ubah Toko",
-                style: GoogleFonts.poppins(color: purple, fontSize: 18),
-              ),
-              SizedBox(height: 15),
-              MyTextField(controller: name, label: "Nama Toko"),
-              MyTextField(controller: address, label: "Alamat Toko"),
-              MyTextField(controller: phone, label: "No HP Toko"),
-              SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  myRedElevated(
-                    width: 150,
-                    onPress: () => Get.back(),
-                    text: "Kembali",
-                  ),
-                  myGreenElevated(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                homeIndicator(),
+                Text(
+                  "Ubah Toko",
+                  style: GoogleFonts.poppins(color: purple, fontSize: 18),
+                ),
+                SizedBox(height: 15),
+                MyTextField(controller: name, label: "Nama Toko"),
+                MyTextField(controller: address, label: "Alamat Toko"),
+                MyTextField(controller: phone, label: "No HP Toko"),
+                SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    myRedElevated(
                       width: 150,
-                      onPress: () {
-                        updateStore();
-                        Get.back();
-                      },
-                      text: "Simpan"),
-                ],
-              ),
-              SizedBox(
-                height: 40,
-              )
-            ],
+                      onPress: () => Get.back(),
+                      text: "Kembali",
+                    ),
+                    myGreenElevated(
+                        width: 150,
+                        onPress: () {
+                          updateStore();
+                          Get.back();
+                        },
+                        text: "Simpan"),
+                  ],
+                ),
+                SizedBox(
+                  height: 40,
+                )
+              ],
+            ),
           ),
         ),
       ),

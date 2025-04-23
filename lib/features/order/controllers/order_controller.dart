@@ -1,4 +1,6 @@
 import 'package:cashier/core/widgets/my_elevated.dart';
+
+import 'package:cashier/features/user/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,11 +9,10 @@ import 'package:intl/intl.dart';
 import 'package:cashier/core/theme/colors.dart';
 import 'package:cashier/core/utils/get_store_id.dart';
 import 'package:cashier/core/utils/get_user_data.dart';
-import 'package:cashier/features/menu/models/product_model.dart';
+import 'package:cashier/features/product/models/product_model.dart';
 import 'package:cashier/features/order/utils/show_receipt.dart';
 import 'package:cashier/features/order/models/order_model.dart';
 import 'package:cashier/features/store/models/store_model.dart';
-import 'package:cashier/features/user/models/user_model.dart';
 
 class OrderController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -255,6 +256,7 @@ class OrderController extends GetxController {
     try {
       userData.value = await getUserData();
       storeData.value = await getStoreData();
+      debugPrint(" ini store data diordeC:${storeData.value}");
     } catch (e) {
       debugPrint(e.toString());
     }

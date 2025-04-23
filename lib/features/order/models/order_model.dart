@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:cashier/features/menu/models/product_model.dart';
+import 'package:cashier/features/product/models/product_model.dart';
 
 class OrderModel {
   String? id;

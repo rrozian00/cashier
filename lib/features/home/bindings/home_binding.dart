@@ -1,6 +1,6 @@
 import 'package:cashier/features/order/controllers/history_order_controller.dart';
 import 'package:cashier/features/printer/controllers/printer_controller.dart';
-import 'package:cashier/features/user/controllers/profile_controller.dart';
+
 import 'package:get/get.dart';
 
 import '../controllers/home_controller.dart';
@@ -13,9 +13,6 @@ class HomeBinding extends Bindings {
     );
     Get.lazyPut<HistoryOrderController>(
       () => HistoryOrderController(),
-    );
-    Get.lazyPut<ProfileController>(
-      () => ProfileController(),
     );
     Get.lazyPut<PrinterController>(() => PrinterController(), fenix: true);
   }
