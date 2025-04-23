@@ -29,8 +29,8 @@ class RegisterView extends StatelessWidget {
       listener: (context, state) {
         if (state is RegisterSuccessState) {
           Navigator.pushReplacementNamed(context, Routes.login);
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("Berhasil Registrasi")));
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Berhasil Registrasi, Silahkan Login !")));
         }
       },
       child: Scaffold(

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:cashier/features/user/blocs/auth/auth_bloc.dart';
 import 'package:cashier/routes/app_pages.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -20,16 +19,18 @@ class SplashScreen extends StatelessWidget {
 
         if (state is AuthLoggedState) {
           try {
-            // Navigator.pushReplacementNamed(context, Routes.bottom);
-            Get.offAllNamed(Routes.bottom);
+            if (context.mounted) {
+              Navigator.pushReplacementNamed(context, Routes.bottom);
+            }
 
             debugPrint("harusnya udah route");
           } catch (e) {
             debugPrint("error route:$e");
           }
         } else if (state is UnauthenticatedState || state is AuthFailedState) {
-          // Navigator.pushReplacementNamed(context, Routes.login);
-          Get.offAllNamed(Routes.login);
+          if (context.mounted) {
+            Navigator.pushReplacementNamed(context, Routes.login);
+          }
         }
       },
       child: Scaffold(

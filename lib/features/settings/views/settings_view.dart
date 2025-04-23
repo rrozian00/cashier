@@ -1,10 +1,10 @@
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/routes/app_pages.dart';
-import 'package:cashier/core/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:cashier/core/theme/colors.dart';
+import 'package:cashier/core/widgets/my_appbar.dart';
+import 'package:cashier/routes/app_pages.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});

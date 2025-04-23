@@ -1,6 +1,7 @@
 import 'package:cashier/features/user/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 class AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -20,6 +21,15 @@ class AuthRepository {
     final result = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
     return result.user;
+  }
+
+  Future<bool> checkVerification() async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      debugPrint("Virified: ${user.emailVerified.toString()}");
+      return user.emailVerified;
+    }
+    return false;
   }
 
   Future<void> logout() async {
@@ -52,6 +62,13 @@ class AuthRepository {
       }
     } catch (e) {
       throw Exception('Terjadi kesalahan: $e');
+    }
+  }
+
+  Future<void> sendVerification() async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      user.sendEmailVerification();
     }
   }
 }

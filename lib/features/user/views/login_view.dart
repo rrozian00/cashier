@@ -13,7 +13,7 @@ class LoginView extends StatelessWidget {
   LoginView({super.key});
 
   final TextEditingController emailC =
-      TextEditingController(text: "r@gmail.com");
+      TextEditingController(text: "rrozian00@gmail.com");
   final TextEditingController passwordC = TextEditingController(text: "123123");
 
   final _formKey = GlobalKey<FormState>();
@@ -112,9 +112,7 @@ class LoginView extends StatelessWidget {
                         child: BlocBuilder<AuthBloc, AuthState>(
                           builder: (context, state) {
                             if (state is AuthLoadingState) {
-                              return CircularProgressIndicator(
-                                color: black,
-                              );
+                              return CircularProgressIndicator.adaptive();
                             }
                             return Text(
                               "Login",

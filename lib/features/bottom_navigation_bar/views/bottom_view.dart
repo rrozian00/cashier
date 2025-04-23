@@ -1,32 +1,27 @@
-import 'package:cashier/features/order/controllers/order_controller.dart';
-import 'package:cashier/features/store/views/store_view.dart';
-import 'package:cashier/features/user/views/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/instance_manager.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/features/user/blocs/auth/auth_bloc.dart';
 import 'package:cashier/features/bottom_navigation_bar/cubit/bottom_nav_cubit.dart';
 import 'package:cashier/features/home/views/home_view.dart';
 import 'package:cashier/features/order/views/order_view.dart';
 import 'package:cashier/features/printer/views/printer_view.dart';
 import 'package:cashier/features/settings/views/settings_view.dart';
+import 'package:cashier/features/store/views/store_view.dart';
+import 'package:cashier/features/user/blocs/auth/auth_bloc.dart';
+import 'package:cashier/features/user/views/profile_view.dart';
 
 class BottomView extends StatelessWidget {
   const BottomView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    //TODO:
-    Get.put(OrderController());
-
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is! AuthLoggedState) {
           return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            body: Center(child: CircularProgressIndicator.adaptive()),
           );
         }
 

@@ -38,6 +38,7 @@ class MyAlertDialog extends GetView {
             ),
             Text(
               contentText,
+              textAlign: TextAlign.center,
               style: GoogleFonts.poppins(),
             ),
             SizedBox(
@@ -62,6 +63,54 @@ class MyAlertDialog extends GetView {
                   },
                 ),
               ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MySingleAlertDialog extends GetView {
+  const MySingleAlertDialog({
+    super.key,
+    this.onCancel,
+    required this.contentText,
+    this.onCancelColor,
+    this.onCancelText,
+  });
+
+  final VoidCallback? onCancel;
+  final String? onCancelText;
+  final String contentText;
+  final Color? onCancelColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 18.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.warning_amber_rounded,
+              size: 100,
+              color: Colors.amber,
+            ),
+            Text(
+              contentText,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            myGreenElevated(
+              color: onCancelColor,
+              width: 100,
+              text: onCancelText ?? "Batal",
+              onPress: onCancel ?? () => Navigator.pop(context),
             )
           ],
         ),

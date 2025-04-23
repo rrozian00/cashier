@@ -44,5 +44,11 @@ final class ChangePasswordPressed extends AuthEvent {
       ];
 }
 
+// Event untuk cek verification
+final class AuthVerificationRequested extends AuthEvent {}
+
+// Event untuk kirim verification
+final class AuthSendVerification extends AuthEvent {}
+
 // Event untuk logout
 final class AuthLogoutEvent extends AuthEvent {}

@@ -14,12 +14,27 @@ final class UnauthenticatedState extends AuthState {}
 final class AuthLoadingState extends AuthState {}
 
 final class AuthLoggedState extends AuthState {
+  final bool verification;
   final UserModel user;
-  const AuthLoggedState(this.user);
+
+  const AuthLoggedState(this.user, this.verification);
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [user, verification];
 }
+
+// final class AuthSendedVerificationState extends AuthState {
+//   final UserModel user;
+//   final bool verification;
+
+//   const AuthSendedVerificationState({
+//     required this.verification,
+//     required this.user,
+//   });
+
+//   @override
+//   List<Object> get props => [verification, user];
+// }
 
 //Logout
 final class AuthLogoutState extends AuthState {}

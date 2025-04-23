@@ -17,12 +17,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(UnauthenticatedState()) {
     on<AuthCheckStatusEvent>((event, emit) async {
       final user = await authRepository.getCurrentUser();
+      final verif = await authRepository.checkVerification();
       if (user != null) {
-        emit(AuthLoggedState(user));
+        emit(AuthLoggedState(user, verif));
       } else {
         emit(UnauthenticatedState());
       }
     });
+
+    on<AuthSendVerification>(
+      (event, emit) async {
+        emit(AuthLoadingState());
+        await authRepository.sendVerification();
+        final verif = await authRepository.checkVerification();
+        final user = await authRepository.getCurrentUser();
+        if (user != null) {
+          emit(AuthLoggedState(user, verif));
+        }
+      },
+    );
 
     on<AuthLoginEvent>(_onLogin);
 
@@ -42,8 +55,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         String userId = user.uid;
         final userDoc = await userRepository.getUser(userId);
 
+        final verif = await authRepository.checkVerification();
+
         if (userDoc != null) {
-          emit(AuthLoggedState(userDoc));
+          emit(AuthLoggedState(userDoc, verif));
 
           if (userDoc.role == 'owner') {
             debugPrint("Login sebagai Owner");
