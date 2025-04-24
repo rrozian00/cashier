@@ -1,3 +1,4 @@
+import 'package:cashier/features/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -10,13 +11,13 @@ import 'package:cashier/features/home/widgets/statistic_list.dart';
 import 'package:cashier/features/home/widgets/store_name.dart';
 import 'package:cashier/routes/app_pages.dart';
 
-import '../controllers/home_controller.dart';
-
-class HomeView extends GetView<HomeController> {
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    context.read<HomeBloc>().add(HomeGetStoreReq());
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is UnauthenticatedState) {
@@ -25,24 +26,6 @@ class HomeView extends GetView<HomeController> {
       },
       child: Scaffold(
         backgroundColor: softGrey,
-        // appBar: MyAppBar(
-        //   actions: [
-        //     Padding(
-        //       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        //       child: Obx(() => SingleChildScrollView(
-        //             scrollDirection: Axis.horizontal,
-        //             child: Text(
-        //               "Hai, ${controller.userData.value?.name}",
-        //               style: GoogleFonts.poppins(
-        //                 fontSize: 16,
-        //                 color: purple,
-        //                 fontWeight: FontWeight.bold,
-        //               ),
-        //             ),
-        //           )),
-        //     ),
-        //   ],
-        // ),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(left: 10.0),
@@ -102,15 +85,15 @@ class HomeView extends GetView<HomeController> {
 
                   SizedBox(height: 40),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      "Rekapan untuk anda",
-                      style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  // Statistik Keuangan
-                  StatisticList(),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  //   child: Text(
+                  //     "Rekapan untuk anda",
+                  //     style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                  //   ),
+                  // ),
+                  // // Statistik Keuangan
+                  // StatisticList(),
                 ],
               ),
             ),

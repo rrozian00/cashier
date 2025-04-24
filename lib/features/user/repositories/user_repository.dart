@@ -1,5 +1,7 @@
+import 'package:cashier/core/errors/failure.dart';
 import 'package:cashier/features/user/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/rendering.dart';
 
@@ -107,12 +109,17 @@ class UserRepository {
     await docRef.set(updateUser);
   }
 
-  Future<UserModel?> getUser(String uid) async {
-    final doc = await _firestore.collection("users").doc(uid).get();
-    if (doc.exists) {
-      return UserModel.fromMap(doc.data()!);
+  Future<Either<Failure, UserModel>> getUser(String uid) async {
+    try {
+      final doc = await _firestore.collection("users").doc(uid).get();
+      if (doc.exists) {
+        final user = UserModel.fromMap(doc.data()!);
+        return Right(user);
+      }
+      return Left(Failure("User with ID $uid not found"));
+    } catch (e) {
+      return Left(Failure("Unexpected error ${e.toString()}"));
     }
-    return null;
   }
 
   Future<List<UserModel>> getEmployees() async {

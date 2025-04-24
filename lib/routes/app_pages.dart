@@ -11,7 +11,6 @@ import 'package:cashier/features/user/blocs/employee/view/add_employee_view.dart
 import 'package:cashier/features/user/blocs/employee/view/employee_list_view.dart';
 import 'package:cashier/features/user/views/register_view.dart';
 
-import '../features/bottom_navigation_bar/bindings/bottom_binding.dart';
 import '../features/bottom_navigation_bar/views/bottom_view.dart';
 
 import '../features/expense/views/expense_view.dart';
@@ -69,7 +68,6 @@ class AppPages {
     GetPage(
       name: _Paths.bottom,
       page: () => BottomView(),
-      binding: BottomBinding(),
     ),
     GetPage(
       name: _Paths.menus,

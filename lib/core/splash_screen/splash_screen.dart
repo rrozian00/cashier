@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget {
       listener: (context, state) async {
         debugPrint("AuthBloc state: $state");
 
-        await Future.delayed(Duration(milliseconds: 700));
+        await Future.delayed(Duration(milliseconds: 500));
 
         if (state is AuthLoggedState) {
           try {
