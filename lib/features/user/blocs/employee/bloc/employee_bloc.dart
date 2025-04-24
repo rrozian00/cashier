@@ -27,11 +27,39 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
       (event, emit) async {
         try {
           emit(EmployeeLoading());
-          final employees = await _userRepository.getEmployees();
-          emit(EmployeeGetSuccess(employees: employees));
+          final employeesEither = await _userRepository.getEmployees();
+
+          employeesEither.fold(
+            (error) => error.message,
+            (employees) {
+              emit(EmployeeGetSuccess(employees: employees));
+            },
+          );
         } catch (e) {
           emit(EmployeeFailed(message: e.toString()));
         }
+      },
+    );
+
+    //edit
+    on<EditEmployeePressed>(
+      (event, emit) async {
+        emit(EmployeeLoading());
+        await _userRepository.editUser(
+          id: event.id,
+          newSalary: event.salary,
+          newName: event.name,
+          newAddress: event.address,
+          newPhone: event.phone,
+        );
+      },
+    );
+
+    //delete
+    on<DeleteEmployeeRequested>(
+      (event, emit) async {
+        emit(EmployeeLoading());
+        await _userRepository.deleteEmployee(event.id);
       },
     );
   }

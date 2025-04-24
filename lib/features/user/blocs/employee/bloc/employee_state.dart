@@ -31,15 +31,15 @@ final class EmployeeGetSuccess extends EmployeeState {
   List<Object> get props => [employees];
 }
 
-//DETAIL
-final class EmployeeDetailSuccess extends EmployeeState {
-  final UserModel employee;
+// // //DETAIL
+// final class EmployeeDetailSuccess extends EmployeeState {
+//   final UserModel employee;
 
-  const EmployeeDetailSuccess({required this.employee});
+//   const EmployeeDetailSuccess({required this.employee});
 
-  @override
-  List<Object> get props => [employee];
-}
+//   @override
+//   List<Object> get props => [employee];
+// }
 
 //FAILED
 final class EmployeeFailed extends EmployeeState {

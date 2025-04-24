@@ -16,7 +16,6 @@ class EmployeeListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<EmployeeBloc>().add(GetEmployeeRequested());
     return Scaffold(
       backgroundColor: softGrey,
       appBar: MyAppBar(
@@ -77,17 +76,18 @@ class EmployeeListView extends StatelessWidget {
                                         Get.bottomSheet(
                                             backgroundColor: white,
                                             isScrollControlled: true,
-                                            DetailEmlpoyee());
+                                            DetailEmlpoyee(
+                                              data: data,
+                                            ));
                                       },
                                       trailing: Wrap(
                                         children: [
                                           IconButton(
                                             onPressed: () {
                                               Get.bottomSheet(
-                                                  backgroundColor: white,
-                                                  enableDrag: true,
-                                                  isScrollControlled: true,
+                                                  clipBehavior: Clip.hardEdge,
                                                   EditEmployee(
+                                                    id: data.id ?? '',
                                                     name: data.name ?? '',
                                                     address: data.address ?? '',
                                                     phone:
@@ -133,11 +133,19 @@ class EmployeeListView extends StatelessWidget {
                                                         myRedElevated(
                                                             width: 110,
                                                             text: "Hapus",
-                                                            onPress: () async {
-                                                              //TODO:
-                                                              // await controller
-                                                              //     .delete(
-                                                              //         data.id!);
+                                                            onPress: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              context
+                                                                  .read<
+                                                                      EmployeeBloc>()
+                                                                  .add(DeleteEmployeeRequested(
+                                                                      data.id!));
+                                                              context
+                                                                  .read<
+                                                                      EmployeeBloc>()
+                                                                  .add(
+                                                                      GetEmployeeRequested());
                                                             }),
                                                       ],
                                                     )
@@ -155,7 +163,7 @@ class EmployeeListView extends StatelessWidget {
                                       title: Text(data.name ?? ''),
                                       subtitle: Text(
                                         data.email ?? '',
-                                        style: TextStyle(color: red),
+                                        style: TextStyle(color: blue),
                                       ),
                                     ),
                                   ),

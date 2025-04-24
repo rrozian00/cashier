@@ -21,6 +21,7 @@ final class AddEmployeePressed extends EmployeeEvent {
 }
 
 final class EditEmployeePressed extends EmployeeEvent {
+  final String id;
   final String name;
   final String address;
   final String phone;
@@ -28,11 +29,13 @@ final class EditEmployeePressed extends EmployeeEvent {
 
   const EditEmployeePressed(
       {required this.name,
+      required this.id,
       required this.address,
       required this.phone,
       required this.salary});
   @override
   List<Object> get props => [
+        id,
         name,
         address,
         phone,
@@ -40,9 +43,13 @@ final class EditEmployeePressed extends EmployeeEvent {
       ];
 }
 
-final class GetEmployeeRequested extends EmployeeEvent {
-  const GetEmployeeRequested();
+final class DeleteEmployeeRequested extends EmployeeEvent {
+  final String id;
+
+  const DeleteEmployeeRequested(this.id);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [id];
 }
+
+final class GetEmployeeRequested extends EmployeeEvent {}

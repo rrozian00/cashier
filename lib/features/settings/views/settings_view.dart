@@ -1,4 +1,6 @@
+import 'package:cashier/features/user/blocs/employee/bloc/employee_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -37,6 +39,7 @@ class SettingsView extends StatelessWidget {
               _Listile(
                 onPress: () {
                   Get.toNamed(Routes.employee);
+                  context.read<EmployeeBloc>().add(GetEmployeeRequested());
                 },
                 title: "Karyawan",
                 icon: Icons.person_outline_rounded,

@@ -13,7 +13,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   RegisterBloc() : super(RegisterInitial()) {
     on<RegisterRequestedEvent>(_onRegister);
-    on<EditRequestedEvent>(_onEdit);
+    // on<EditRequestedEvent>(_onEdit);
   }
 
   Future<void> _onRegister(
@@ -23,15 +23,5 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     emit(RegisterLoadingState());
     await userRepository.createUser(event.user, event.password);
     emit(RegisterSuccessState(user: event.user));
-  }
-
-  void _onEdit(
-    EditRequestedEvent event,
-    Emitter<RegisterState> emit,
-  ) async {
-    emit(RegisterLoadingState());
-    await userRepository.editUser(
-        newName: event.name, newAddress: event.address, newPhone: event.phone);
-    emit(EditSuccessState());
   }
 }

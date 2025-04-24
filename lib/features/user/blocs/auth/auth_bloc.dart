@@ -53,18 +53,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await authRepository.login(event.email, event.password);
       if (user != null) {
         String userId = user.uid;
-        final userDoc = await userRepository.getUser(userId);
+        final userEither = await userRepository.getUser(userId);
+        final userDoc = userEither.getOrElse(
+          () => throw Exception("Unexpected null"),
+        );
 
         final verif = await authRepository.checkVerification();
 
-        if (userDoc != null) {
-          emit(AuthLoggedState(userDoc, verif));
+        emit(AuthLoggedState(userDoc, verif));
 
-          if (userDoc.role == 'owner') {
-            debugPrint("Login sebagai Owner");
-          } else if (userDoc.role == 'employee') {
-            debugPrint("Login sebagai Karyawan");
-          }
+        if (userDoc.role == 'owner') {
+          debugPrint("Login sebagai Owner");
+        } else if (userDoc.role == 'employee') {
+          debugPrint("Login sebagai Karyawan");
         }
       }
     } on FirebaseException catch (e) {

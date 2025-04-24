@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cashier/core/utils/get_store_id.dart';
+import 'package:cashier/features/product/repositories/product_repository.dart';
 import 'package:cashier/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +71,16 @@ class ProductController extends GetxController {
 
   /// 🔹 **Tambah Menu (Hanya Owner)**
   Future<void> addMenu() async {
+    final repository = ProductRepository();
+
+    String? url;
+    if (image.value.isNotEmpty) {
+      url = await repository.uploadImageToCloudinary(File(image.value));
+    } else {
+      Get.snackbar("Error", "Silakan pilih gambar terlebih dahulu");
+      return;
+    }
+
     if (!ownerTrue.value) {
       Get.snackbar(
           "Akses Ditolak", "Hanya pemilik toko yang bisa menambahkan menu.");
@@ -99,7 +112,7 @@ class ProductController extends GetxController {
       barcode: produkIdC.text,
       name: name.value,
       price: priceC.text.replaceAll(RegExp(r'[^\d]'), ''),
-      image: image.value,
+      image: url,
       createdAt: createdAt,
     );
     await docRef.set(data.toMap());

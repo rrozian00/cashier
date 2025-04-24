@@ -61,13 +61,6 @@ class UserRepository {
           .doc(userCredential.user?.uid)
           .set(data.toMap());
 
-      // final storeRef = _firestore.collection("stores").doc(user.storeId);
-      // final snapshot = await storeRef.get();
-
-      // if (!snapshot.exists) {
-      //   // Buat dulu dokumen kosong, bisa dengan default value
-      //   await storeRef.set({"employees": []});
-      // }
       await _firestore.collection("stores").doc(user.storeId).update({
         "employees": FieldValue.arrayUnion([userCredential.user?.uid])
       });
@@ -82,16 +75,15 @@ class UserRepository {
   }
 
   Future<void> editUser({
+    required String id,
     required String newName,
     required String newAddress,
     required String newPhone,
+    required String newSalary,
   }) async {
-    final userId = _auth.currentUser?.uid;
-    if (userId == null) throw Exception("User belum login");
-
     final docRef = _firestore
         .collection('users')
-        .doc(userId)
+        .doc(id)
         .withConverter<UserModel>(
           fromFirestore: (snapshot, _) => UserModel.fromMap(snapshot.data()!),
           toFirestore: (model, _) => model.toMap(),
@@ -104,6 +96,7 @@ class UserRepository {
       name: newName,
       address: newAddress,
       phoneNumber: newPhone,
+      salary: newSalary,
     );
 
     await docRef.set(updateUser);
@@ -122,19 +115,26 @@ class UserRepository {
     }
   }
 
-  Future<List<UserModel>> getEmployees() async {
+  Future<Either<Failure, List<UserModel>>> getEmployees() async {
     final userId = _auth.currentUser?.uid;
-    if (userId == null) return [];
+    if (userId == null) {
+      return Left(Failure("User with id $userId not found"));
+    }
 
-    final user = await getUser(userId);
-    if (user == null) return [];
+    final userEither = await getUser(userId);
+
+    final user = userEither.getOrElse(
+      () => throw Exception("Unexpected null user"),
+    );
 
     final storeDoc =
         await _firestore.collection('stores').doc(user.storeId).get();
 
     final employeesData = storeDoc.data()?['employees'] as List<dynamic>?;
 
-    if (employeesData == null) return [];
+    if (employeesData == null) {
+      return Left(Failure("Employees null"));
+    }
 
     final employeeQuery = await _firestore
         .collection("users")
@@ -145,6 +145,10 @@ class UserRepository {
     final employees =
         employeeQuery.docs.map((d) => UserModel.fromMap(d.data())).toList();
 
-    return employees;
+    return Right(employees);
+  }
+
+  Future<void> deleteEmployee(String id) async {
+    await _firestore.collection('users').doc(id).delete();
   }
 }

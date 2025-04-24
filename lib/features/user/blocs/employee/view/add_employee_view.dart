@@ -28,10 +28,8 @@ class AddEmployeeView extends StatelessWidget {
     return BlocListener<EmployeeBloc, EmployeeState>(
       listener: (context, state) {
         if (state is EmployeeAddSuccess) {
-          Navigator.popUntil(
-            context,
-            (route) => route.settings.name == Routes.employee,
-          );
+          Navigator.pushReplacementNamed(context, Routes.login);
+          // context.read<EmployeeBloc>().add(GetEmployeeRequested());
         } else if (state is EmployeeFailed) {
           throw Exception(state.message);
         }

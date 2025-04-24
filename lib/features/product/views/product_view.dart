@@ -62,27 +62,28 @@ class ProductView extends GetView<ProductController> {
                         child: ListTile(
                           leading: CircleAvatar(
                             backgroundColor: Colors.grey[300],
-                            child:
-                                barang.image != null && barang.image!.isNotEmpty
-                                    ? ClipOval(
-                                        child: Image.file(
-                                          File(barang.image!),
-                                          height: 50,
-                                          width: 50,
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            return Image.asset(
-                                              'assets/icons/icon.png',
-                                              fit: BoxFit.cover,
-                                            );
-                                          },
-                                        ),
-                                      )
-                                    : Image.asset(
-                                        'assets/icons/icon.png',
-                                        fit: BoxFit.cover,
-                                      ),
+                            child: barang.image != null &&
+                                    barang.image!.isNotEmpty
+                                ? ClipOval(
+                                    // child: Image.file(
+                                    //   File(barang.image!),
+                                    //   height: 50,
+                                    //   width: 50,
+                                    //   fit: BoxFit.cover,
+                                    //   errorBuilder:
+                                    //       (context, error, stackTrace) {
+                                    //     return Image.asset(
+                                    //       'assets/icons/icon.png',
+                                    //       fit: BoxFit.cover,
+                                    //     );
+                                    //   },
+                                    // ),
+                                    child: Image.network(barang.image ?? ''),
+                                  )
+                                : Image.asset(
+                                    'assets/icons/icon.png',
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                           // leading: Text(
                           //   "${index + 1}",
