@@ -13,8 +13,7 @@ class Date extends GetView<HomeController> {
       child: Text(
         DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(DateTime.now()),
         style: TextStyle(
-          // color: purple,
-          fontSize: 25,
+          fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
       ),

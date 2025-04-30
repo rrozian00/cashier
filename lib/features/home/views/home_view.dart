@@ -25,7 +25,7 @@ class HomeView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: softGrey,
+        // backgroundColor: softGrey,
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(left: 10.0),
@@ -58,18 +58,18 @@ class HomeView extends StatelessWidget {
                     ],
                   ),
 
-                  SizedBox(height: 50),
+                  SizedBox(height: 100),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Date(),
+                      const Date(),
                     ],
                   ),
-                  // SizedBox(height: 20),
+                  SizedBox(height: 40),
 
                   // // Animasi Logo Toko
                   StoreName(),
-                  SizedBox(height: 20),
+                  SizedBox(height: 30),
 
                   // Tanggal Sekarang
 
@@ -84,32 +84,11 @@ class HomeView extends StatelessWidget {
                   StatisticList(),
 
                   SizedBox(height: 40),
-
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  //   child: Text(
-                  //     "Rekapan untuk anda",
-                  //     style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-                  //   ),
-                  // ),
-                  // // Statistik Keuangan
-                  // StatisticList(),
                 ],
               ),
             ),
           ),
         ),
-        // floatingActionButton: ElevatedButton(onPressed: () {
-        //   context.read<AuthBloc>().add(AuthLogoutEvent());
-        // }, child: BlocBuilder<AuthBloc, AuthState>(
-        //   builder: (context, state) {
-        //     if (state is UnauthenticatedState) {
-        //       return CircularProgressIndicator();
-        //     } else {
-        //       return Text("Keluar");
-        //     }
-        //   },
-        // )),
       ),
     );
   }

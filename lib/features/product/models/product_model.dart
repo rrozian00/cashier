@@ -1,20 +1,24 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ProductModel {
   String? id; // Ubah ke String agar sesuai dengan Firestore
   String? barcode;
   String? name;
   String? price;
   String? image;
+  String? publicId;
   String? quantity;
-  String? createdAt;
+  Timestamp? createdAt;
   ProductModel({
     this.id,
     this.barcode,
     this.name,
     this.price,
     this.image,
+    this.publicId,
     this.quantity,
     this.createdAt,
   });
@@ -25,8 +29,9 @@ class ProductModel {
     String? name,
     String? price,
     String? image,
+    String? publicId,
     String? quantity,
-    String? createdAt,
+    Timestamp? createdAt,
   }) {
     return ProductModel(
       id: id ?? this.id,
@@ -34,6 +39,7 @@ class ProductModel {
       name: name ?? this.name,
       price: price ?? this.price,
       image: image ?? this.image,
+      publicId: publicId ?? this.publicId,
       quantity: quantity ?? this.quantity,
       createdAt: createdAt ?? this.createdAt,
     );
@@ -46,6 +52,7 @@ class ProductModel {
       'name': name,
       'price': price,
       'image': image,
+      'publicId': publicId,
       'quantity': quantity,
       'createdAt': createdAt,
     };
@@ -58,8 +65,10 @@ class ProductModel {
       name: map['name'] != null ? map['name'] as String : null,
       price: map['price'] != null ? map['price'] as String : null,
       image: map['image'] != null ? map['image'] as String : null,
+      publicId: map['publicId'] != null ? map['publicId'] as String : null,
       quantity: map['quantity'] != null ? map['quantity'] as String : null,
-      createdAt: map['createdAt'] != null ? map['createdAt'] as String : null,
+      createdAt:
+          map['createdAt'] != null ? map['createdAt'] as Timestamp : null,
     );
   }
 
@@ -70,7 +79,7 @@ class ProductModel {
 
   @override
   String toString() {
-    return 'ProductModel(id: $id, barcode: $barcode, name: $name, price: $price, image: $image, quantity: $quantity, createdAt: $createdAt)';
+    return 'ProductModel(id: $id, barcode: $barcode, name: $name, price: $price, image: $image, publicId: $publicId, quantity: $quantity, createdAt: $createdAt)';
   }
 
   @override
@@ -82,6 +91,7 @@ class ProductModel {
         other.name == name &&
         other.price == price &&
         other.image == image &&
+        other.publicId == publicId &&
         other.quantity == quantity &&
         other.createdAt == createdAt;
   }
@@ -93,6 +103,7 @@ class ProductModel {
         name.hashCode ^
         price.hashCode ^
         image.hashCode ^
+        publicId.hashCode ^
         quantity.hashCode ^
         createdAt.hashCode;
   }

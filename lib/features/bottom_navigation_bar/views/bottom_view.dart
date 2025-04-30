@@ -61,7 +61,7 @@ class BottomView extends StatelessWidget {
                   ? pages[selectedIndex]
                   : const Center(child: Text("Halaman tidak ditemukan")),
               bottomNavigationBar: GNav(
-                backgroundColor: softGrey,
+                // backgroundColor: softGrey,
                 curve: Curves.bounceIn,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 padding: const EdgeInsets.only(

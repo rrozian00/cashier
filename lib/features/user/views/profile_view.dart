@@ -23,10 +23,13 @@ class ProfileView extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is UnauthenticatedState) {
-          // await Future.delayed(Duration(milliseconds: 300));
-          if (context.mounted) {
-            Navigator.pushReplacementNamed(context, Routes.login);
-          }
+          // Get.offAllNamed(Routes.login);
+          // Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => SplashScreen(),
+          //     ));
+          Navigator.pushReplacementNamed(context, Routes.login);
         } else if (state is AuthLoggedState) {
           // print("State nya ini");
           showDialog(

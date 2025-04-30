@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
 
 import 'package:cashier/core/splash_screen/splash_screen.dart';
-import 'package:cashier/features/order/bindings/product_list_binding.dart';
+
 import 'package:cashier/features/order/views/check_out_view.dart';
 import 'package:cashier/features/product/views/product_list.dart';
 import 'package:cashier/features/product/views/add_product_view.dart';
-import 'package:cashier/features/product/views/edit_product_view.dart';
 import 'package:cashier/features/store/views/add_store_view.dart';
 import 'package:cashier/features/user/blocs/employee/view/add_employee_view.dart';
 import 'package:cashier/features/user/blocs/employee/view/employee_list_view.dart';
@@ -18,13 +17,13 @@ import '../features/home/bindings/home_binding.dart';
 import '../features/home/views/home_view.dart';
 import '../features/order/bindings/history_order_binding.dart';
 import '../features/order/bindings/input_manual_binding.dart';
-import '../features/order/bindings/order_binding.dart';
+
 import '../features/order/views/history_order_view.dart';
 import '../features/order/views/input_manual_view.dart';
 import '../features/order/views/order_view.dart';
 import '../features/printer/bindings/printer_binding.dart';
 import '../features/printer/views/printer_view.dart';
-import '../features/product/bindings/product_binding.dart';
+
 import '../features/product/views/product_view.dart';
 import '../features/settings/bindings/settings_binding.dart';
 import '../features/settings/views/settings_view.dart';
@@ -53,37 +52,28 @@ class AppPages {
     GetPage(
       name: _Paths.order,
       page: () => OrderView(),
-      binding: TransaksiBinding(),
     ),
     GetPage(
       name: _Paths.productList,
       page: () => ProductList(),
-      binding: ProductListBinding(),
     ),
     GetPage(
       name: _Paths.checkOut,
       page: () => CheckOutView(),
-      binding: TransaksiBinding(),
     ),
     GetPage(
       name: _Paths.bottom,
       page: () => BottomView(),
     ),
     GetPage(
-      name: _Paths.menus,
+      name: _Paths.product,
       page: () => const ProductView(),
-      binding: ProductBinding(),
     ),
     GetPage(
       name: _Paths.addMenus,
-      page: () => const AddProductView(),
-      binding: ProductBinding(),
+      page: () => AddProductView(),
     ),
-    GetPage(
-      name: _Paths.editMenus,
-      page: () => const EditProductView(),
-      binding: ProductBinding(),
-    ),
+
     GetPage(
       name: _Paths.settings,
       page: () => const SettingsView(),

@@ -19,6 +19,12 @@ class StatisticList extends StatelessWidget {
             subtitle: rupiahConverterDouble(12000), //TODO:
             color: green,
           ),
+          MyCard(
+            image: "assets/images/expenses.png",
+            title: "Total Pengeluaran Hari Ini",
+            subtitle: rupiahConverterDouble(12000), //TODO:
+            color: green,
+          ),
           // SizedBox(height: 16),
         ],
       ),

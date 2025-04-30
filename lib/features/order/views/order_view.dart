@@ -1,7 +1,6 @@
-import 'dart:io';
-
-import 'package:cashier/features/product/views/product_list.dart';
+import 'package:cashier/features/product/bloc/product_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,6 +10,7 @@ import 'package:cashier/core/utils/scanner_page.dart';
 import 'package:cashier/core/widgets/my_appbar.dart';
 import 'package:cashier/core/widgets/my_elevated.dart';
 import 'package:cashier/features/product/models/product_model.dart';
+import 'package:cashier/features/product/views/product_list.dart';
 import 'package:cashier/routes/app_pages.dart';
 
 import '../controllers/order_controller.dart';
@@ -20,6 +20,8 @@ class OrderView extends GetView<OrderController> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(OrderController()); //TODO:
+
     return Scaffold(
       backgroundColor: softGrey,
       appBar: MyAppBar(titleText: 'Pilih Produk', actions: [
@@ -144,10 +146,10 @@ class OrderView extends GetView<OrderController> {
                                 onTap: () =>
                                     controller.addValueCart(produk, jumlah),
                                 leading: SizedBox(
-                                    width: 50,
-                                    height: 50,
-                                    child:
-                                        Image.file(File(produk.image ?? ""))),
+                                  width: 50,
+                                  height: 50,
+                                  child: Image.network(produk.image ?? ""),
+                                ),
                                 title: Text(
                                   produk.name ?? 'Nama Produk',
                                   style: GoogleFonts.poppins(
@@ -262,6 +264,9 @@ class OrderView extends GetView<OrderController> {
                               clipBehavior: Clip.hardEdge,
                               ProductList(),
                             );
+                            context
+                                .read<ProductBloc>()
+                                .add(ProductGetRequested());
                           }),
                       myPurpleIconElevated(
                           onPress: () async {

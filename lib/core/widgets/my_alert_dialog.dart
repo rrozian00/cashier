@@ -36,10 +36,13 @@ class MyAlertDialog extends GetView {
               size: 100,
               color: Colors.amber,
             ),
-            Text(
-              contentText,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18.0),
+              child: Text(
+                contentText,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(),
+              ),
             ),
             SizedBox(
               height: 25,
@@ -51,7 +54,7 @@ class MyAlertDialog extends GetView {
                   color: onCancelColor,
                   width: 100,
                   text: "Batal",
-                  onPress: onCancel ?? () => Get.back(),
+                  onPress: onCancel ?? () => Navigator.pop(context),
                 ),
                 myGreenElevated(
                   color: onConfirmColor,

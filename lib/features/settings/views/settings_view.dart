@@ -1,3 +1,4 @@
+import 'package:cashier/features/product/bloc/product_bloc.dart';
 import 'package:cashier/features/user/blocs/employee/bloc/employee_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +47,8 @@ class SettingsView extends StatelessWidget {
               ),
               _Listile(
                 onPress: () {
-                  Get.toNamed(Routes.menus);
+                  Get.toNamed(Routes.product);
+                  context.read<ProductBloc>().add(ProductGetRequested());
                 },
                 title: "Produk",
                 icon: Icons.receipt_outlined,

@@ -9,9 +9,9 @@ abstract class Routes {
   static const checkOut = _Paths.checkOut;
   static const productList = _Paths.productList;
   static const bottom = _Paths.bottom;
-  static const menus = _Paths.menus;
+  static const product = _Paths.product;
   static const addMenus = _Paths.addMenus;
-  static const editMenus = _Paths.editMenus;
+  static const editProducts = _Paths.editProducts;
   static const settings = _Paths.settings;
   static const historyOrder = _Paths.historyOrder;
   static const expense = _Paths.expense;
@@ -36,9 +36,9 @@ abstract class _Paths {
   static const checkOut = '/check-out';
   static const productList = '/product-list';
   static const bottom = '/bottom';
-  static const menus = '/menus';
+  static const product = '/product';
   static const addMenus = '/add-menus';
-  static const editMenus = '/edit-menus';
+  static const editProducts = '/edit-products';
   static const settings = '/settings';
   static const historyOrder = '/history_order';
   static const expense = '/expense';
