@@ -37,7 +37,7 @@ android {
             storeFile file("release-key.jks")
             storePassword('nosecret123')
             keyAlias("ricky")
-            keyPassword("keyPassword")
+            keyPassword("nosecret123")
         }
     }
 
