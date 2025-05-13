@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: appProviders,
       child: GetMaterialApp(
-        theme: ThemeData.dark(),
+        // theme: ThemeData.dark(),
         title: "Cashier",
         initialRoute: AppPages.initial,
         getPages: AppPages.routes,

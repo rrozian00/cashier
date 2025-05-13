@@ -25,7 +25,6 @@ import '../features/printer/bindings/printer_binding.dart';
 import '../features/printer/views/printer_view.dart';
 
 import '../features/product/views/product_view.dart';
-import '../features/settings/bindings/settings_binding.dart';
 import '../features/settings/views/settings_view.dart';
 import '../features/store/bindings/store_binding.dart';
 import '../features/store/views/store_view.dart';
@@ -77,7 +76,6 @@ class AppPages {
     GetPage(
       name: _Paths.settings,
       page: () => const SettingsView(),
-      binding: SettingsBinding(),
     ),
     GetPage(
       name: _Paths.historyOrder,

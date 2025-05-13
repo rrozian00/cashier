@@ -46,7 +46,21 @@ class OrderController extends GetxController {
       addCart(item);
     } else {
       Get.snackbar("Error", "Produk tidak ditemukan");
+      print(item.toString());
     }
+  }
+
+  Future<void> fetchProduct() async {
+    final result = await _firestore
+        .collection("stores")
+        .doc(storeData.value?.id)
+        .collection('products')
+        .get();
+    product.value = result.docs
+        .map(
+          (e) => ProductModel.fromMap(e.data()),
+        )
+        .toList();
   }
 
   void clearCart() {
@@ -256,6 +270,7 @@ class OrderController extends GetxController {
     try {
       userData.value = await getUserData();
       storeData.value = await getStoreData();
+      await fetchProduct();
       debugPrint(" ini store data diordeC:${storeData.value}");
     } catch (e) {
       debugPrint(e.toString());
