@@ -1,17 +1,17 @@
-import 'package:cashier/features/product/bloc/product_bloc.dart';
-import 'package:cashier/features/product/views/edit_product_view.dart';
+import '../bloc/product_bloc.dart';
+import 'edit_product_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/utils/rupiah_converter.dart';
-import 'package:cashier/core/widgets/my_alert_dialog.dart';
-import 'package:cashier/core/widgets/my_appbar.dart';
-import 'package:cashier/core/widgets/my_elevated.dart';
-import 'package:cashier/core/widgets/no_data.dart';
-import 'package:cashier/routes/app_pages.dart';
+import '../../../core/theme/colors.dart';
+import '../../../core/utils/rupiah_converter.dart';
+import '../../../core/widgets/my_alert_dialog.dart';
+import '../../../core/widgets/my_appbar.dart';
+import '../../../core/widgets/my_elevated.dart';
+import '../../../core/widgets/no_data.dart';
+import '../../../routes/app_pages.dart';
 
 class ProductView extends StatelessWidget {
   const ProductView({super.key});

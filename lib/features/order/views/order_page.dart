@@ -1,20 +1,41 @@
-// import 'package:cashier/features/order/bloc/order_bloc.dart';
-// import 'package:cashier/features/product/models/product_model.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:intl/intl.dart';
+import '../bloc/order_bloc.dart';
+import '../../product/models/product_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
-// class OrderPage extends StatelessWidget {
-//   const OrderPage({super.key});
+class OrderPage extends StatelessWidget {
+  const OrderPage({super.key});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocProvider(
-//       create: (context) => OrderBloc(),
-//       child: const OrderView(),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    context.read<OrderBloc>().add(Fetchroduct());
+    return Scaffold(
+      body: BlocBuilder<OrderBloc, OrderState>(
+        builder: (context, state) {
+          if (state is OrderLoading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is ProductSuccess) {
+            return SafeArea(
+                child: ListView.builder(
+              itemCount: state.products.length,
+              itemBuilder: (context, index) {
+                final datas = state.products[index];
+                return ListTile(
+                  title: Text(datas.name ?? ''),
+                );
+              },
+            ));
+          }
+          return Text("404");
+        },
+      ),
+    );
+  }
+}
 
 // class OrderView extends StatelessWidget {
 //   const OrderView({super.key});

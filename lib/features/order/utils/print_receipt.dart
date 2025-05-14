@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 
-import 'package:cashier/core/utils/rupiah_converter.dart';
-import 'package:cashier/features/product/models/product_model.dart';
-import 'package:cashier/features/order/controllers/order_controller.dart';
+import '../../../core/utils/rupiah_converter.dart';
+import '../../product/models/product_model.dart';
+import '../controllers/order_controller.dart';
 
 Future<void> printReceipt() async {
   final controller = Get.find<OrderController>();

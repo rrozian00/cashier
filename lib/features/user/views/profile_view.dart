@@ -1,18 +1,18 @@
-import 'package:cashier/core/widgets/my_alert_dialog.dart';
-import 'package:cashier/features/user/blocs/auth/auth_bloc.dart';
-import 'package:cashier/features/bottom_navigation_bar/cubit/bottom_nav_cubit.dart';
-import 'package:cashier/features/user/models/user_model.dart';
-import 'package:cashier/features/user/views/change_password.dart';
-import 'package:cashier/features/user/views/edit_profile_view.dart';
-import 'package:cashier/routes/app_pages.dart';
+import '../../../core/widgets/my_alert_dialog.dart';
+import '../blocs/auth/auth_bloc.dart';
+import '../../bottom_navigation_bar/cubit/bottom_nav_cubit.dart';
+import '../models/user_model.dart';
+import 'change_password.dart';
+import 'edit_profile_view.dart';
+import '../../../routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/widgets/my_appbar.dart';
-import 'package:cashier/core/widgets/my_elevated.dart';
+import '../../../core/theme/colors.dart';
+import '../../../core/widgets/my_appbar.dart';
+import '../../../core/widgets/my_elevated.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});

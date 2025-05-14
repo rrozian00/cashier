@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import 'package:cashier/core/utils/app_providers.dart';
+import 'core/utils/app_providers.dart';
 
-import 'package:cashier/firebase_options.dart';
+import 'firebase_options.dart';
 
 import 'routes/app_pages.dart';
 

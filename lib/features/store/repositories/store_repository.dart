@@ -1,5 +1,5 @@
-import 'package:cashier/core/errors/failure.dart';
-import 'package:cashier/features/store/models/store_model.dart';
+import '../../../core/errors/failure.dart';
+import '../models/store_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 

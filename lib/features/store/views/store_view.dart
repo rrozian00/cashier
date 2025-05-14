@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/widgets/my_appbar.dart';
-import 'package:cashier/core/widgets/my_elevated.dart';
-import 'package:cashier/core/widgets/no_data.dart';
-import 'package:cashier/routes/app_pages.dart';
+import '../../../core/theme/colors.dart';
+import '../../../core/widgets/my_appbar.dart';
+import '../../../core/widgets/my_elevated.dart';
+import '../../../core/widgets/no_data.dart';
+import '../../../routes/app_pages.dart';
 
 import '../controllers/store_controller.dart';
 

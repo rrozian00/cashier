@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:cashier/features/user/models/user_model.dart';
-import 'package:cashier/features/user/repositories/user_repository.dart';
+import '../../../models/user_model.dart';
+import '../../../repositories/user_repository.dart';
 
 import 'package:equatable/equatable.dart';
 

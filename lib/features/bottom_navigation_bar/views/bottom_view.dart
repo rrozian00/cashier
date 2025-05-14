@@ -1,17 +1,17 @@
-import 'package:cashier/features/order/views/order_page.dart';
+import '../../order/views/order_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/features/bottom_navigation_bar/cubit/bottom_nav_cubit.dart';
-import 'package:cashier/features/home/views/home_view.dart';
-import 'package:cashier/features/order/views/order_view.dart';
-import 'package:cashier/features/printer/views/printer_view.dart';
-import 'package:cashier/features/settings/views/settings_view.dart';
-import 'package:cashier/features/store/views/store_view.dart';
-import 'package:cashier/features/user/blocs/auth/auth_bloc.dart';
-import 'package:cashier/features/user/views/profile_view.dart';
+import '../../../core/theme/colors.dart';
+import '../cubit/bottom_nav_cubit.dart';
+import '../../home/views/home_view.dart';
+import '../../order/views/order_view.dart';
+import '../../printer/views/printer_view.dart';
+import '../../settings/views/settings_view.dart';
+import '../../store/views/store_view.dart';
+import '../../user/blocs/auth/auth_bloc.dart';
+import '../../user/views/profile_view.dart';
 
 class BottomView extends StatelessWidget {
   const BottomView({super.key});
@@ -31,12 +31,14 @@ class BottomView extends StatelessWidget {
         final pages = role == 'owner'
             ? [
                 HomeView(),
-                OrderView(),
+                // OrderView(),
+                OrderPage(),
                 SettingsView(),
               ]
             : [
                 HomeView(),
-                OrderView(),
+                // OrderView(),
+                OrderPage(),
                 StoreView(),
                 PrinterView(),
                 ProfileView(),

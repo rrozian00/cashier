@@ -1,13 +1,13 @@
-import 'package:cashier/features/user/blocs/auth/auth_bloc.dart';
+import '../blocs/auth/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/widgets/home_indicator.dart';
-import 'package:cashier/core/widgets/my_elevated.dart';
-import 'package:cashier/core/widgets/my_text_field.dart';
+import '../../../core/theme/colors.dart';
+import '../../../core/widgets/home_indicator.dart';
+import '../../../core/widgets/my_elevated.dart';
+import '../../../core/widgets/my_text_field.dart';
 
 class ChangePasswordView extends StatefulWidget {
   const ChangePasswordView({super.key});

@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/utils/rupiah_converter.dart';
-import 'package:cashier/core/utils/scanner_page.dart';
-import 'package:cashier/core/widgets/my_appbar.dart';
-import 'package:cashier/core/widgets/my_elevated.dart';
-import 'package:cashier/features/product/bloc/product_bloc.dart';
+import '../../../core/theme/colors.dart';
+import '../../../core/utils/rupiah_converter.dart';
+import '../../../core/utils/scanner_page.dart';
+import '../../../core/widgets/my_appbar.dart';
+import '../../../core/widgets/my_elevated.dart';
+import '../bloc/product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -33,6 +33,7 @@ class AddProductView extends StatelessWidget {
           }
           if (state is ProductFailed) {
             debugPrint(state.message);
+            Get.snackbar("Error", state.message);
           }
         },
         builder: (context, state) {

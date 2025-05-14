@@ -1,15 +1,15 @@
-import 'package:cashier/core/widgets/home_indicator.dart';
-import 'package:cashier/core/widgets/my_elevated.dart';
-import 'package:cashier/features/order/controllers/order_controller.dart';
-import 'package:cashier/features/product/bloc/product_bloc.dart';
-import 'package:cashier/features/product/models/product_model.dart';
+import '../../../core/widgets/home_indicator.dart';
+import '../../../core/widgets/my_elevated.dart';
+import '../../order/controllers/order_controller.dart';
+import '../bloc/product_bloc.dart';
+import '../models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/widgets/no_data.dart';
+import '../../../core/theme/colors.dart';
+import '../../../core/widgets/no_data.dart';
 
 class ProductList extends StatelessWidget {
   const ProductList({super.key});

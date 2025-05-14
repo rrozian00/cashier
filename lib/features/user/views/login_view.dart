@@ -1,9 +1,9 @@
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/widgets/my_elevated.dart';
-import 'package:cashier/core/widgets/my_text_field.dart';
-import 'package:cashier/features/user/blocs/auth/auth_bloc.dart';
-import 'package:cashier/features/user/views/register_view.dart';
-import 'package:cashier/routes/app_pages.dart';
+import '../../../core/theme/colors.dart';
+import '../../../core/widgets/my_elevated.dart';
+import '../../../core/widgets/my_text_field.dart';
+import '../blocs/auth/auth_bloc.dart';
+import 'register_view.dart';
+import '../../../routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';

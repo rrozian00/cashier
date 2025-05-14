@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cashier/core/utils/get_user_data.dart';
+import '../../../core/utils/get_user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:cashier/core/errors/failure.dart';
-import 'package:cashier/features/product/models/product_model.dart';
+import '../../../core/errors/failure.dart';
+import '../models/product_model.dart';
 
 class ProductRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -237,37 +237,33 @@ class ProductRepository {
         .update(updatedData.toMap());
   }
 
-  Future<Either<Failure, Stream<List<ProductModel>>>>
-      fetchProductRealTime() async {
+  Stream<Either<Failure, List<ProductModel>>> watchProducts() async* {
     try {
-      String? userId;
-      // if (userId == null) {
-      //   return left(Failure('User not authenticated'));
-      // }
       final user = await getUserData();
-      if (user != null) {
-        userId = user.id;
-        print("userId nya:$userId");
-      }
-      final userDoc = await _firestore.collection('users').doc(userId).get();
-      final storeId = userDoc.data()?['storeId'];
-
-      if (storeId == null) {
-        return left(Failure('Store ID not found'));
+      if (user == null) {
+        yield Left(Failure("User Not found"));
+        return;
       }
 
-      final stream = _firestore
-          .collection('stores')
-          .doc(storeId)
-          .collection('products')
+      if (user.id == null) {
+        yield Left(Failure("Store not found for current user"));
+        return;
+      }
+      yield* _firestore
+          .collection('stores/${user.storeId}/products')
           .snapshots()
-          .map((snapshot) => snapshot.docs
-              .map((doc) => ProductModel.fromMap(doc.data()))
-              .toList());
-
-      return right(stream);
+          .map(
+        (snap) {
+          final data = snap.docs
+              .map(
+                (e) => ProductModel.fromMap(e.data()),
+              )
+              .toList();
+          return Right(data);
+        },
+      );
     } catch (e) {
-      return left(Failure('Unexpected error: $e'));
+      yield left(Failure('Unexpected error: $e'));
     }
   }
 }

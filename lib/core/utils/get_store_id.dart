@@ -1,5 +1,5 @@
-import 'package:cashier/core/utils/get_user_data.dart';
-import 'package:cashier/features/store/models/store_model.dart';
+import 'get_user_data.dart';
+import '../../features/store/models/store_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

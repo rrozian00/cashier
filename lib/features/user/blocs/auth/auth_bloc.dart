@@ -3,9 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cashier/features/user/models/user_model.dart';
-import 'package:cashier/features/user/repositories/auth_repository.dart';
-import 'package:cashier/features/user/repositories/user_repository.dart';
+import '../../models/user_model.dart';
+import '../../repositories/auth_repository.dart';
+import '../../repositories/user_repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

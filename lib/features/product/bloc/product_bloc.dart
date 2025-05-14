@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:cashier/features/product/models/product_model.dart';
-import 'package:cashier/features/product/repositories/product_repository.dart';
+import '../models/product_model.dart';
+import '../repositories/product_repository.dart';
 
 part 'product_event.dart';
 part 'product_state.dart';

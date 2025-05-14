@@ -1,14 +1,14 @@
 import 'package:get/get.dart';
 
-import 'package:cashier/core/splash_screen/splash_screen.dart';
+import '../core/splash_screen/splash_screen.dart';
 
-import 'package:cashier/features/order/views/check_out_view.dart';
-import 'package:cashier/features/product/views/product_list.dart';
-import 'package:cashier/features/product/views/add_product_view.dart';
-import 'package:cashier/features/store/views/add_store_view.dart';
-import 'package:cashier/features/user/blocs/employee/view/add_employee_view.dart';
-import 'package:cashier/features/user/blocs/employee/view/employee_list_view.dart';
-import 'package:cashier/features/user/views/register_view.dart';
+import '../features/order/views/check_out_view.dart';
+import '../features/product/views/product_list.dart';
+import '../features/product/views/add_product_view.dart';
+import '../features/store/views/add_store_view.dart';
+import '../features/user/blocs/employee/view/add_employee_view.dart';
+import '../features/user/blocs/employee/view/employee_list_view.dart';
+import '../features/user/views/register_view.dart';
 
 import '../features/bottom_navigation_bar/views/bottom_view.dart';
 

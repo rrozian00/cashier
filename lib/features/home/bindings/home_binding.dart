@@ -1,5 +1,5 @@
-import 'package:cashier/features/order/controllers/history_order_controller.dart';
-import 'package:cashier/features/printer/controllers/printer_controller.dart';
+import '../../order/controllers/history_order_controller.dart';
+import '../../printer/controllers/printer_controller.dart';
 
 import 'package:get/get.dart';
 

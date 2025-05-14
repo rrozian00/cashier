@@ -1,15 +1,15 @@
-import 'package:cashier/routes/app_pages.dart';
+import '../../../routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/widgets/my_appbar.dart';
-import 'package:cashier/core/widgets/my_elevated.dart';
-import 'package:cashier/core/widgets/my_text_field.dart';
-import 'package:cashier/features/user/blocs/register/register_bloc.dart';
-import 'package:cashier/features/user/models/user_model.dart';
-import 'package:cashier/features/user/views/login_view.dart';
+import '../../../core/theme/colors.dart';
+import '../../../core/widgets/my_appbar.dart';
+import '../../../core/widgets/my_elevated.dart';
+import '../../../core/widgets/my_text_field.dart';
+import '../blocs/register/register_bloc.dart';
+import '../models/user_model.dart';
+import 'login_view.dart';
 
 class RegisterView extends StatelessWidget {
   RegisterView({super.key});

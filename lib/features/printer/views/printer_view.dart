@@ -1,7 +1,7 @@
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/widgets/my_appbar.dart';
-import 'package:cashier/core/widgets/my_elevated.dart';
-import 'package:cashier/core/widgets/no_data.dart';
+import '../../../core/theme/colors.dart';
+import '../../../core/widgets/my_appbar.dart';
+import '../../../core/widgets/my_elevated.dart';
+import '../../../core/widgets/no_data.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/printer_controller.dart';

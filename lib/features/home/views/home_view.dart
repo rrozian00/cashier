@@ -1,15 +1,15 @@
-import 'package:cashier/features/home/bloc/home_bloc.dart';
+import '../bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/features/user/blocs/auth/auth_bloc.dart';
-import 'package:cashier/features/home/widgets/date.dart';
-import 'package:cashier/features/home/widgets/statistic_list.dart';
-import 'package:cashier/features/home/widgets/store_name.dart';
-import 'package:cashier/routes/app_pages.dart';
+import '../../../core/theme/colors.dart';
+import '../../user/blocs/auth/auth_bloc.dart';
+import '../widgets/date.dart';
+import '../widgets/statistic_list.dart';
+import '../widgets/store_name.dart';
+import '../../../routes/app_pages.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});

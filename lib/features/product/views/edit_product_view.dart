@@ -1,12 +1,12 @@
-import 'package:cashier/core/theme/colors.dart';
+import '../../../core/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:cashier/core/utils/rupiah_converter.dart';
-import 'package:cashier/core/widgets/my_appbar.dart';
-import 'package:cashier/core/widgets/my_elevated.dart';
-import 'package:cashier/features/product/bloc/product_bloc.dart';
-import 'package:cashier/features/product/models/product_model.dart';
+import '../../../core/utils/rupiah_converter.dart';
+import '../../../core/widgets/my_appbar.dart';
+import '../../../core/widgets/my_elevated.dart';
+import '../bloc/product_bloc.dart';
+import '../models/product_model.dart';
 
 class EditProductView extends StatefulWidget {
   final ProductModel productData; // Receive data as parameter

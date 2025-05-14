@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:cashier/features/expense/models/expense_model.dart';
-import 'package:cashier/features/expense/repositories/expense_repository.dart';
+import '../models/expense_model.dart';
+import '../repositories/expense_repository.dart';
 import 'package:equatable/equatable.dart';
 
 part 'expense_event.dart';

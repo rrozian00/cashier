@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/utils/rupiah_converter.dart';
-import 'package:cashier/features/home/widgets/my_card.dart';
+import '../../../core/theme/colors.dart';
+import '../../../core/utils/rupiah_converter.dart';
+import 'my_card.dart';
 
 class StatisticList extends StatelessWidget {
   const StatisticList({super.key});

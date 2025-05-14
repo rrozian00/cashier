@@ -1,7 +1,7 @@
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/utils/rupiah_converter.dart';
-import 'package:cashier/core/widgets/my_elevated.dart';
-import 'package:cashier/features/order/controllers/order_controller.dart';
+import '../../../core/theme/colors.dart';
+import '../../../core/utils/rupiah_converter.dart';
+import '../../../core/widgets/my_elevated.dart';
+import '../controllers/order_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';

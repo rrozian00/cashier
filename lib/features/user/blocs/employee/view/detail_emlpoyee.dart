@@ -1,6 +1,6 @@
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/widgets/home_indicator.dart';
-import 'package:cashier/features/user/models/user_model.dart';
+import '../../../../../core/theme/colors.dart';
+import '../../../../../core/widgets/home_indicator.dart';
+import '../../../models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

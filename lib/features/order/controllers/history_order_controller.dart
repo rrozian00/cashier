@@ -1,11 +1,11 @@
-import 'package:cashier/features/user/models/user_model.dart';
+import '../../user/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import 'package:cashier/core/utils/get_store_id.dart';
-import 'package:cashier/features/order/models/order_model.dart';
+import '../../../core/utils/get_store_id.dart';
+import '../models/order_model.dart';
 
 class HistoryOrderController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

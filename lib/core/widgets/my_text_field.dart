@@ -1,4 +1,4 @@
-import 'package:cashier/core/theme/colors.dart';
+import '../theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';

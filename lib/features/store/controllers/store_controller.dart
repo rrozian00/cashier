@@ -1,14 +1,14 @@
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/utils/get_store_id.dart';
-import 'package:cashier/core/widgets/home_indicator.dart';
+import '../../../core/theme/colors.dart';
+import '../../../core/utils/get_store_id.dart';
+import '../../../core/widgets/home_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:cashier/core/widgets/my_elevated.dart';
-import 'package:cashier/core/widgets/my_text_field.dart';
-import 'package:cashier/features/store/models/store_model.dart';
+import '../../../core/widgets/my_elevated.dart';
+import '../../../core/widgets/my_text_field.dart';
+import '../models/store_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StoreController extends GetxController {

@@ -20,4 +20,16 @@ class AddToCart extends OrderEvent {
 
 class RemoveToCart extends OrderEvent {}
 
+class StopWatchingProducts extends OrderEvent {}
+
 class ClearCart extends OrderEvent {}
+
+class _EmitError extends OrderEvent {
+  final String message;
+  const _EmitError(this.message);
+}
+
+class _EmitProductSuccess extends OrderEvent {
+  final List<ProductModel> products;
+  const _EmitProductSuccess(this.products);
+}
