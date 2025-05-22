@@ -7,7 +7,9 @@ sealed class OrderEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class Fetchroduct extends OrderEvent {}
+class FetchProduct extends OrderEvent {}
+
+class FetchOrder extends OrderEvent {}
 
 class AddToCart extends OrderEvent {
   final ProductModel product;

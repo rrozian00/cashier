@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import '../../../core/errors/failure.dart';
-import '../repositories/order_repository.dart';
-import '../../product/models/product_model.dart';
-import '../../product/repositories/product_repository.dart';
+import '../../../../core/errors/failure.dart';
+import '../../repositories/order_repository.dart';
+import '../../../product/models/product_model.dart';
+import '../../../product/repositories/product_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
@@ -17,7 +17,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   StreamSubscription<Either<Failure, List<ProductModel>>>? _productSubs;
 
   OrderBloc() : super(OrderInitial()) {
-    on<Fetchroduct>(_onWatchProductRealtime);
+    on<FetchProduct>(_onWatchProductRealtime);
     on<StopWatchingProducts>(_onStopWatchingProducts);
     on<_EmitError>((event, emit) {
       emit(OrderError(message: event.message));
@@ -28,7 +28,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   }
 
   Future<void> _onWatchProductRealtime(
-    Fetchroduct event,
+    FetchProduct event,
     Emitter<OrderState> emit,
   ) async {
     emit(OrderLoading());

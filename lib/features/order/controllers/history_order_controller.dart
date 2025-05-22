@@ -1,3 +1,5 @@
+import 'package:cashier/features/order/repositories/order_repository.dart';
+
 import '../../user/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,7 @@ import '../../../core/utils/get_store_id.dart';
 import '../models/order_model.dart';
 
 class HistoryOrderController extends GetxController {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final orderRepo = OrderRepository();
 
   final listEmployee = <UserModel>[].obs;
   var storeId = ''.obs;
@@ -35,15 +37,6 @@ class HistoryOrderController extends GetxController {
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
       initialDateRange: selectedDateRange.value,
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            primaryColor: Colors.blue,
-            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
-          ),
-          child: child!,
-        );
-      },
     );
 
     if (picked != null && picked != selectedDateRange.value) {
@@ -51,45 +44,33 @@ class HistoryOrderController extends GetxController {
       formattedDateRange.value =
           '${DateFormat('dd/MM/yyyy').format(picked.start)} - ${DateFormat('dd/MM/yyyy').format(picked.end)}';
 
-      await fetchOrder();
+      final startTimestamp = Timestamp.fromDate(selectedDateRange.value!.start);
+      final endTimestamp = Timestamp.fromDate(
+          selectedDateRange.value!.end.add(Duration(days: 1)));
+      await fetchData(startTimestamp, endTimestamp);
       updateCalculations();
     }
   }
 
-  Future<void> fetchOrder() async {
-    if (storeId.isEmpty) return;
-    debugPrint("isi storeId ${storeId.value}");
-
-    try {
-      isLoading.value = true;
-      final start = selectedDateRange.value!.start;
-      debugPrint("isi start ${start.toString()}");
-      debugPrint("ts:${Timestamp.fromDate(start)}");
-
-      final end = selectedDateRange.value!.end;
-      final endPlusOne = end.add(const Duration(days: 1));
-
-      final querySnap = await _firestore
-          .collection("stores")
-          .doc(storeId.value)
-          .collection("orders")
-          .where("createdAt", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
-          .where("createdAt",
-              isLessThanOrEqualTo: Timestamp.fromDate(endPlusOne))
-          .get();
-      orderList.value =
-          querySnap.docs.map((e) => OrderModel.fromMap(e.data())).toList();
-      debugPrint("isi orderlist ${orderList.length}");
-    } catch (e) {
-      debugPrint("eror fetch order: $e");
-    } finally {
-      isLoading.value = false;
-    }
+  Future<void> fetchData(
+    Timestamp start,
+    Timestamp end,
+  ) async {
+    isLoading.value = true;
+    final result = await orderRepo.getHistoryOrders(start, end);
+    result.fold(
+      (err) {
+        Get.snackbar("Error", err.message);
+        isLoading.value = false;
+      },
+      (datas) {
+        orderList.value = datas;
+        isLoading.value = false;
+      },
+    );
   }
 
   void updateCalculations() {
-    // listEmployee.value = employeeController.listEmployee;
-
     totalPenjualan.value = orderList.fold(
       0,
       (sum1, transaksi) => sum1 + double.tryParse(transaksi.total ?? '0')!,
@@ -109,6 +90,7 @@ class HistoryOrderController extends GetxController {
   void resetDateRangeAndData() {
     selectedDateRange.value = null;
     formattedDateRange.value = null;
+    orderList.value = [];
   }
 
   @override

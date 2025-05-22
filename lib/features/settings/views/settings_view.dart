@@ -1,3 +1,5 @@
+import 'package:cashier/features/order/views/history_order_view.dart';
+
 import '../../product/bloc/product_bloc.dart';
 import '../../user/blocs/employee/bloc/employee_bloc.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +79,12 @@ class SettingsView extends StatelessWidget {
               ),
               _Listile(
                 onPress: () {
-                  Get.toNamed(Routes.historyOrder);
+                  // Get.toNamed(Routes.historyOrder);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HistoryOrderView(),
+                      ));
                 },
                 title: "Riwayat",
                 icon: Icons.history_toggle_off_rounded,

@@ -1,6 +1,8 @@
+import 'package:cashier/features/order/blocs/history_order_bloc/history_order_bloc.dart';
+
 import '../../features/expense/bloc/expense_bloc.dart';
 import '../../features/home/bloc/home_bloc.dart';
-import '../../features/order/bloc/order_bloc.dart';
+import '../../features/order/blocs/order_bloc/order_bloc.dart';
 import '../../features/product/bloc/product_bloc.dart';
 import '../../features/user/blocs/auth/auth_bloc.dart';
 import '../../features/bottom_navigation_bar/cubit/bottom_nav_cubit.dart';
@@ -17,4 +19,5 @@ final List<BlocProvider> appProviders = [
   BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
   BlocProvider<ProductBloc>(create: (context) => ProductBloc()),
   BlocProvider<OrderBloc>(create: (context) => OrderBloc()),
+  BlocProvider<HistoryOrderBloc>(create: (context) => HistoryOrderBloc()),
 ];
