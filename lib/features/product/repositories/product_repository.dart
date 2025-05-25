@@ -266,4 +266,36 @@ class ProductRepository {
       yield left(Failure('Unexpected error: $e'));
     }
   }
+
+  Future<Either<Failure, ProductModel>> getProductByBarcode(
+      String barcode) async {
+    try {
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) {
+        return Left(Failure("User tidak terautentikasi."));
+      }
+
+      final userDoc = await _firestore.collection('users').doc(userId).get();
+      final storeId = userDoc.data()?['storeId'];
+
+      if (storeId == null) {
+        return Left(Failure("Store ID tidak ditemukan."));
+      }
+
+      final snapshot = await _firestore
+          .collection('stores/$storeId/products')
+          .where('barcode', isEqualTo: barcode)
+          .limit(1)
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        return Left(Failure("Produk dengan barcode tersebut tidak ditemukan."));
+      }
+
+      final product = ProductModel.fromMap(snapshot.docs.first.data());
+      return Right(product);
+    } catch (e) {
+      return Left(Failure("Unexpected error: $e"));
+    }
+  }
 }

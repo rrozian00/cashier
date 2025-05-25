@@ -1,14 +1,31 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cashier/features/order/blocs/order_bloc/order_bloc.dart';
+import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/utils/rupiah_converter.dart';
 import '../../product/models/product_model.dart';
-import '../controllers/order_controller.dart';
 import 'print_receipt.dart';
 
-class ShowReceipt extends GetView<OrderController> {
-  const ShowReceipt({super.key});
+class ShowReceipt extends StatelessWidget {
+  const ShowReceipt({
+    super.key,
+    required this.storeName,
+    required this.storeAddress,
+    required this.userName,
+    required this.state,
+    required this.orderBloc,
+  });
+
+  final String storeName;
+  final String storeAddress;
+  final String userName;
+
+  final CheckOutState state;
+  final OrderBloc orderBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +43,20 @@ class ShowReceipt extends GetView<OrderController> {
                   Text(
                     "STRUK PEMBAYARAN",
                     style: GoogleFonts.poppins(
-                      fontSize: 22,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    "${controller.storeData.value?.name} - ${controller.storeData.value?.address}",
+                    "$storeName - $storeAddress",
                     style:
-                        GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
+                        GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
                   ),
                   Text(
-                    "Kasir: ${controller.userData.value?.name}",
+                    "Kasir: $userName",
                     style:
-                        GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
+                        GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
                   ),
                 ],
               ),
@@ -50,15 +67,15 @@ class ShowReceipt extends GetView<OrderController> {
             Expanded(
               child: ListView(
                 children: [
-                  ...controller.cart.map((item) {
-                    final produk = item['produk'] as ProductModel?;
+                  ...orderBloc.cart.map((item) {
+                    final produk = item.product as ProductModel?;
                     if (produk == null) {
                       debugPrint("Produk null di item: $item");
                       return const SizedBox();
                     }
 
                     int hargaSatuan = int.tryParse(produk.price ?? '0') ?? 0;
-                    int jumlah = item['jumlah'] ?? 0;
+                    int jumlah = item.quantity;
                     int subTotal = jumlah * hargaSatuan;
 
                     return Padding(
@@ -72,14 +89,14 @@ class ShowReceipt extends GetView<OrderController> {
                               Text(
                                 produk.name ?? 'Nama Tidak Ada',
                                 style: GoogleFonts.poppins(
-                                  fontSize: 16,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
                               Text(
                                 "$jumlah x ${rupiahConverter(hargaSatuan)}",
                                 style: GoogleFonts.poppins(
-                                  fontSize: 14,
+                                  fontSize: 10,
                                   color: Colors.grey,
                                 ),
                               ),
@@ -88,7 +105,7 @@ class ShowReceipt extends GetView<OrderController> {
                           Text(
                             rupiahConverter(subTotal),
                             style: GoogleFonts.poppins(
-                              fontSize: 16,
+                              fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -105,11 +122,10 @@ class ShowReceipt extends GetView<OrderController> {
             // Total Harga
             Column(
               children: [
-                _buildRow("Subtotal", controller.totalHarga.value),
-                _buildRow("Total Harga", controller.totalHarga.value,
+                _buildRow("Total Harga", state.totalPrice, bold: true),
+                _buildRow("Bayar", state.paymentAmount),
+                _buildRow("Kembalian", (state.paymentAmount - state.totalPrice),
                     bold: true),
-                _buildRow("Bayar", controller.jumlahBayar.value),
-                _buildRow("Kembalian", controller.kembalian.value, bold: true),
               ],
             ),
 
@@ -122,13 +138,10 @@ class ShowReceipt extends GetView<OrderController> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      controller.displayText.value = '';
-                      controller.cart.clear();
-                      controller.jumlahBayar.value = 0;
-                      controller.bayarController.clear();
-                      controller.kembalian.value = 0;
-                      Get.back(); // Menutup BottomSheet
-                      Get.back(); // Menutup BottomSheet
+                      context.read<CheckOutBloc>().add(ClearReceipt());
+                      context.read<OrderBloc>().add(ClearCart());
+                      Navigator.pop(context);
+                      Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blueAccent,
@@ -141,12 +154,18 @@ class ShowReceipt extends GetView<OrderController> {
                     child: Text(
                       "Tutup",
                       style: GoogleFonts.poppins(
-                          fontSize: 16, color: Colors.white),
+                          fontSize: 12, color: Colors.white),
                     ),
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      printReceipt();
+                      printReceipt(
+                        cart: orderBloc.cart,
+                        state: state,
+                        storeAddress: storeAddress,
+                        storeName: storeName,
+                        userName: userName,
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blueAccent,
@@ -159,7 +178,7 @@ class ShowReceipt extends GetView<OrderController> {
                     child: Text(
                       "Print Struk",
                       style: GoogleFonts.poppins(
-                          fontSize: 16, color: Colors.white),
+                          fontSize: 12, color: Colors.white),
                     ),
                   ),
                 ],
@@ -210,14 +229,14 @@ Widget _buildRow(String title, int value, {bool bold = false}) {
         Text(
           title,
           style: GoogleFonts.poppins(
-            fontSize: 16,
+            fontSize: 12,
             fontWeight: bold ? FontWeight.bold : FontWeight.normal,
           ),
         ),
         Text(
           rupiahConverter(value),
           style: GoogleFonts.poppins(
-            fontSize: 16,
+            fontSize: 12,
             fontWeight: bold ? FontWeight.bold : FontWeight.normal,
           ),
         ),

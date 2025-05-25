@@ -1,23 +1,27 @@
-import '../../order/views/order_page.dart';
+import 'package:cashier/features/printer/controllers/printer_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../../../core/theme/colors.dart';
-import '../cubit/bottom_nav_cubit.dart';
 import '../../home/views/home_view.dart';
+
 import '../../order/views/order_view.dart';
 import '../../printer/views/printer_view.dart';
 import '../../settings/views/settings_view.dart';
 import '../../store/views/store_view.dart';
 import '../../user/blocs/auth/auth_bloc.dart';
 import '../../user/views/profile_view.dart';
+import '../cubit/bottom_nav_cubit.dart';
+import 'package:get/get.dart';
 
 class BottomView extends StatelessWidget {
   const BottomView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Get.put(PrinterController(), permanent: true);
+
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is! AuthLoggedState) {
@@ -31,14 +35,12 @@ class BottomView extends StatelessWidget {
         final pages = role == 'owner'
             ? [
                 HomeView(),
-                // OrderView(),
-                OrderPage(),
+                OrderView(),
                 SettingsView(),
               ]
             : [
                 HomeView(),
-                // OrderView(),
-                OrderPage(),
+                OrderView(),
                 StoreView(),
                 PrinterView(),
                 ProfileView(),

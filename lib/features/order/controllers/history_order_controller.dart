@@ -1,4 +1,4 @@
-import 'package:cashier/features/order/repositories/order_repository.dart';
+import '../repositories/order_repository.dart';
 
 import '../../user/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

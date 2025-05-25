@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+
 import '../../../models/user_model.dart';
 import '../../../repositories/user_repository.dart';
-
-import 'package:equatable/equatable.dart';
 
 part 'employee_event.dart';
 part 'employee_state.dart';

@@ -1,37 +1,88 @@
 part of 'order_bloc.dart';
 
-sealed class OrderEvent extends Equatable {
+abstract class OrderEvent extends Equatable {
   const OrderEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class FetchProduct extends OrderEvent {}
 
-class FetchOrder extends OrderEvent {}
+class StopWatchingProducts extends OrderEvent {}
 
 class AddToCart extends OrderEvent {
   final ProductModel product;
 
-  const AddToCart(this.product);
+  const AddToCart({required this.product});
 
   @override
-  List<Object> get props => [product];
+  List<Object?> get props => [product];
 }
 
-class RemoveToCart extends OrderEvent {}
+class AddToCartByBarcode extends OrderEvent {
+  final String barcode;
 
-class StopWatchingProducts extends OrderEvent {}
+  const AddToCartByBarcode({required this.barcode});
+
+  @override
+  List<Object?> get props => [barcode];
+}
+
+class AddToCartByTap extends OrderEvent {
+  final ProductModel product;
+
+  const AddToCartByTap({required this.product});
+
+  @override
+  List<Object?> get props => [product];
+}
+
+class RemoveFromCart extends OrderEvent {
+  final ProductModel product;
+
+  const RemoveFromCart({required this.product});
+
+  @override
+  List<Object?> get props => [product];
+}
+
+class IncrementCartItem extends OrderEvent {
+  final ProductModel product;
+
+  const IncrementCartItem({required this.product});
+
+  @override
+  List<Object?> get props => [product];
+}
+
+class DecrementCartItem extends OrderEvent {
+  final ProductModel product;
+
+  const DecrementCartItem({required this.product});
+
+  @override
+  List<Object?> get props => [product];
+}
 
 class ClearCart extends OrderEvent {}
 
-class _EmitError extends OrderEvent {
-  final String message;
-  const _EmitError(this.message);
-}
-
 class _EmitProductSuccess extends OrderEvent {
   final List<ProductModel> products;
-  const _EmitProductSuccess(this.products);
+  const _EmitProductSuccess({required this.products});
+}
+
+class _EmitError extends OrderEvent {
+  final String message;
+  const _EmitError({required this.message});
+}
+
+class UpdateCartItem extends OrderEvent {
+  final ProductModel product;
+  final int quantity;
+
+  const UpdateCartItem({required this.product, required this.quantity});
+
+  @override
+  List<Object?> get props => [product, quantity];
 }

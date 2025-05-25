@@ -12,12 +12,26 @@ class PrinterController extends GetxController {
   var isLoading = false.obs;
 
   /// Cek izin Bluetooth sebelum scan
+  // Future<void> checkPermission() async {
+  //   var status = await Permission.bluetooth.request();
+  //   if (status.isGranted) {
+  //     debugPrint("Izin Bluetooth diberikan.");
+  //   } else {
+  //     debugPrint("Izin Bluetooth ditolak.");
+  //   }
+  // }
   Future<void> checkPermission() async {
-    var status = await Permission.bluetooth.request();
-    if (status.isGranted) {
-      debugPrint("Izin Bluetooth diberikan.");
+    final statuses = await [
+      Permission.bluetooth,
+      Permission.bluetoothScan,
+      Permission.bluetoothConnect,
+      Permission.location,
+    ].request();
+
+    if (statuses.values.every((status) => status.isGranted)) {
+      debugPrint("Semua izin Bluetooth diberikan.");
     } else {
-      debugPrint("Izin Bluetooth ditolak.");
+      debugPrint("Ada izin yang ditolak: $statuses");
     }
   }
 
@@ -32,12 +46,12 @@ class PrinterController extends GetxController {
           await PrintBluetoothThermal.pairedBluetooths;
       devices.value = results;
       debugPrint("Ditemukan ${devices.length} perangkat.");
-      // Get.snackbar("Sukses", "Ditemukan ${devices.length} perangkat.");
     } catch (e) {
       debugPrint("Gagal scan perangkat: $e");
+    } finally {
+      await Future.delayed(Duration(seconds: 3)); // Tunggu sampai scan selesai
+      isScanning.value = false; // 🔹 Set false setelah scan selesai
     }
-    await Future.delayed(Duration(seconds: 3)); // Tunggu sampai scan selesai
-    isScanning.value = false; // 🔹 Set false setelah scan selesai
   }
 
   /// Sambungkan ke printer

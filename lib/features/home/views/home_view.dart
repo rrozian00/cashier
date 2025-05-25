@@ -41,7 +41,7 @@ class HomeView extends StatelessWidget {
                       Text(
                         "for simple life, use",
                         style: GoogleFonts.montserrat(
-                          fontSize: 20,
+                          fontSize: 18,
                           color: brown,
                           fontWeight: FontWeight.w600,
                         ),
@@ -51,7 +51,7 @@ class HomeView extends StatelessWidget {
                         "Cashier !!",
                         style: GoogleFonts.lobster(
                           color: black,
-                          fontSize: 40,
+                          fontSize: 30,
                           fontWeight: FontWeight.w800,
                         ),
                       ),

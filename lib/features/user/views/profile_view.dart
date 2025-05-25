@@ -1,18 +1,17 @@
-import '../../../core/widgets/my_alert_dialog.dart';
-import '../blocs/auth/auth_bloc.dart';
-import '../../bottom_navigation_bar/cubit/bottom_nav_cubit.dart';
-import '../models/user_model.dart';
-import 'change_password.dart';
-import 'edit_profile_view.dart';
-import '../../../routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/theme/colors.dart';
+import '../../../core/widgets/my_alert_dialog.dart';
 import '../../../core/widgets/my_appbar.dart';
 import '../../../core/widgets/my_elevated.dart';
+import '../../../routes/app_pages.dart';
+import '../../bottom_navigation_bar/cubit/bottom_nav_cubit.dart';
+import '../blocs/auth/auth_bloc.dart';
+import '../models/user_model.dart';
+import 'change_password.dart';
+import 'edit_profile_view.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -131,7 +130,7 @@ class ProfileView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 myPurpleElevated(
-                  width: 170,
+                  width: MediaQuery.of(context).size.width / 2.5,
                   onPress: () {
                     showModalBottomSheet(
                       clipBehavior: Clip.hardEdge,
@@ -143,7 +142,7 @@ class ProfileView extends StatelessWidget {
                   text: "Ubah Password",
                 ),
                 myRedElevated(
-                  width: 170,
+                  width: MediaQuery.of(context).size.width / 2.5,
                   onPress: () {
                     showDialog(
                       context: context,

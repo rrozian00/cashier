@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import 'package:cashier/features/order/blocs/history_order_bloc/history_order_bloc.dart';
-import 'package:cashier/features/order/views/widgets/content_widget.dart';
-import 'package:cashier/features/order/views/widgets/header_widget.dart';
+import '../blocs/history_order_bloc/history_order_bloc.dart';
+import 'widgets/content_widget.dart';
+import 'widgets/header_widget.dart';
 
 import '../../../core/widgets/no_data.dart';
 import '../models/order_model.dart';

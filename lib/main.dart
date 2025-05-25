@@ -4,10 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import 'core/utils/app_providers.dart';
-
+import 'core/app_providers/app_providers.dart';
 import 'firebase_options.dart';
-
 import 'routes/app_pages.dart';
 
 void main() async {
@@ -15,7 +13,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   await initializeDateFormatting('id_ID', null).then((_) {
     runApp(const MyApp());
   });
@@ -23,7 +20,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(

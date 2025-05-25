@@ -1,6 +1,8 @@
+import 'package:cashier/features/order/blocs/order_bloc/order_bloc.dart';
+
 import '../../../core/widgets/home_indicator.dart';
 import '../../../core/widgets/my_elevated.dart';
-import '../../order/controllers/order_controller.dart';
+
 import '../bloc/product_bloc.dart';
 import '../models/product_model.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +18,6 @@ class ProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final orderController = Get.put(OrderController());
-
     return Scaffold(
       backgroundColor: softGrey,
       body: Column(
@@ -47,7 +47,7 @@ class ProductList extends StatelessWidget {
                     );
                   }
 
-                  return _buildProductGrid(state.products, orderController);
+                  return _buildProductGrid(state.products);
                 }
 
                 return const SizedBox();
@@ -64,8 +64,7 @@ class ProductList extends StatelessWidget {
     );
   }
 
-  Widget _buildProductGrid(
-      List<ProductModel> products, OrderController orderController) {
+  Widget _buildProductGrid(List<ProductModel> products) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: GridView.builder(
@@ -80,7 +79,6 @@ class ProductList extends StatelessWidget {
           final product = products[index];
           return _ProductItem(
             product: product,
-            orderController: orderController,
           );
         },
       ),
@@ -90,15 +88,14 @@ class ProductList extends StatelessWidget {
 
 class _ProductItem extends StatelessWidget {
   final ProductModel product;
-  final OrderController orderController;
 
   const _ProductItem({
     required this.product,
-    required this.orderController,
   });
 
   @override
   Widget build(BuildContext context) {
+    final orderBloc = context.read<OrderBloc>();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -114,10 +111,12 @@ class _ProductItem extends StatelessWidget {
             ],
           ),
           child: InkWell(
-            onLongPress: () => orderController.deleteCart(product),
+            onLongPress: () =>
+                context.read<OrderBloc>().add(RemoveFromCart(product: product)),
             borderRadius: BorderRadius.circular(12),
             splashColor: purple,
-            onTap: () => orderController.addCart(product),
+            onTap: () =>
+                context.read<OrderBloc>().add(AddToCartByTap(product: product)),
             child: Stack(
               children: [
                 ClipRRect(
@@ -135,34 +134,35 @@ class _ProductItem extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  bottom: 6,
-                  right: 6,
-                  child: Obx(() {
-                    final item = orderController.cart
-                        .firstWhereOrNull((e) => e['produk'].id == product.id);
-                    final quantity = item?['jumlah'] ?? 0;
+                    bottom: 6,
+                    right: 6,
+                    child: BlocBuilder<OrderBloc, OrderState>(
+                      builder: (context, state) {
+                        final item = orderBloc.cart.firstWhereOrNull(
+                            (e) => e.product.id == product.id);
+                        final quantity = item?.quantity ?? 0;
 
-                    return quantity > 0
-                        ? Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              color: red,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: Text(
-                                "$quantity",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                        return quantity > 0
+                            ? Container(
+                                height: 30,
+                                width: 30,
+                                decoration: BoxDecoration(
+                                  color: red,
+                                  shape: BoxShape.circle,
                                 ),
-                              ),
-                            ),
-                          )
-                        : const SizedBox();
-                  }),
-                )
+                                child: Center(
+                                  child: Text(
+                                    "$quantity",
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : const SizedBox();
+                      },
+                    ))
               ],
             ),
           ),

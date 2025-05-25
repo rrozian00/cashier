@@ -1,6 +1,7 @@
-import '../theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../theme/colors.dart';
 
 Widget myElevated({
   double? width,
@@ -24,7 +25,7 @@ Widget myElevated({
               Text(
                 text ?? '',
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: 12,
                   color: Colors.black,
                 ),
               ),
@@ -58,7 +59,7 @@ Widget myPurpleElevated({
               Text(
                 text ?? '',
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: 12,
                   color: Colors.white,
                 ),
               ),
@@ -92,7 +93,7 @@ Widget myRedElevated({
               Text(
                 text ?? '',
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: 12,
                   color: Colors.white,
                 ),
               ),
@@ -127,7 +128,7 @@ Widget myGreenElevated({
               Text(
                 text ?? '',
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: 12,
                   color: Colors.white,
                 ),
               ),
@@ -165,7 +166,7 @@ Widget myPurpleIconElevated({
             Text(
               text ?? '',
               style: GoogleFonts.poppins(
-                fontSize: 16,
+                fontSize: 12,
                 color: Colors.white,
               ),
             ),

@@ -1,16 +1,16 @@
-import '../../../../../core/theme/colors.dart';
-import '../../../../../core/widgets/my_elevated.dart';
-import '../../../../../core/widgets/my_text_field.dart';
-import '../../auth/auth_bloc.dart';
-import '../bloc/employee_bloc.dart';
-import '../../../models/user_model.dart';
-import '../../../../../routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../../core/widgets/my_appbar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../../../../core/theme/colors.dart';
+import '../../../../../core/widgets/my_appbar.dart';
+import '../../../../../core/widgets/my_elevated.dart';
+import '../../../../../core/widgets/my_text_field.dart';
+import '../../../../../routes/app_pages.dart';
+import '../../../models/user_model.dart';
+import '../../auth/auth_bloc.dart';
+import '../bloc/employee_bloc.dart';
 
 class AddEmployeeView extends StatelessWidget {
   AddEmployeeView({super.key});

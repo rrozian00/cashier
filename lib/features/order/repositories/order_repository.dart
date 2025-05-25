@@ -30,4 +30,26 @@ class OrderRepository {
       return Left(Failure(e.toString()));
     }
   }
+
+  Future<Either<Failure, void>> saveOrder(OrderModel orderModel) async {
+    try {
+      final storeData = await getStoreData();
+
+      if (storeData == null) {
+        return Left(Failure("Store Data tidak ditemukan"));
+      }
+
+      final storeId = storeData.id;
+      final docRef = _firestore
+          .collection('stores')
+          .doc(storeId)
+          .collection('orders')
+          .doc();
+      final data = orderModel.copyWith(id: docRef.id);
+      await docRef.set(data.toMap());
+      return Right(null);
+    } catch (e) {
+      return Left(Failure("Unexpected error $e"));
+    }
+  }
 }

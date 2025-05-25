@@ -1,4 +1,4 @@
-import 'package:cashier/features/order/views/history_order_view.dart';
+import '../../order/views/history_order_view.dart';
 
 import '../../product/bloc/product_bloc.dart';
 import '../../user/blocs/employee/bloc/employee_bloc.dart';

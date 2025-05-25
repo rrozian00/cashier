@@ -1,28 +1,41 @@
 part of 'order_bloc.dart';
 
-sealed class OrderState extends Equatable {
-  @override
-  List<Object> get props => [];
-}
-
-final class OrderInitial extends OrderState {}
-
-final class OrderLoading extends OrderState {}
-
-final class ProductSuccess extends OrderState {
-  final List<ProductModel> products;
-
-  ProductSuccess({required this.products});
+abstract class OrderState extends Equatable {
+  const OrderState();
 
   @override
-  List<Object> get props => [products];
+  List<Object?> get props => [];
 }
 
-final class OrderError extends OrderState {
+class OrderInitial extends OrderState {}
+
+class OrderLoading extends OrderState {}
+
+class OrderError extends OrderState {
   final String message;
-
-  OrderError({required this.message});
+  const OrderError({required this.message});
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
+}
+
+class ProductLoaded extends OrderState {
+  final List<ProductModel> products;
+  const ProductLoaded({required this.products});
+
+  @override
+  List<Object?> get props => [products];
+}
+
+class OrderCartState extends OrderState {
+  final List<CartModel> cart;
+  final int totalPrice;
+
+  const OrderCartState({
+    required this.cart,
+    required this.totalPrice,
+  });
+
+  @override
+  List<Object?> get props => [cart, totalPrice];
 }

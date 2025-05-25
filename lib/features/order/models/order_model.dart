@@ -1,15 +1,10 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
+import 'package:cashier/features/order/models/cart_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
-
-import 'package:cashier/features/product/models/product_model.dart';
 
 class OrderModel {
   String? id;
   String? name;
-  List<ProductModel>? products;
+  List<CartModel>? products;
   String? total;
   String? refund;
   String? payment;
@@ -27,7 +22,7 @@ class OrderModel {
   OrderModel copyWith({
     String? id,
     String? name,
-    List<ProductModel>? products,
+    List<CartModel>? products,
     String? total,
     String? refund,
     String? payment,
@@ -61,9 +56,9 @@ class OrderModel {
       id: map['id'] != null ? map['id'] as String : null,
       name: map['name'] != null ? map['name'] as String : null,
       products: map['products'] != null
-          ? List<ProductModel>.from(
-              (map['products'] as List).map<ProductModel?>(
-                (x) => ProductModel.fromMap(x as Map<String, dynamic>),
+          ? List<CartModel>.from(
+              (map['products'] as List).map<CartModel?>(
+                (x) => CartModel.fromMap(x as Map<String, dynamic>),
               ),
             )
           : null,
@@ -73,39 +68,5 @@ class OrderModel {
       createdAt:
           map['createdAt'] != null ? map['createdAt'] as Timestamp : null,
     );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory OrderModel.fromJson(String source) =>
-      OrderModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  String toString() {
-    return 'OrderModel(id: $id, name: $name, products: $products, total: $total, refund: $refund, payment: $payment, createdAt: $createdAt)';
-  }
-
-  @override
-  bool operator ==(covariant OrderModel other) {
-    if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.name == name &&
-        listEquals(other.products, products) &&
-        other.total == total &&
-        other.refund == refund &&
-        other.payment == payment &&
-        other.createdAt == createdAt;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        name.hashCode ^
-        products.hashCode ^
-        total.hashCode ^
-        refund.hashCode ^
-        payment.hashCode ^
-        createdAt.hashCode;
   }
 }

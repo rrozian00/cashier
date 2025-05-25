@@ -1,5 +1,5 @@
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/features/order/blocs/history_order_bloc/history_order_bloc.dart';
+import '../../../../core/theme/colors.dart';
+import '../../blocs/history_order_bloc/history_order_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import '../../../core/theme/colors.dart';
 import '../../../core/widgets/my_appbar.dart';
 import '../../../core/widgets/my_elevated.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../controllers/input_manual_controller.dart';
 
 class InputManualView extends GetView<InputManualController> {

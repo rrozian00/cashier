@@ -1,35 +1,27 @@
 import 'package:get/get.dart';
 
 import '../core/splash_screen/splash_screen.dart';
-
-import '../features/order/views/check_out_view.dart';
-import '../features/product/views/product_list.dart';
-import '../features/product/views/add_product_view.dart';
-import '../features/store/views/add_store_view.dart';
-import '../features/user/blocs/employee/view/add_employee_view.dart';
-import '../features/user/blocs/employee/view/employee_list_view.dart';
-import '../features/user/views/register_view.dart';
-
 import '../features/bottom_navigation_bar/views/bottom_view.dart';
-
 import '../features/expense/views/expense_view.dart';
-import '../features/home/bindings/home_binding.dart';
-import '../features/home/views/home_view.dart';
 import '../features/order/bindings/history_order_binding.dart';
 import '../features/order/bindings/input_manual_binding.dart';
-
 import '../features/order/views/history_order_view.dart';
 import '../features/order/views/input_manual_view.dart';
 import '../features/order/views/order_view.dart';
 import '../features/printer/bindings/printer_binding.dart';
 import '../features/printer/views/printer_view.dart';
-
+import '../features/product/views/add_product_view.dart';
+import '../features/product/views/product_list.dart';
 import '../features/product/views/product_view.dart';
 import '../features/settings/views/settings_view.dart';
 import '../features/store/bindings/store_binding.dart';
+import '../features/store/views/add_store_view.dart';
 import '../features/store/views/store_view.dart';
+import '../features/user/blocs/employee/view/add_employee_view.dart';
+import '../features/user/blocs/employee/view/employee_list_view.dart';
 import '../features/user/views/login_view.dart';
 import '../features/user/views/profile_view.dart';
+import '../features/user/views/register_view.dart';
 
 part 'app_routes.dart';
 
@@ -43,11 +35,7 @@ class AppPages {
       name: _Paths.splash,
       page: () => SplashScreen(),
     ),
-    GetPage(
-      name: _Paths.home,
-      page: () => HomeView(),
-      binding: HomeBinding(),
-    ),
+
     GetPage(
       name: _Paths.order,
       page: () => OrderView(),
@@ -56,10 +44,10 @@ class AppPages {
       name: _Paths.productList,
       page: () => ProductList(),
     ),
-    GetPage(
-      name: _Paths.checkOut,
-      page: () => CheckOutView(),
-    ),
+    // GetPage(
+    //   name: _Paths.checkOut,
+    //   page: () => CheckOutView(),
+    // ),
     GetPage(
       name: _Paths.bottom,
       page: () => BottomView(),

@@ -1,5 +1,5 @@
-import 'package:cashier/core/utils/rupiah_converter.dart';
-import 'package:cashier/features/order/models/order_model.dart';
+import '../../../../core/utils/rupiah_converter.dart';
+import '../../models/order_model.dart';
 import 'package:flutter/material.dart';
 
 class ContentWidget extends StatelessWidget {
@@ -131,16 +131,17 @@ class ContentWidget extends StatelessWidget {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: transaksi.products?.map((product) {
-                                    final int price =
-                                        int.tryParse(product.price ?? '0') ?? 0;
-                                    final int qty =
-                                        int.tryParse(product.quantity ?? '0') ??
-                                            0;
+                                    final int price = int.tryParse(
+                                            product.product.price ?? '0') ??
+                                        0;
+                                    final int qty = int.tryParse(
+                                            product.product.quantity ?? '0') ??
+                                        0;
                                     final int subtotal = price * qty;
 
                                     return ListTile(
                                       contentPadding: EdgeInsets.zero,
-                                      title: Text("${product.name}"),
+                                      title: Text("${product.product.name}"),
                                       subtitle: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,

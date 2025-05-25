@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+
 import '../../store/models/store_model.dart';
 import '../../store/repositories/store_repository.dart';
 import '../../user/models/user_model.dart';
 import '../../user/repositories/auth_repository.dart';
-import 'package:equatable/equatable.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';

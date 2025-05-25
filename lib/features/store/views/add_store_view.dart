@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import '../../../core/widgets/my_appbar.dart';
 import '../../../core/widgets/my_elevated.dart';
 import '../../../core/widgets/my_text_field.dart';
 import '../controllers/store_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class AddStoreView extends GetView<StoreController> {
   const AddStoreView({super.key});

@@ -5,8 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cashier/features/order/models/order_model.dart';
-import 'package:cashier/features/order/repositories/order_repository.dart';
+import '../../models/order_model.dart';
+import '../../repositories/order_repository.dart';
 
 part 'history_order_event.dart';
 part 'history_order_state.dart';

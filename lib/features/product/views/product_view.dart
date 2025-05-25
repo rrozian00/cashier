@@ -1,5 +1,3 @@
-import '../bloc/product_bloc.dart';
-import 'edit_product_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -12,6 +10,8 @@ import '../../../core/widgets/my_appbar.dart';
 import '../../../core/widgets/my_elevated.dart';
 import '../../../core/widgets/no_data.dart';
 import '../../../routes/app_pages.dart';
+import '../bloc/product_bloc.dart';
+import 'edit_product_view.dart';
 
 class ProductView extends StatelessWidget {
   const ProductView({super.key});

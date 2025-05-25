@@ -1,1 +1,58 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"cashier-d2878","appId":"1:54320001887:android:e6633233d0ec8ab5197cea","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"cashier-d2878","appId":"1:54320001887:ios:36826283e6e82622197cea","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"cashier-d2878","appId":"1:54320001887:ios:36826283e6e82622197cea","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"cashier-d2878","configurations":{"android":"1:54320001887:android:e6633233d0ec8ab5197cea","ios":"1:54320001887:ios:36826283e6e82622197cea"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "cashier-d2878",
+          "appId": "1:54320001887:android:e6633233d0ec8ab5197cea",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "cashier-d2878",
+          "appId": "1:54320001887:ios:36826283e6e82622197cea",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "cashier-d2878",
+          "appId": "1:54320001887:ios:36826283e6e82622197cea",
+          "uploadDebugSymbols": false,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "cashier-d2878",
+          "configurations": {
+            "android": "1:54320001887:android:e6633233d0ec8ab5197cea",
+            "ios": "1:54320001887:ios:36826283e6e82622197cea"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "*.exe",
+      "*.dll",
+      "*.bin",
+      "*.so",
+      "**/.*",
+      "**/BLEServer.exe"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
