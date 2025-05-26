@@ -1,5 +1,5 @@
 import '../../../core/theme/colors.dart';
-import '../../../core/widgets/my_elevated.dart';
+
 import '../../../core/widgets/my_text_field.dart';
 import '../blocs/auth/auth_bloc.dart';
 import 'register_view.dart';

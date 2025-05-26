@@ -243,7 +243,6 @@ class OrderView extends StatelessWidget {
               : Container(),
           orderBloc.cart.isNotEmpty
               ? ElevatedButton(
-                  // width: 150,
                   onPressed: () {
                     Navigator.push(
                         context,

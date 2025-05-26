@@ -8,7 +8,7 @@ import '../../../core/theme/colors.dart';
 import '../../../core/utils/rupiah_converter.dart';
 import '../../../core/utils/scanner_page.dart';
 import '../../../core/widgets/my_appbar.dart';
-import '../../../core/widgets/my_elevated.dart';
+
 import '../bloc/product_bloc.dart';
 
 class AddProductView extends StatelessWidget {

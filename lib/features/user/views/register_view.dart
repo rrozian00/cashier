@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/theme/colors.dart';
 import '../../../core/widgets/my_appbar.dart';
-import '../../../core/widgets/my_elevated.dart';
+
 import '../../../core/widgets/my_text_field.dart';
 import '../blocs/register/register_bloc.dart';
 import '../models/user_model.dart';

@@ -8,7 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/theme/colors.dart';
 import '../../../core/utils/rupiah_converter.dart';
-import '../../../core/widgets/my_elevated.dart';
 
 class CheckOutView extends StatelessWidget {
   const CheckOutView({
