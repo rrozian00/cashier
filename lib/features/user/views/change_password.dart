@@ -79,17 +79,19 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        myRedElevated(
-                          width: 150,
-                          text: "Batal",
-                          onPress: () async {
+                        ElevatedButton(
+                          child: Text("Batal"),
+                          // width: 150,
+                          // text: "Batal",
+                          onPressed: () async {
                             Get.back();
                           },
                         ),
-                        myGreenElevated(
-                          width: 150,
-                          text: "Simpan",
-                          onPress: () {
+                        ElevatedButton(
+                          child: Text("Simpan"),
+                          // width: 150,
+                          // text: "Simpan",
+                          onPressed: () {
                             context.read<AuthBloc>().add(ChangePasswordPressed(
                                   email: email.text,
                                   oldPass: oldPass.text,

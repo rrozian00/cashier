@@ -54,11 +54,12 @@ class AddStoreView extends GetView<StoreController> {
                   ? Center(child: CircularProgressIndicator()) // Loading
                   : SizedBox(
                       width: double.infinity,
-                      child: myGreenElevated(
-                        onPress: () {
+                      child: ElevatedButton(
+                        onPressed: () {
                           controller.addStore();
                         },
-                        text: "Simpan",
+                        // text: "Simpan",
+                        child: Text("Simpan"),
                       ),
                     );
             }),

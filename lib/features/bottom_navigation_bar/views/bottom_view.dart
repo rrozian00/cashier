@@ -1,11 +1,11 @@
-import 'package:cashier/features/printer/controllers/printer_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../home/views/home_view.dart';
+import 'package:cashier/features/printer/controllers/printer_controller.dart';
 
+import '../../home/views/home_view.dart';
 import '../../order/views/order_view.dart';
 import '../../printer/views/printer_view.dart';
 import '../../settings/views/settings_view.dart';
@@ -13,7 +13,6 @@ import '../../store/views/store_view.dart';
 import '../../user/blocs/auth/auth_bloc.dart';
 import '../../user/views/profile_view.dart';
 import '../cubit/bottom_nav_cubit.dart';
-import 'package:get/get.dart';
 
 class BottomView extends StatelessWidget {
   const BottomView({super.key});
@@ -66,14 +65,14 @@ class BottomView extends StatelessWidget {
                   ? pages[selectedIndex]
                   : const Center(child: Text("Halaman tidak ditemukan")),
               bottomNavigationBar: GNav(
-                // backgroundColor: softGrey,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 curve: Curves.bounceIn,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 padding: const EdgeInsets.only(
                     right: 10, left: 10, bottom: 35, top: 10),
                 tabBorderRadius: 15,
-                color: grey,
-                activeColor: purple,
+                color: Theme.of(context).disabledColor,
+                activeColor: Theme.of(context).colorScheme.primary,
                 tabs: tabs,
                 selectedIndex: selectedIndex,
                 onTabChange: (index) {

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/theme/colors.dart';
 import '../../../core/widgets/my_alert_dialog.dart';
-import '../../../core/widgets/my_appbar.dart';
-import '../../../core/widgets/my_elevated.dart';
 import '../../../routes/app_pages.dart';
 import '../../bottom_navigation_bar/cubit/bottom_nav_cubit.dart';
 import '../blocs/auth/auth_bloc.dart';
@@ -22,15 +19,8 @@ class ProfileView extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is UnauthenticatedState) {
-          // Get.offAllNamed(Routes.login);
-          // Navigator.pushReplacement(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => SplashScreen(),
-          //     ));
           Navigator.pushReplacementNamed(context, Routes.login);
         } else if (state is AuthLoggedState) {
-          // print("State nya ini");
           showDialog(
             context: context,
             builder: (context) {
@@ -50,15 +40,17 @@ class ProfileView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: softGrey,
-        appBar: MyAppBar(
-          titleText: "Profil",
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: AppBar(
+          title: Text("Profil"),
           actions: [
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 if (state is AuthLoggedState) {
                   return IconButton(
-                    icon: Icon(Icons.edit_square, color: blue),
+                    icon: Icon(
+                      Icons.edit_square,
+                    ),
                     onPressed: () => showModalBottomSheet(
                       clipBehavior: Clip.hardEdge,
                       scrollControlDisabledMaxHeightRatio: 0.9,
@@ -110,7 +102,7 @@ class ProfileView extends StatelessWidget {
                     Icon(
                       Icons.warning,
                       size: 40,
-                      color: Colors.amber,
+                      color: Colors.yellow,
                     ),
                     Text("Kirim link verifikasi ke email saya"),
                   ],
@@ -129,9 +121,9 @@ class ProfileView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                myPurpleElevated(
-                  width: MediaQuery.of(context).size.width / 2.5,
-                  onPress: () {
+                ElevatedButton(
+                  // width: MediaQuery.of(context).size.width / 2.5,
+                  onPressed: () {
                     showModalBottomSheet(
                       clipBehavior: Clip.hardEdge,
                       scrollControlDisabledMaxHeightRatio: 0.9,
@@ -139,11 +131,11 @@ class ProfileView extends StatelessWidget {
                       builder: (_) => ChangePasswordView(),
                     );
                   },
-                  text: "Ubah Password",
+                  child: Text("Ubah Password"),
                 ),
-                myRedElevated(
-                  width: MediaQuery.of(context).size.width / 2.5,
-                  onPress: () {
+                OutlinedButton(
+                  // width: MediaQuery.of(context).size.width / 2.5,
+                  onPressed: () {
                     showDialog(
                       context: context,
                       builder: (context) {
@@ -160,7 +152,8 @@ class ProfileView extends StatelessWidget {
                       },
                     );
                   },
-                  text: "Keluar",
+                  child: Text("Keluar"),
+                  // text: "Keluar",
                 ),
               ],
             ),
@@ -173,10 +166,11 @@ class ProfileView extends StatelessWidget {
   /// Widget untuk Item Profil
   Widget _buildProfileItem(IconData icon, String title, String value) {
     return ListTile(
-      leading: Icon(icon, color: purple),
-      title:
-          Text(title, style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
-      subtitle: Text(value, key: ValueKey(value), style: GoogleFonts.poppins()),
+      leading: Icon(
+        icon,
+      ),
+      title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+      subtitle: Text(value, key: ValueKey(value), style: TextStyle()),
     );
   }
 }

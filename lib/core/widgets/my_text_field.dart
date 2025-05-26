@@ -129,6 +129,7 @@ class MyText extends StatelessWidget {
     this.color,
     this.filled,
     this.suffix,
+    this.suffixIcon,
   });
 
   final TextEditingController controller;
@@ -142,6 +143,7 @@ class MyText extends StatelessWidget {
   final bool? filled;
   final Color? color;
   final String? suffix;
+  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -156,6 +158,7 @@ class MyText extends StatelessWidget {
         ),
         SizedBox(height: 10),
         TextFormField(
+            maxLines: 1,
             validator: validator,
             textCapitalization: textCapitalization ?? TextCapitalization.words,
             obscureText: obscure ?? false,
@@ -163,6 +166,7 @@ class MyText extends StatelessWidget {
             controller: controller,
             keyboardType: textInputType,
             decoration: InputDecoration(
+                suffixIcon: suffixIcon,
                 suffixText: suffix,
                 fillColor: color ?? white,
                 filled: filled ?? true,

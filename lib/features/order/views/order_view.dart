@@ -1,18 +1,18 @@
-import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
-
-import '../blocs/order_bloc/order_bloc.dart';
-import '../check_out/check_out_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:cashier/core/theme/cubit/theme_cubit.dart';
+import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
+
 import '../../../core/theme/colors.dart';
 import '../../../core/utils/rupiah_converter.dart';
 import '../../../core/utils/scanner_page.dart';
-import '../../../core/widgets/my_appbar.dart';
-import '../../../core/widgets/my_elevated.dart';
 import '../../product/bloc/product_bloc.dart';
 import '../../product/views/product_list.dart';
+import '../blocs/order_bloc/order_bloc.dart';
+import '../check_out/check_out_view.dart';
 
 class OrderView extends StatelessWidget {
   const OrderView({super.key});
@@ -24,14 +24,21 @@ class OrderView extends StatelessWidget {
         final orderBloc = context.read<OrderBloc>();
 
         return Scaffold(
-          backgroundColor: softGrey,
-          appBar: MyAppBar(
-            titleText: 'Pilih Produk',
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          appBar: AppBar(
+            leading: IconButton(
+                onPressed: () {
+                  context.read<ThemeCubit>().toggleTheme();
+                },
+                icon: Icon(CupertinoIcons.bookmark)),
+            // titleText: 'Pilih Produk',
+            title: Text("Pilih Produk"),
             actions: [
               IconButton(
                 color: blue,
                 onPressed: () => orderBloc.add(ClearCart()),
-                icon: Icon(Icons.clear, color: red),
+                icon: Icon(Icons.clear,
+                    color: Theme.of(context).colorScheme.error),
               ),
             ],
           ),
@@ -63,22 +70,30 @@ class OrderView extends StatelessWidget {
     if (orderBloc.cart.isEmpty) {
       return Center(
         child: Column(
+          // spacing: 10,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/empty.png', height: 70),
+            Image.asset(
+              'assets/images/shopping-cart.png',
+              height: 50,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+            SizedBox(
+              height: 25,
+            ),
             Text(
               "Keranjang Kosong",
               style: GoogleFonts.poppins(
                 fontSize: 18,
-                color: Colors.deepPurple,
-                fontWeight: FontWeight.w500,
+                // color: Colors.deepPurple,
+                fontWeight: FontWeight.bold,
               ),
             ),
             Text(
               "Silahkan pilih Daftar Produk / Scan Barcode",
-              style: GoogleFonts.poppins(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+              style: TextStyle(
+                // color: Colors.black,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ],
@@ -107,7 +122,7 @@ class OrderView extends StatelessWidget {
                     onPressed: () => Navigator.of(context).pop(false),
                     child: const Text('Batal'),
                   ),
-                  TextButton(
+                  ElevatedButton(
                     onPressed: () => Navigator.of(context).pop(true),
                     child: const Text('Hapus'),
                   ),
@@ -124,79 +139,79 @@ class OrderView extends StatelessWidget {
             ),
             alignment: Alignment.centerRight,
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: const Icon(Icons.delete, color: Colors.white),
+            child: const Icon(Icons.delete),
           ),
           onDismissed: (direction) {
             orderBloc.add(RemoveFromCart(product: product));
           },
-          child: Card(
-            elevation: 4,
-            color: white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Stack(
-              children: [
-                ListTile(
-                  onTap: () => orderBloc.add(UpdateCartItem(
-                    product: product,
-                    quantity: quantity,
-                  )),
-                  leading: SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: Image.network(product.image ?? ""),
-                  ),
-                  title: Text(
-                    product.name ?? 'Nama Produk',
-                    style: GoogleFonts.poppins(
-                      color: purple,
-                      fontWeight: FontWeight.bold,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 3.0),
+            child: Card(
+              elevation: 4,
+              color: Theme.of(context).colorScheme.onPrimary,
+              // color: white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Stack(
+                children: [
+                  ListTile(
+                    onTap: () => orderBloc.add(UpdateCartItem(
+                      product: product,
+                      quantity: quantity,
+                    )),
+                    leading: ClipOval(
+                      child: Image.network(product.image ?? ""),
                     ),
-                  ),
-                  subtitle: Text(
-                    rupiahConverter(int.tryParse(product.price ?? '') ?? 0),
-                    style: GoogleFonts.poppins(color: Colors.black),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.remove_rounded, color: red),
-                        onPressed: () =>
-                            orderBloc.add(DecrementCartItem(product: product)),
+                    title: Text(
+                      product.name ?? 'Nama Produk',
+                      style: TextStyle(
+                        // color: purple,
+                        fontWeight: FontWeight.bold,
                       ),
-                      IconButton(
-                        icon: Icon(Icons.add_rounded, color: green),
-                        onPressed: () =>
-                            orderBloc.add(IncrementCartItem(product: product)),
-                      ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: 6,
-                  left: 10,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.pink,
                     ),
-                    height: 30,
-                    width: 30,
-                    child: Center(
-                      child: Text(
-                        quantity.toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: white,
+                    subtitle: Text(
+                      rupiahConverter(int.tryParse(product.price ?? '') ?? 0),
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.remove_rounded),
+                          onPressed: () => orderBloc
+                              .add(DecrementCartItem(product: product)),
                         ),
-                        textAlign: TextAlign.center,
+                        IconButton(
+                          icon: Icon(Icons.add_rounded),
+                          onPressed: () => orderBloc
+                              .add(IncrementCartItem(product: product)),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    top: 6,
+                    left: 10,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Theme.of(context).colorScheme.onSurface),
+                      height: 30,
+                      width: 30,
+                      child: Center(
+                        child: Text(
+                          quantity.toString(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.surface,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -219,7 +234,7 @@ class OrderView extends StatelessWidget {
                       rupiahConverter(orderBloc.totalPrice),
                       style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
-                        color: purple,
+                        // color: purple,
                         fontSize: 24,
                       ),
                     ),
@@ -227,9 +242,9 @@ class OrderView extends StatelessWidget {
                 )
               : Container(),
           orderBloc.cart.isNotEmpty
-              ? myGreenElevated(
-                  width: 150,
-                  onPress: () {
+              ? ElevatedButton(
+                  // width: 150,
+                  onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -244,10 +259,10 @@ class OrderView extends StatelessWidget {
                   },
                   child: Text(
                     "BAYAR",
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
+                    style: TextStyle(
+                      // color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                   ),
                 )
@@ -267,10 +282,11 @@ class OrderView extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            myPurpleIconElevated(
-              icon: Icons.list,
-              text: "Daftar Produk",
-              onPress: () {
+            ElevatedButton(
+              child: Text("Daftar Produk"),
+              // icon: Icons.list,
+              // text: "Daftar Produk",
+              onPressed: () {
                 showModalBottomSheet(
                   context: context,
                   clipBehavior: Clip.hardEdge,
@@ -279,8 +295,8 @@ class OrderView extends StatelessWidget {
                 productBloc.add(ProductGetRequested());
               },
             ),
-            myPurpleIconElevated(
-              onPress: () async {
+            ElevatedButton(
+              onPressed: () async {
                 final result = await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ScannerPage()),
@@ -290,8 +306,9 @@ class OrderView extends StatelessWidget {
                   orderBloc.add(AddToCartByBarcode(barcode: result));
                 }
               },
-              text: "Scan Barcode",
-              icon: Icons.qr_code_scanner_rounded,
+              child: Text("Scan Barcode"),
+              // text: "Scan Barcode",
+              // icon: Icons.qr_code_scanner_rounded,
             ),
           ],
         ),

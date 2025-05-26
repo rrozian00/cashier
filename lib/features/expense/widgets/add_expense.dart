@@ -78,17 +78,19 @@ class AddExpense extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      myRedElevated(
-                        width: 120,
-                        text: "Batal",
-                        onPress: () {
+                      ElevatedButton(
+                        // width: 120,
+                        // text: "Batal",
+                        child: Text("Batal"),
+                        onPressed: () {
                           Navigator.pop(context);
                         },
                       ),
-                      myGreenElevated(
-                          width: 120,
-                          text: "Simpan",
-                          onPress: () {
+                      ElevatedButton(
+                          child: Text("Simpan"),
+                          // width: 120,
+                          // text: "Simpan",
+                          onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               context.read<ExpenseBloc>().add(
                                   ExpenseAddRequested(

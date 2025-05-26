@@ -25,7 +25,7 @@ class HomeView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        // backgroundColor: softGrey,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(left: 10.0),

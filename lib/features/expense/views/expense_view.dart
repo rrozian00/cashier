@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/theme/colors.dart';
 import '../../../core/utils/rupiah_converter.dart';
-import '../../../core/widgets/my_appbar.dart';
-import '../../../core/widgets/my_elevated.dart';
 import '../../../core/widgets/no_data.dart';
 import '../bloc/expense_bloc.dart';
 import '../widgets/add_expense.dart';
@@ -16,9 +13,8 @@ class ExpenseView extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<ExpenseBloc>().add(ExpenseGetRequested());
     return Scaffold(
-      backgroundColor: softGrey,
-      appBar: MyAppBar(
-        titleText: 'Pengeluaran',
+      appBar: AppBar(
+        title: Text('Pengeluaran'),
       ),
       body: BlocBuilder<ExpenseBloc, ExpenseState>(
         builder: (context, state) {
@@ -50,9 +46,9 @@ class ExpenseView extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12.0, vertical: 4),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: grey),
+                      child: Card(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: ListTile(
@@ -61,7 +57,6 @@ class ExpenseView extends StatelessWidget {
                           subtitle: Text(
                             rupiahConverter(int.tryParse(data.pay ?? '-') ?? 0),
                             style: const TextStyle(
-                              color: Colors.red,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
@@ -78,16 +73,18 @@ class ExpenseView extends StatelessWidget {
           return const SizedBox(); // fallback default
         },
       ),
-      floatingActionButton: myPurpleElevated(
-          height: 45,
-          width: 180,
-          onPress: () => showDialog(
-                context: context,
-                builder: (context) {
-                  return AddExpense();
-                },
-              ),
-          text: "Tambah"),
+      floatingActionButton: ElevatedButton(
+        // height: 45,
+        // width: 180,
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) {
+            return AddExpense();
+          },
+        ),
+        // text: "Tambah",
+        child: Text("Tambah"),
+      ),
     );
   }
 }

@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../core/widgets/my_appbar.dart';
-import '../../../core/widgets/my_elevated.dart';
 import '../../../core/widgets/no_data.dart';
 import '../../../routes/app_pages.dart';
 
@@ -16,18 +12,17 @@ class StoreView extends GetView<StoreController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(
+      appBar: AppBar(
         actions: [
           TextButton(
               onPressed: () => controller.editDialog(context),
               child: Text(
                 "Ubah Toko",
-                style: TextStyle(
-                  color: blue,
-                ),
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
               ))
         ],
-        titleText: "Profil Toko",
+        // titleText: "Profil Toko",
+        title: Text("Profil Toko"),
       ),
       body: Obx(() {
         if (controller.store.value == null) {
@@ -48,7 +43,7 @@ class StoreView extends GetView<StoreController> {
                       children: [
                         Image.asset(
                           "assets/images/store.png",
-                          color: purple,
+                          color: Theme.of(context).colorScheme.primary,
                           width: 100,
                         )
                       ],
@@ -78,11 +73,13 @@ class StoreView extends GetView<StoreController> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Obx(() => Visibility(
             visible: controller.store.value == null,
-            child: myPurpleElevated(
-                width: 180,
-                height: 45,
-                onPress: () => Get.toNamed(Routes.addStore),
-                text: "Tambah Toko"),
+            child: ElevatedButton(
+              // width: 180,
+              // height: 45,
+              child: Text("Tambah Toko"),
+              onPressed: () => Get.toNamed(Routes.addStore),
+              // text: "Tambah Toko"
+            ),
           )),
     );
   }
@@ -99,16 +96,14 @@ class StoreView extends GetView<StoreController> {
           minTileHeight: 0,
           leading: Icon(
             icon,
-            color: purple,
-          ),
-          subtitle: Text(
-            subtitle,
-            style:
-                GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold),
           ),
           title: Text(
             title,
-            style: GoogleFonts.poppins(color: oldGrey, fontSize: 12),
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(
+            subtitle,
+            style: TextStyle(),
           ),
         ),
         Divider()

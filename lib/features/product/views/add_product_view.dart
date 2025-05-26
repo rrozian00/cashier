@@ -152,10 +152,11 @@ class AddProductView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 25),
-                  myGreenElevated(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      text: "Simpan",
-                      onPress: () {
+                  ElevatedButton(
+                      // width: MediaQuery.of(context).size.width * 0.9,
+                      // text: "Simpan",
+                      child: Text("Simpan"),
+                      onPressed: () {
                         context.read<ProductBloc>().add(ProductAddRequested(
                               name: name.text,
                               productCode: productCode.text,

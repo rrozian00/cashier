@@ -92,13 +92,15 @@ class _EditProfileViewState extends State<EditProfileView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          myRedElevated(
-                            text: "Batal",
-                            onPress: () => Get.back(),
+                          ElevatedButton(
+                            // text: "Batal",
+                            child: Text("Batal"),
+                            onPressed: () => Get.back(),
                           ),
-                          myGreenElevated(
-                            text: "Simpan",
-                            onPress: () {
+                          ElevatedButton(
+                            // text: "Simpan",
+                            child: Text("simpan"),
+                            onPressed: () {
                               Get.dialog(MyAlertDialog(
                                 onConfirm: () {
                                   context.read<RegisterBloc>().add(

@@ -17,7 +17,6 @@ class HistoryOrderView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: HistoryOrderHeader(),
         body: BlocBuilder<HistoryOrderBloc, HistoryOrderState>(
           builder: (context, state) {

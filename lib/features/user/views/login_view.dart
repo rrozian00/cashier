@@ -12,8 +12,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LoginView extends StatelessWidget {
   LoginView({super.key});
 
-  final TextEditingController emailC = TextEditingController();
-  final TextEditingController passwordC = TextEditingController();
+  final TextEditingController emailC =
+      TextEditingController(text: "rrozian00@gmail.com");
+  final TextEditingController passwordC =
+      TextEditingController(text: "1231231");
 
   final _formKey = GlobalKey<FormState>();
 
@@ -40,7 +42,6 @@ class LoginView extends StatelessWidget {
               child: Form(
                 key: _formKey,
                 child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
@@ -82,43 +83,63 @@ class LoginView extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    MyText(
-                      filled: true,
-                      color: white,
-                      textCapitalization: TextCapitalization.none,
-                      controller: passwordC,
-                      label: "Password",
-                      hint: "Password",
-                      obscure: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Password tidak boleh kosong";
-                        }
-                        return null;
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        final isObscure = state is UnauthenticatedState
+                            ? state.isObsecure
+                            : true;
+                        final hasToggle = state is UnauthenticatedState;
+
+                        return MyText(
+                          suffixIcon: IconButton(
+                            onPressed: hasToggle
+                                ? () =>
+                                    context.read<AuthBloc>().add(SeePassword())
+                                : null,
+                            icon: Icon(
+                              isObscure
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                            ),
+                          ),
+                          filled: true,
+                          color: white,
+                          textCapitalization: TextCapitalization.none,
+                          controller: passwordC,
+                          label: "Password",
+                          hint: "Password",
+                          obscure: isObscure,
+                          validator: (value) => value == null || value.isEmpty
+                              ? "Password tidak boleh kosong"
+                              : null,
+                        );
                       },
                     ),
                     SizedBox(height: 20),
                     Center(
-                      child: myElevated(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        onPress: () {
-                          if (_formKey.currentState!.validate()) {
-                            context.read<AuthBloc>().add(AuthLoginEvent(
-                                email: emailC.text, password: passwordC.text));
-                          }
-                        },
-                        child: BlocBuilder<AuthBloc, AuthState>(
-                          builder: (context, state) {
-                            if (state is AuthLoadingState) {
-                              return CircularProgressIndicator.adaptive();
-                            }
-                            return Text(
-                              "Login",
-                              style: GoogleFonts.montserrat(fontSize: 18),
+                      child: BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          if (state is! AuthLoadingState) {
+                            return ElevatedButton(
+                              // width: MediaQuery.of(context).size.width * 0.8,
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  context.read<AuthBloc>().add(AuthLoginEvent(
+                                      email: emailC.text,
+                                      password: passwordC.text));
+                                }
+                              },
+                              child: Text(
+                                "Login",
+                                style: GoogleFonts.montserrat(fontSize: 14),
+                              ),
                             );
-                          },
-                        ),
+                          }
+
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
                       ),
                     ),
                     SizedBox(height: 100),

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:cashier/core/widgets/my_elevated.dart';
-
 class MyAlertDialog extends GetView {
   const MyAlertDialog({
     super.key,
@@ -34,7 +32,7 @@ class MyAlertDialog extends GetView {
             Icon(
               Icons.warning_amber_rounded,
               size: 100,
-              color: Colors.amber,
+              // color: Colors.yellow,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -50,17 +48,22 @@ class MyAlertDialog extends GetView {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                myRedElevated(
-                  color: onCancelColor,
-                  width: 100,
-                  text: "Batal",
-                  onPress: onCancel ?? () => Navigator.pop(context),
+                OutlinedButton(
+                  // color: onCancelColor,
+                  // width: 100,
+                  // text: "Batal",
+                  onPressed: onCancel ?? () => Navigator.pop(context),
+                  // color: onCancelColor,
+                  // width: 100,
+                  // text: "Batal",
+                  child: Text("Batal"),
                 ),
-                myGreenElevated(
-                  color: onConfirmColor,
-                  width: 100,
-                  text: onConfirmText ?? "Simpan",
-                  onPress: () {
+                ElevatedButton(
+                  child: Text(onConfirmText ?? "Simpan"),
+                  // color: onConfirmColor,
+                  // width: 100,
+                  // text: onConfirmText ?? "Simpan",
+                  onPressed: () {
                     onConfirm();
                     Get.back();
                   },
@@ -99,7 +102,7 @@ class MySingleAlertDialog extends GetView {
             Icon(
               Icons.warning_amber_rounded,
               size: 100,
-              color: Colors.amber,
+              // color: Colors.amber,
             ),
             Text(
               contentText,
@@ -109,11 +112,9 @@ class MySingleAlertDialog extends GetView {
             SizedBox(
               height: 25,
             ),
-            myGreenElevated(
-              color: onCancelColor,
-              width: 100,
-              text: onCancelText ?? "Batal",
-              onPress: onCancel ?? () => Navigator.pop(context),
+            ElevatedButton(
+              onPressed: onCancel ?? () => Navigator.pop(context),
+              child: Text(onCancelText ?? "Batal"),
             )
           ],
         ),

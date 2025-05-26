@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
@@ -14,14 +16,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final authRepository = AuthRepository();
   final userRepository = UserRepository();
 
-  AuthBloc() : super(UnauthenticatedState()) {
+  AuthBloc() : super(UnauthenticatedState(true)) {
     on<AuthCheckStatusEvent>((event, emit) async {
       final user = await authRepository.getCurrentUser();
       final verif = await authRepository.checkVerification();
       if (user != null) {
         emit(AuthLoggedState(user, verif));
       } else {
-        emit(UnauthenticatedState());
+        emit(UnauthenticatedState(true));
       }
     });
 
@@ -42,6 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ChangePasswordPressed>(_onChangePass);
 
     on<AuthLogoutEvent>(_onLogout);
+    on<SeePassword>(_onSeePassword);
   }
 
   Future<void> _onLogin(
@@ -94,6 +97,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoadingState());
     await authRepository.logout();
-    emit(UnauthenticatedState());
+    emit(UnauthenticatedState(true));
+  }
+
+  void _onSeePassword(SeePassword event, Emitter<AuthState> emit) {
+    if (state is UnauthenticatedState) {
+      final currenState = state as UnauthenticatedState;
+      emit(UnauthenticatedState(!currenState.isObsecure));
+    }
   }
 }

@@ -20,7 +20,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        backgroundColor: white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         shadowColor: black,
         elevation: 5,
         flexibleSpace: Stack(

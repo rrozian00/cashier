@@ -93,7 +93,7 @@ class AddEmployeeView extends StatelessWidget {
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is AuthLoggedState) {
-                        return myPurpleElevated(onPress: () {
+                        return ElevatedButton(onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             context.read<EmployeeBloc>().add(AddEmployeePressed(
                                 employee: UserModel(

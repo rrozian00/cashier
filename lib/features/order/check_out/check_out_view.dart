@@ -128,8 +128,8 @@ class CheckOutView extends StatelessWidget {
                         'C'
                       ];
 
-                      return myElevated(
-                        onPress: () {
+                      return ElevatedButton(
+                        onPressed: () {
                           final bloc = context.read<CheckOutBloc>();
                           if (buttons[index] == 'C') {
                             bloc.add(ClearPressed());
@@ -158,10 +158,11 @@ class CheckOutView extends StatelessWidget {
         floatingActionButton: BlocBuilder<CheckOutBloc, CheckOutState>(
           builder: (context, state) {
             if (state.canProcess) {
-              return myGreenElevated(
-                  width: 180,
-                  text: "PROSES",
-                  onPress: () {
+              return ElevatedButton(
+                  child: Text("PROSES"),
+                  // width: 180,
+                  // text: "PROSES",
+                  onPressed: () {
                     context.read<CheckOutBloc>().add(ProcessPayment());
                   });
             } else {

@@ -1,4 +1,3 @@
-import '../../../../core/theme/colors.dart';
 import '../../blocs/history_order_bloc/history_order_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +12,6 @@ class HistoryOrderHeader extends StatelessWidget
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
       title: OutlinedButton(
         onPressed: () {
           context
@@ -34,7 +32,7 @@ class HistoryOrderHeader extends StatelessWidget
                 style: GoogleFonts.jetBrainsMono(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: black,
+                  // color: black,
                 ),
               );
             }
@@ -43,25 +41,25 @@ class HistoryOrderHeader extends StatelessWidget
               style: GoogleFonts.jetBrainsMono(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: black,
+                // color: black,
               ),
             );
           },
         ),
       ),
-      actions: [
-        IconButton(
-          onPressed: () {
-            // Add reset functionality here
-            // Example: context.read<HistoryOrderBloc>().add(ResetDateRange());
-          },
-          icon: const Icon(
-            Icons.refresh,
-            color: Colors.deepPurple,
-          ),
-          tooltip: 'Reset',
-        ),
-      ],
+      // actions: [
+      //   IconButton(
+      //     onPressed: () {
+      //       // Add reset functionality here
+      //       // Example: context.read<HistoryOrderBloc>().add(ResetDateRange());
+      //     },
+      //     icon: const Icon(
+      //       Icons.refresh,
+      //       // color: Colors.deepPurple,
+      //     ),
+      //     tooltip: 'Reset',
+      //   ),
+      // ],
     );
   }
 

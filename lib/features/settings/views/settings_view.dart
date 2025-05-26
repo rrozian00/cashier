@@ -1,3 +1,6 @@
+import 'package:cashier/core/theme/cubit/theme_cubit.dart';
+import 'package:flutter/cupertino.dart';
+
 import '../../order/views/history_order_view.dart';
 
 import '../../product/bloc/product_bloc.dart';
@@ -8,7 +11,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/theme/colors.dart';
-import '../../../core/widgets/my_appbar.dart';
 import '../../../routes/app_pages.dart';
 
 class SettingsView extends StatelessWidget {
@@ -17,9 +19,14 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: softGrey,
-      appBar: MyAppBar(
-        titleText: 'Pengaturan',
+      // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              context.read<ThemeCubit>().toggleTheme();
+            },
+            icon: Icon(CupertinoIcons.bookmark)),
+        title: Text('Pengaturan'),
       ),
       body: SafeArea(
         child: Padding(
@@ -96,7 +103,6 @@ class SettingsView extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       floatingActionButton: Text(
         "v.2.0.0",
-        style: TextStyle(color: oldGrey),
       ),
     );
   }
@@ -123,10 +129,8 @@ class _Listile extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-            color: white,
-            // border: Border.all(color: grey),
+            color: Theme.of(context).colorScheme.onPrimary,
             borderRadius: BorderRadius.circular(15)),
-        // color: Colors.black,
         child: ListTile(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -138,15 +142,15 @@ class _Listile extends StatelessWidget {
           onTap: onPress,
           contentPadding: EdgeInsets.symmetric(horizontal: 10),
           leading: CircleAvatar(
-            backgroundColor: purple.withAlpha(50),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             child: Icon(
               icon,
-              color: purple,
+              color: Theme.of(context).colorScheme.onSecondary,
             ),
           ),
           title: Text(
             title ?? "-",
-            style: GoogleFonts.jetBrainsMono(color: black),
+            style: GoogleFonts.jetBrainsMono(),
           ),
         ),
       ),

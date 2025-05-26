@@ -116,18 +116,21 @@ class StoreController extends GetxController {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    myRedElevated(
-                      width: 150,
-                      onPress: () => Get.back(),
-                      text: "Kembali",
+                    ElevatedButton(
+                      // width: 150,
+                      onPressed: () => Get.back(),
+                      // text: "Kembali",
+                      child: Text("Kembali"),
                     ),
-                    myGreenElevated(
-                        width: 150,
-                        onPress: () {
-                          updateStore();
-                          Get.back();
-                        },
-                        text: "Simpan"),
+                    ElevatedButton(
+                      child: Text("Simpan"),
+                      // width: 150,
+                      onPressed: () {
+                        updateStore();
+                        Get.back();
+                      },
+                      // text: "Simpan",
+                    ),
                   ],
                 ),
                 SizedBox(

@@ -52,3 +52,5 @@ final class AuthSendVerification extends AuthEvent {}
 
 // Event untuk logout
 final class AuthLogoutEvent extends AuthEvent {}
+
+final class SeePassword extends AuthEvent {}

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/theme/colors.dart';
-import '../../../core/widgets/my_appbar.dart';
-import '../../../core/widgets/my_elevated.dart';
 import '../../../core/widgets/no_data.dart';
 import '../controllers/printer_controller.dart';
 
@@ -14,9 +12,8 @@ class PrinterView extends GetView<PrinterController> {
   Widget build(BuildContext context) {
     controller.isConnected.value;
     return Scaffold(
-      backgroundColor: softGrey,
-      appBar: MyAppBar(
-        titleText: "Printer",
+      appBar: AppBar(
+        title: Text("Printer"),
       ),
       body: Obx(
         () {
@@ -33,7 +30,7 @@ class PrinterView extends GetView<PrinterController> {
                 Center(
                   child: Text(
                     "Terhubung dengan ${controller.selectedPrinter.value?.name}",
-                    style: TextStyle(color: green),
+                    style: TextStyle(),
                   ),
                 ),
               ],
@@ -104,9 +101,9 @@ class PrinterView extends GetView<PrinterController> {
           Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Obx(() => myElevated(
-                height: 50,
-                onPress: controller.isScanning.value
+          Obx(() => ElevatedButton(
+                // height: 50,
+                onPressed: controller.isScanning.value
                     ? null
                     : controller.scanDevices, // Disable saat scanning
                 child: controller.isScanning.value
@@ -129,14 +126,15 @@ class PrinterView extends GetView<PrinterController> {
 
           // Tombol Connect & Disconnect
           Obx(() => controller.isConnected.value
-              ? myRedElevated(
-                  onPress: controller.disconnectPrinter,
-                  text: "Putuskan",
+              ? ElevatedButton(
+                  onPressed: controller.disconnectPrinter,
+                  // text: "Putuskan",
+                  child: Text("Putuskan"),
                   // style: TextStyle(color: white),
                 )
-              : myElevated(
-                  height: 50,
-                  onPress: controller.connectToPrinter,
+              : ElevatedButton(
+                  // height: 50,
+                  onPressed: controller.connectToPrinter,
                   child: controller.isLoading.value
                       ? Row(
                           mainAxisSize: MainAxisSize.min,

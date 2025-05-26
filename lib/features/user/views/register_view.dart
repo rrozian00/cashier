@@ -131,9 +131,9 @@ class RegisterView extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 20),
-                  myElevated(
-                    height: 50,
-                    onPress: () {
+                  ElevatedButton(
+                    // height: 50,
+                    onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         context.read<RegisterBloc>().add(RegisterRequestedEvent(
                             user: UserModel(

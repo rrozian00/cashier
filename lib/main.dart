@@ -1,3 +1,6 @@
+import 'package:cashier/core/theme/colors.dart';
+import 'package:cashier/core/theme/cubit/theme_cubit.dart';
+import 'package:cashier/core/theme/my_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,11 +27,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: appProviders,
-      child: GetMaterialApp(
-        // theme: ThemeData.dark(),
-        title: "Cashier",
-        initialRoute: AppPages.initial,
-        getPages: AppPages.routes,
+      child: BlocBuilder<ThemeCubit, bool>(
+        builder: (context, isDarkMode) {
+          return GetMaterialApp(
+            theme: isDarkMode ? MyTheme.darkTheme : MyTheme.lightTheme,
+            title: "Cashier",
+            initialRoute: AppPages.initial,
+            getPages: AppPages.routes,
+          );
+        },
       ),
     );
   }

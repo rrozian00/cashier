@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../theme/colors.dart';
-
 Widget noData({
   required String title,
   required String message,
@@ -16,7 +14,6 @@ Widget noData({
         Icon(
           icon,
           size: 80,
-          color: grey,
         ),
         const SizedBox(height: 10),
         Text(
@@ -24,17 +21,13 @@ Widget noData({
           style: GoogleFonts.poppins(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.black87,
           ),
         ),
         const SizedBox(height: 5),
         Text(
           message,
           textAlign: TextAlign.center,
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            color: Colors.grey.shade600,
-          ),
+          style: GoogleFonts.poppins(),
         ),
       ],
     ),

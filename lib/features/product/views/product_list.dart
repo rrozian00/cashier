@@ -1,17 +1,15 @@
-import 'package:cashier/features/order/blocs/order_bloc/order_bloc.dart';
-
-import '../../../core/widgets/home_indicator.dart';
-import '../../../core/widgets/my_elevated.dart';
-
-import '../bloc/product_bloc.dart';
-import '../models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:cashier/features/order/blocs/order_bloc/order_bloc.dart';
+
 import '../../../core/theme/colors.dart';
+import '../../../core/widgets/home_indicator.dart';
 import '../../../core/widgets/no_data.dart';
+import '../bloc/product_bloc.dart';
+import '../models/product_model.dart';
 
 class ProductList extends StatelessWidget {
   const ProductList({super.key});
@@ -19,7 +17,6 @@ class ProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: softGrey,
       body: Column(
         children: [
           homeIndicator(),
@@ -56,10 +53,11 @@ class ProductList extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: myGreenElevated(
-        onPress: () => Navigator.pop(context),
-        text: "Selesai",
-        width: 180,
+      floatingActionButton: ElevatedButton(
+        onPressed: () => Navigator.pop(context),
+        child: Text("Selesai"),
+        // text: "Selesai",
+        // width: 180,
       ),
     );
   }
@@ -176,7 +174,7 @@ class _ProductItem extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.poppins(
               fontSize: 12,
-              color: purple,
+              // color: purple,
               fontWeight: FontWeight.w600,
             ),
           ),

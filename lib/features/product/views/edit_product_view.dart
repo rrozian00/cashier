@@ -125,10 +125,11 @@ class _EditProductViewState extends State<EditProductView> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                myGreenElevated(
-                  width: 180,
-                  text: "Simpan",
-                  onPress: () {
+                ElevatedButton(
+                  // width: 180,
+                  // text: "Simpan",
+                  child: Text("Simpan"),
+                  onPressed: () {
                     context.read<ProductBloc>().add(ProductEditRequested(
                           id: widget.productData.id!,
                           newName: nameC.text,

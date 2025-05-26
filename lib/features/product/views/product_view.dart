@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/theme/colors.dart';
 import '../../../core/utils/rupiah_converter.dart';
 import '../../../core/widgets/my_alert_dialog.dart';
-import '../../../core/widgets/my_appbar.dart';
-import '../../../core/widgets/my_elevated.dart';
 import '../../../core/widgets/no_data.dart';
 import '../../../routes/app_pages.dart';
 import '../bloc/product_bloc.dart';
@@ -30,9 +27,8 @@ class ProductView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: softGrey,
-        appBar: MyAppBar(
-          titleText: "Produk",
+        appBar: AppBar(
+          title: Text("Produk"),
         ),
         body: BlocBuilder<ProductBloc, ProductState>(
           buildWhen: (previous, current) {
@@ -71,15 +67,14 @@ class ProductView extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10.0, vertical: 3),
                           child: Card(
-                            color: white,
-                            elevation: 3,
-                            borderOnForeground: true,
+                            elevation: 4,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            // color: white,
                             shape: RoundedRectangleBorder(
-                                side: BorderSide(color: white),
-                                borderRadius: BorderRadius.circular(15)),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                             child: ListTile(
                               leading: CircleAvatar(
-                                backgroundColor: Colors.grey[300],
                                 child: datas.image != null &&
                                         datas.image!.isNotEmpty
                                     ? ClipOval(
@@ -92,20 +87,15 @@ class ProductView extends StatelessWidget {
                               ),
                               title: Text(
                                 datas.name ?? '-',
-                                style: GoogleFonts.poppins(
-                                  color: purple,
+                                style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 14,
                                 ),
                               ),
                               subtitle: Text(
                                 rupiahConverter(
                                   int.tryParse(datas.price ?? "") ?? 0,
                                 ),
-                                style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontSize: 12,
-                                ),
+                                style: TextStyle(),
                               ),
                               trailing: Wrap(
                                 children: [
@@ -137,7 +127,6 @@ class ProductView extends StatelessWidget {
                                         )),
                                     icon: Icon(
                                       Icons.edit,
-                                      color: purple,
                                     ),
                                   ),
                                 ],
@@ -155,11 +144,12 @@ class ProductView extends StatelessWidget {
             }
           },
         ),
-        floatingActionButton: myPurpleElevated(
-          height: 45,
-          width: 180,
-          text: "Tambah Produk",
-          onPress: () => Navigator.pushNamed(context, Routes.addMenus),
+        floatingActionButton: ElevatedButton(
+          // height: 45,
+          // width: 180,
+          // text: "Tambah Produk",
+          child: Text("Tambah"),
+          onPressed: () => Navigator.pushNamed(context, Routes.addMenus),
         ),
       ),
     );

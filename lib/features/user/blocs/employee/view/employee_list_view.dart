@@ -1,6 +1,4 @@
 import '../../../../../core/theme/colors.dart';
-import '../../../../../core/widgets/my_appbar.dart';
-import '../../../../../core/widgets/my_elevated.dart';
 import '../../../../../core/widgets/no_data.dart';
 import '../bloc/employee_bloc.dart';
 import 'detail_emlpoyee.dart';
@@ -17,24 +15,23 @@ class EmployeeListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: softGrey,
-      appBar: MyAppBar(
-        titleText: "Daftar Karyawan",
+      appBar: AppBar(
+        title: Text("Daftar Karyawan"),
       ),
-      body: BlocBuilder<EmployeeBloc, EmployeeState>(
-        builder: (context, state) {
-          if (state is EmployeeLoading) {
-            return Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          }
+      body: SafeArea(
+        child: BlocBuilder<EmployeeBloc, EmployeeState>(
+          builder: (context, state) {
+            if (state is EmployeeLoading) {
+              return Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            }
 
-          if (state is EmployeeGetSuccess) {
-            final employees = state.employees;
+            if (state is EmployeeGetSuccess) {
+              final employees = state.employees;
 
-            if (employees.isNotEmpty) {
-              return SafeArea(
-                child: Column(
+              if (employees.isNotEmpty) {
+                return Column(
                   children: [
                     Expanded(
                         flex: 1,
@@ -48,15 +45,15 @@ class EmployeeListView extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final data = state.employees[index];
                           return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 3),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   "${index + 1}",
                                   style: GoogleFonts.roboto(
-                                    color: blue,
+                                    // color: blue,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -64,11 +61,11 @@ class EmployeeListView extends StatelessWidget {
                                 SizedBox(width: 5),
                                 Flexible(
                                   child: Card(
-                                    color: white,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
                                     elevation: 4,
                                     borderOnForeground: true,
                                     shape: RoundedRectangleBorder(
-                                      side: BorderSide(color: grey),
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: ListTile(
@@ -97,7 +94,7 @@ class EmployeeListView extends StatelessWidget {
                                             },
                                             icon: Icon(
                                               Icons.edit,
-                                              color: blue,
+                                              // color: blue,
                                             ),
                                           ),
                                           IconButton(
@@ -125,15 +122,19 @@ class EmployeeListView extends StatelessWidget {
                                                           MainAxisAlignment
                                                               .spaceAround,
                                                       children: [
-                                                        myGreenElevated(
-                                                            width: 110,
-                                                            text: "Batal",
-                                                            onPress: () =>
+                                                        ElevatedButton(
+                                                            child:
+                                                                Text("Batal"),
+                                                            // width: 110,
+                                                            // text: "Batal",
+                                                            onPressed: () =>
                                                                 Get.back()),
-                                                        myRedElevated(
-                                                            width: 110,
-                                                            text: "Hapus",
-                                                            onPress: () {
+                                                        ElevatedButton(
+                                                            child:
+                                                                Text("Hapus"),
+                                                            // width: 110,
+                                                            // text: "Hapus",
+                                                            onPressed: () {
                                                               Navigator.pop(
                                                                   context);
                                                               context
@@ -160,10 +161,14 @@ class EmployeeListView extends StatelessWidget {
                                           ),
                                         ],
                                       ),
-                                      title: Text(data.name ?? ''),
+                                      title: Text(
+                                        data.name ?? '',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                       subtitle: Text(
                                         data.email ?? '',
-                                        style: TextStyle(color: blue),
+                                        style: TextStyle(),
                                       ),
                                     ),
                                   ),
@@ -175,20 +180,21 @@ class EmployeeListView extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-              );
+                );
+              }
             }
-          }
-          return noData(
-              title: "Tidak ada data Karyawan",
-              message: "Silahkan Tambah Karyawan");
-        },
+            return noData(
+                title: "Tidak ada data Karyawan",
+                message: "Silahkan Tambah Karyawan");
+          },
+        ),
       ),
-      floatingActionButton: myPurpleElevated(
-          width: 220,
-          height: 45,
-          onPress: () => Get.toNamed(Routes.addEmployee),
-          text: "Tambah Karyawan"),
+      floatingActionButton: ElevatedButton(
+        // width: 220,
+        // height: 45,
+        onPressed: () => Get.toNamed(Routes.addEmployee),
+        child: Text("Tambah Karyawan"),
+      ),
     );
   }
 }

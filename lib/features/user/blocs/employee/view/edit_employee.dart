@@ -86,27 +86,30 @@ class _EditEmployeeState extends State<EditEmployee> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    myRedElevated(
-                      width: 110,
-                      onPress: () => Navigator.pop(context),
-                      text: "Batal",
+                    ElevatedButton(
+                      child: Text("Batal"),
+                      onPressed: () => Navigator.pop(context),
+                      // text: "Batal",
+                      // width: 110,
                     ),
-                    myGreenElevated(
-                        width: 110,
-                        onPress: () {
-                          Navigator.pop(context);
-                          context.read<EmployeeBloc>().add(EditEmployeePressed(
-                                id: widget.id,
-                                name: nameC.text,
-                                address: addressC.text,
-                                phone: phoneC.text,
-                                salary: salaryC.text,
-                              ));
-                          context
-                              .read<EmployeeBloc>()
-                              .add(GetEmployeeRequested());
-                        },
-                        text: "Simpan"),
+                    ElevatedButton(
+                      // width: 110,
+                      child: Text("Simpan"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        context.read<EmployeeBloc>().add(EditEmployeePressed(
+                              id: widget.id,
+                              name: nameC.text,
+                              address: addressC.text,
+                              phone: phoneC.text,
+                              salary: salaryC.text,
+                            ));
+                        context
+                            .read<EmployeeBloc>()
+                            .add(GetEmployeeRequested());
+                      },
+                      // text: "Simpan",
+                    ),
                   ],
                 )
               ],
