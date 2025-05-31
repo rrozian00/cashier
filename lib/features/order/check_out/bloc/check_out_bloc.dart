@@ -84,7 +84,7 @@ class CheckOutBloc extends Bloc<CheckOutEvent, CheckOutState> {
 
       final orderModel = OrderModel(
         payment: state.paymentAmount.toString(),
-        products: state.cart,
+        products: event.cart,
         refund: (state.paymentAmount - state.totalPrice).toString(),
         total: state.totalPrice.toString(),
         createdAt: createdAt,

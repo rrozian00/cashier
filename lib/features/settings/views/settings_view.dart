@@ -1,4 +1,5 @@
 import 'package:cashier/core/theme/cubit/theme_cubit.dart';
+import 'package:cashier/features/order/blocs/history_order_bloc/history_order_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../order/views/history_order_view.dart';
@@ -25,7 +26,7 @@ class SettingsView extends StatelessWidget {
             onPressed: () {
               context.read<ThemeCubit>().toggleTheme();
             },
-            icon: Icon(CupertinoIcons.bookmark)),
+            icon: Icon(Icons.palette_outlined)),
         title: Text('Pengaturan'),
       ),
       body: SafeArea(
@@ -86,7 +87,9 @@ class SettingsView extends StatelessWidget {
               ),
               _Listile(
                 onPress: () {
-                  // Get.toNamed(Routes.historyOrder);
+                  context
+                      .read<HistoryOrderBloc>()
+                      .add(ShowInitial(context: context));
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -123,12 +126,20 @@ class _Listile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: 5,
+        top: 10,
         left: 10.0,
         right: 5,
       ),
       child: Container(
         decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  color: Theme.of(context).colorScheme.secondary,
+                  blurStyle: BlurStyle.outer,
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: Offset(0, 1))
+            ],
             color: Theme.of(context).colorScheme.onPrimary,
             borderRadius: BorderRadius.circular(15)),
         child: ListTile(

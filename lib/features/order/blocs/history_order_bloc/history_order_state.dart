@@ -7,8 +7,6 @@ sealed class HistoryOrderState extends Equatable {
   List<Object> get props => [];
 }
 
-final class HistoryOrderInitial extends HistoryOrderState {}
-
 final class HistoryOrderLoading extends HistoryOrderState {}
 
 final class HistoryOrderLoaded extends HistoryOrderState {

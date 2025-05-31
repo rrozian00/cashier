@@ -134,9 +134,8 @@ class ContentWidget extends StatelessWidget {
                                     final int price = int.tryParse(
                                             product.product.price ?? '0') ??
                                         0;
-                                    final int qty = int.tryParse(
-                                            product.product.quantity ?? '0') ??
-                                        0;
+                                    final int qty =
+                                        product.product.quantity ?? 0;
                                     final int subtotal = price * qty;
 
                                     return ListTile(

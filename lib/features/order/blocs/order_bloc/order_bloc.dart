@@ -44,7 +44,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   int get totalPrice => _cart.fold(0, (sum, item) {
         final price = int.tryParse(item.product.price ?? '0') ?? 0;
-        return sum + (price * item.quantity);
+        return sum + (price * item.product.quantity!);
       });
 
   void _emitCart(Emitter<OrderState> emit) {
@@ -53,11 +53,17 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   void _onAddToCart(AddToCart event, Emitter<OrderState> emit) {
     final index = _cart.indexWhere((e) => e.product.id == event.product.id);
+
     if (index == -1) {
-      _cart.add(CartModel(product: event.product, quantity: 1));
+      // Buat product baru dengan quantity 1
+      final newProduct = event.product.copyWith(quantity: 1);
+      _cart.add(CartModel(product: newProduct));
     } else {
-      final current = _cart[index];
-      _cart[index] = current.copyWith(quantity: current.quantity + 1);
+      // Update quantity di product yang ada
+      final existingProduct = _cart[index].product;
+      final updatedProduct =
+          existingProduct.copyWith(quantity: existingProduct.quantity! + 1);
+      _cart[index] = CartModel(product: updatedProduct);
     }
     _emitCart(emit);
   }
@@ -65,23 +71,27 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   void _onIncrementCartItem(IncrementCartItem event, Emitter<OrderState> emit) {
     final index = _cart.indexWhere((e) => e.product.id == event.product.id);
     if (index != -1) {
-      final current = _cart[index];
-      _cart[index] = current.copyWith(quantity: current.quantity + 1);
+      final existingProduct = _cart[index].product;
+      final updatedProduct =
+          existingProduct.copyWith(quantity: existingProduct.quantity! + 1);
+      _cart[index] = CartModel(product: updatedProduct);
+      _emitCart(emit);
     }
-    _emitCart(emit);
   }
 
   void _onDecrementCartItem(DecrementCartItem event, Emitter<OrderState> emit) {
     final index = _cart.indexWhere((e) => e.product.id == event.product.id);
     if (index != -1) {
-      final current = _cart[index];
-      if (current.quantity > 1) {
-        _cart[index] = current.copyWith(quantity: current.quantity - 1);
+      final existingProduct = _cart[index].product;
+      if (existingProduct.quantity! > 1) {
+        final updatedProduct =
+            existingProduct.copyWith(quantity: existingProduct.quantity! - 1);
+        _cart[index] = CartModel(product: updatedProduct);
       } else {
         _cart.removeAt(index);
       }
+      _emitCart(emit);
     }
-    _emitCart(emit);
   }
 
   void _onAddToCartByBarcode(
@@ -143,13 +153,16 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     final index = _cart.indexWhere((e) => e.product.id == event.product.id);
     if (index != -1) {
       if (event.quantity > 0) {
-        _cart[index] = _cart[index].copyWith(quantity: event.quantity);
+        final updatedProduct =
+            _cart[index].product.copyWith(quantity: event.quantity);
+        _cart[index] = CartModel(product: updatedProduct);
       } else {
         _cart.removeAt(index);
       }
     } else {
       if (event.quantity > 0) {
-        _cart.add(CartModel(product: event.product, quantity: event.quantity));
+        final newProduct = event.product.copyWith(quantity: event.quantity);
+        _cart.add(CartModel(product: newProduct));
       }
     }
     _emitCart(emit);

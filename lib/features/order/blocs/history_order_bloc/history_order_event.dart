@@ -14,3 +14,11 @@ class ShowMyDateRange extends HistoryOrderEvent {
   @override
   List<Object> get props => [context];
 }
+
+class ShowInitial extends HistoryOrderEvent {
+  final BuildContext context;
+  const ShowInitial({required this.context});
+
+  @override
+  List<Object> get props => [context];
+}

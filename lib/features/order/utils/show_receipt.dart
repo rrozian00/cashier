@@ -75,7 +75,7 @@ class ShowReceipt extends StatelessWidget {
                     }
 
                     int hargaSatuan = int.tryParse(produk.price ?? '0') ?? 0;
-                    int jumlah = item.quantity;
+                    int jumlah = item.product.quantity ?? 0;
                     int subTotal = jumlah * hargaSatuan;
 
                     return Padding(

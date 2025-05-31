@@ -6,11 +6,11 @@ import '../../product/models/product_model.dart';
 
 class CartModel extends Equatable {
   final ProductModel product;
-  final int quantity;
+  // final int quantity;
 
   const CartModel({
     required this.product,
-    required this.quantity,
+    // required this.quantity,
   });
 
   CartModel copyWith({
@@ -19,21 +19,21 @@ class CartModel extends Equatable {
   }) {
     return CartModel(
       product: product ?? this.product,
-      quantity: quantity ?? this.quantity,
+      // quantity: quantity ?? this.quantity,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'product': product.toMap(),
-      'quantity': quantity,
+      // 'quantity': quantity,
     };
   }
 
   factory CartModel.fromMap(Map<String, dynamic> map) {
     return CartModel(
       product: ProductModel.fromMap(map['product'] as Map<String, dynamic>),
-      quantity: map['quantity'] as int,
+      // quantity: map['quantity'] as int,
     );
   }
 
@@ -46,5 +46,5 @@ class CartModel extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [product, quantity];
+  List<Object?> get props => [product];
 }

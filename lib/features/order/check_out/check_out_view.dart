@@ -162,7 +162,9 @@ class CheckOutView extends StatelessWidget {
                   // width: 180,
                   // text: "PROSES",
                   onPressed: () {
-                    context.read<CheckOutBloc>().add(ProcessPayment());
+                    context
+                        .read<CheckOutBloc>()
+                        .add(ProcessPayment(cart: orderBloc.cart));
                   });
             } else {
               return Text(

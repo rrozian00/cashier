@@ -72,7 +72,7 @@ Future<void> printReceipt({
     if (produk == null) continue;
 
     int hargaSatuan = int.tryParse(produk.price ?? '0') ?? 0;
-    int jumlah = item.quantity;
+    int jumlah = item.product.quantity ?? 0;
     int subTotal = jumlah * hargaSatuan;
 
     // Format produk dengan rata kiri untuk nama & rata kanan untuk angka

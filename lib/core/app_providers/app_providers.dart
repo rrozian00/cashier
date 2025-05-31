@@ -22,7 +22,8 @@ final List<BlocProvider> appProviders = [
   BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
   BlocProvider<ProductBloc>(create: (context) => ProductBloc()),
   BlocProvider<OrderBloc>(create: (context) => OrderBloc()),
-  BlocProvider<HistoryOrderBloc>(create: (context) => HistoryOrderBloc()),
+  BlocProvider<HistoryOrderBloc>(
+      create: (context) => HistoryOrderBloc(context: context)),
   BlocProvider<CheckOutBloc>(create: (context) => CheckOutBloc()),
   BlocProvider<ThemeCubit>(create: (context) => ThemeCubit(ThemeService())),
 ];

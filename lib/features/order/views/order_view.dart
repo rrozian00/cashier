@@ -1,3 +1,4 @@
+import 'package:cashier/features/product/models/product_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,8 +31,7 @@ class OrderView extends StatelessWidget {
                 onPressed: () {
                   context.read<ThemeCubit>().toggleTheme();
                 },
-                icon: Icon(CupertinoIcons.bookmark)),
-            // titleText: 'Pilih Produk',
+                icon: Icon(Icons.palette_outlined)),
             title: Text("Pilih Produk"),
             actions: [
               IconButton(
@@ -106,7 +106,7 @@ class OrderView extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = orderBloc.cart[index];
         final product = item.product;
-        final quantity = item.quantity;
+        final quantity = item.product.quantity;
 
         return Dismissible(
           confirmDismiss: (direction) async {
@@ -147,6 +147,7 @@ class OrderView extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 3.0),
             child: Card(
+              shadowColor: Theme.of(context).colorScheme.secondary,
               elevation: 4,
               color: Theme.of(context).colorScheme.onPrimary,
               // color: white,
@@ -156,10 +157,7 @@ class OrderView extends StatelessWidget {
               child: Stack(
                 children: [
                   ListTile(
-                    onTap: () => orderBloc.add(UpdateCartItem(
-                      product: product,
-                      quantity: quantity,
-                    )),
+                    onTap: () => _showQuantityDialog(context, product),
                     leading: ClipOval(
                       child: Image.network(product.image ?? ""),
                     ),
@@ -247,11 +245,9 @@ class OrderView extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CheckOutView(
-                            orderBloc: orderBloc,
-                          ),
+                          builder: (context) =>
+                              CheckOutView(orderBloc: orderBloc),
                         ));
-
                     context
                         .read<CheckOutBloc>()
                         .add(InitCheckOut(orderBloc.totalPrice));
@@ -314,4 +310,41 @@ class OrderView extends StatelessWidget {
       ),
     );
   }
+}
+
+void _showQuantityDialog(BuildContext context, ProductModel product) {
+  final controller = TextEditingController(
+    text: product.quantity.toString(),
+  );
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(product.name ?? ''),
+      content: TextField(
+        controller: controller,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(labelText: 'Jumlah'),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Batal'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            final newQty = int.tryParse(controller.text) ?? 0;
+            context.read<OrderBloc>().add(
+                  UpdateCartItem(
+                    product: product,
+                    quantity: newQty,
+                  ),
+                );
+            Navigator.pop(context);
+          },
+          child: Text('Simpan'),
+        ),
+      ],
+    ),
+  );
 }

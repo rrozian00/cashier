@@ -38,7 +38,10 @@ class SplashScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset("assets/icons/icon.png"),
+              Image.asset(
+                "assets/icons/icon.png",
+                color: Theme.of(context).colorScheme.primary,
+              ),
               Text(
                 "Cashier",
                 style: GoogleFonts.lobster(

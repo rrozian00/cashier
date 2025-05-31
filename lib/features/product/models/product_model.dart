@@ -10,7 +10,7 @@ class ProductModel {
   String? price;
   String? image;
   String? publicId;
-  String? quantity;
+  int? quantity;
   Timestamp? createdAt;
   ProductModel({
     this.id,
@@ -30,7 +30,7 @@ class ProductModel {
     String? price,
     String? image,
     String? publicId,
-    String? quantity,
+    int? quantity,
     Timestamp? createdAt,
   }) {
     return ProductModel(
@@ -66,7 +66,7 @@ class ProductModel {
       price: map['price'] != null ? map['price'] as String : null,
       image: map['image'] != null ? map['image'] as String : null,
       publicId: map['publicId'] != null ? map['publicId'] as String : null,
-      quantity: map['quantity'] != null ? map['quantity'] as String : null,
+      quantity: map['quantity'] != null ? map['quantity'] as int : null,
       createdAt:
           map['createdAt'] != null ? map['createdAt'] as Timestamp : null,
     );
