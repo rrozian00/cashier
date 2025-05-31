@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.natureship.cashier"
-    compileSdk = 35 // Sesuaikan dengan compileSdk yang diinginkan
+    compileSdk = 35 
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -19,9 +19,9 @@ android {
 
     defaultConfig {
         applicationId = "com.natureship.cashier"
-        minSdk = 23 // Sesuaikan dengan minSdk yang sesuai
-        targetSdk = 34 // Sesuaikan dengan targetSdk yang diinginkan
-        versionCode = 1
+        minSdk = 23 
+        targetSdk = 34 
+        versionCode = 4
         versionName = "2.0.0"
 
         ndk {

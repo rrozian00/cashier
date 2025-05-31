@@ -14,14 +14,16 @@ class StatisticList extends StatelessWidget {
       child: Row(
         children: [
           MyCard(
-            image: "assets/images/income.png",
-            title: "Total Pendapatan Hari Ini",
+            image: "assets/images/empty.png",
+            // title: "Total Pendapatan Hari Ini",
+            title: "UNDER MAINTENANCE",
             subtitle: rupiahConverterDouble(12000), //TODO:
             color: green,
           ),
           MyCard(
-            image: "assets/images/expenses.png",
-            title: "Total Pengeluaran Hari Ini",
+            image: "assets/images/empty.png",
+            title: "UNDER MAINTENANCE",
+            // title: "Total Pengeluaran Hari Ini",
             subtitle: rupiahConverterDouble(12000), //TODO:
             color: green,
           ),

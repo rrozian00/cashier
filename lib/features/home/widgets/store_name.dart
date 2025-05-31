@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/theme/colors.dart';
 import '../bloc/home_bloc.dart';
 
 class StoreName extends StatefulWidget {
@@ -21,6 +20,8 @@ class _StoreNameState extends State<StoreName> {
 
   @override
   Widget build(BuildContext context) {
+    final colorThis = Theme.of(context).colorScheme.error;
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -31,16 +32,17 @@ class _StoreNameState extends State<StoreName> {
               child: Icon(
                 Icons.store_rounded,
                 size: 70,
-                color: oldRed,
+                color: colorThis,
               )),
           BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
               if (state is HomeSuccess) {
-                return Text(
-                  state.store.name ?? 'Nama Kosong',
-                  style: GoogleFonts.pacifico(
-                      fontSize: 30, fontWeight: FontWeight.bold, color: oldRed),
-                );
+                return Text(state.store.name ?? 'Nama Kosong',
+                    style: GoogleFonts.pacifico(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: colorThis,
+                    ));
               }
               if (state is HomeError) {
                 return Text("state error ${state.message}");
