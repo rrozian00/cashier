@@ -1,13 +1,13 @@
 import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
-import 'package:cashier/features/order/models/cart_model.dart';
+import 'package:cashier/features/order/order/models/cart_model.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 
-import '../../../core/utils/rupiah_converter.dart';
-import '../../product/models/product_model.dart';
+import '../../../../core/utils/rupiah_converter.dart';
+import '../../../product/models/product_model.dart';
 
 Future<void> printReceipt({
   required String storeName,

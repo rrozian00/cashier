@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../core/utils/rupiah_converter.dart';
+import '../../../../core/theme/colors.dart';
+import '../../../../core/utils/rupiah_converter.dart';
 import 'my_card.dart';
 
 class StatisticList extends StatelessWidget {

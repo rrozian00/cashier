@@ -7,13 +7,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cashier/core/theme/cubit/theme_cubit.dart';
 import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../core/utils/rupiah_converter.dart';
-import '../../../core/utils/scanner_page.dart';
-import '../../product/bloc/product_bloc.dart';
-import '../../product/views/product_list.dart';
-import '../blocs/order_bloc/order_bloc.dart';
-import '../check_out/check_out_view.dart';
+import '../../../../core/theme/colors.dart';
+import '../../../../core/utils/rupiah_converter.dart';
+import '../../../../core/utils/scanner_page.dart';
+import '../../../product/bloc/product_bloc.dart';
+import '../../../product/views/product_list.dart';
+import '../bloc/order_bloc.dart';
+import '../../check_out/views/check_out_view.dart';
 
 class OrderView extends StatelessWidget {
   const OrderView({super.key});

@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../blocs/history_order_bloc/history_order_bloc.dart';
-import 'widgets/content_widget.dart';
-import 'widgets/header_widget.dart';
+import '../bloc/history_order_bloc.dart';
+import '../../order/views/widgets/content_widget.dart';
+import '../../order/views/widgets/header_widget.dart';
 
-import '../../../core/widgets/no_data.dart';
-import '../models/order_model.dart';
+import '../../../../core/widgets/no_data.dart';
+import '../../order/models/order_model.dart';
 
 class HistoryOrderView extends StatelessWidget {
   const HistoryOrderView({super.key});

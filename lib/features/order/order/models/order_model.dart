@@ -1,4 +1,4 @@
-import 'package:cashier/features/order/models/cart_model.dart';
+import 'package:cashier/features/order/order/models/cart_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OrderModel {

@@ -1,5 +1,5 @@
-import '../models/order_model.dart';
-import '../../../core/utils/rupiah_converter.dart';
+import '../../order/models/order_model.dart';
+import '../../../../core/utils/rupiah_converter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

@@ -1,13 +1,13 @@
-import 'package:cashier/features/order/blocs/order_bloc/order_bloc.dart';
+import 'package:cashier/features/order/order/bloc/order_bloc.dart';
 import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
-import 'package:cashier/features/order/utils/show_receipt.dart';
+import 'package:cashier/features/order/order/utils/show_receipt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../core/utils/rupiah_converter.dart';
+import '../../../../core/theme/colors.dart';
+import '../../../../core/utils/rupiah_converter.dart';
 
 class CheckOutView extends StatelessWidget {
   const CheckOutView({

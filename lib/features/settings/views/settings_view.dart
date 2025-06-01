@@ -1,8 +1,8 @@
 import 'package:cashier/core/theme/cubit/theme_cubit.dart';
-import 'package:cashier/features/order/blocs/history_order_bloc/history_order_bloc.dart';
+import 'package:cashier/features/order/history_order/bloc/history_order_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../order/views/history_order_view.dart';
+import '../../order/history_order/views/history_order_view.dart';
 
 import '../../product/bloc/product_bloc.dart';
 import '../../user/blocs/employee/bloc/employee_bloc.dart';
@@ -22,11 +22,11 @@ class SettingsView extends StatelessWidget {
     return Scaffold(
       // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              context.read<ThemeCubit>().toggleTheme();
-            },
-            icon: Icon(Icons.palette_outlined)),
+        // leading: IconButton(
+        //     onPressed: () {
+        //       context.read<ThemeCubit>().toggleTheme();
+        //     },
+        //     icon: Icon(Icons.palette_outlined)),
         title: Text('Pengaturan'),
       ),
       body: SafeArea(
@@ -98,6 +98,52 @@ class SettingsView extends StatelessWidget {
                 },
                 title: "Riwayat",
                 icon: Icons.history_toggle_off_rounded,
+              ),
+              _Listile(
+                onPress: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Column(
+                          spacing: 35,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "Pilih Tema",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                ElevatedButton(
+                                    onPressed: () {
+                                      context
+                                          .read<ThemeCubit>()
+                                          .chooseTheme(true);
+                                    },
+                                    child: Text("Dark")),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      context
+                                          .read<ThemeCubit>()
+                                          .chooseTheme(false);
+                                    },
+                                    child: Text("Light")),
+                              ],
+                            ),
+                            OutlinedButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text("Ok"))
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+                title: "Tema",
+                icon: Icons.palette_outlined,
               ),
             ],
           ),

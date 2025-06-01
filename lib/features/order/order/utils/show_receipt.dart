@@ -1,13 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cashier/features/order/blocs/order_bloc/order_bloc.dart';
+import 'package:cashier/features/order/order/bloc/order_bloc.dart';
 import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/utils/rupiah_converter.dart';
-import '../../product/models/product_model.dart';
+import '../../../../core/utils/rupiah_converter.dart';
+import '../../../product/models/product_model.dart';
 import 'print_receipt.dart';
 
 class ShowReceipt extends StatelessWidget {

@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import '../../models/cart_model.dart';
+import '../models/cart_model.dart';
 import '../../../../core/errors/failure.dart';
-import '../../repositories/order_repository.dart';
+import '../repositories/order_repository.dart';
 import '../../../product/models/product_model.dart';
 import '../../../product/repositories/product_repository.dart';
 import 'package:dartz/dartz.dart';

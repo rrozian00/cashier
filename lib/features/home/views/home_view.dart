@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../user/blocs/auth/auth_bloc.dart';
-import '../widgets/date.dart';
-import '../widgets/statistic_list.dart';
-import '../widgets/store_name.dart';
+import 'widgets/date.dart';
+import 'widgets/statistic_list.dart';
+import 'widgets/store_name.dart';
 import '../../../routes/app_pages.dart';
 
 class HomeView extends StatelessWidget {

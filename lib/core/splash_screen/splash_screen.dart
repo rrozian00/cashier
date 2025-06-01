@@ -41,6 +41,7 @@ class SplashScreen extends StatelessWidget {
               Image.asset(
                 "assets/icons/icon.png",
                 color: Theme.of(context).colorScheme.primary,
+                width: MediaQuery.of(context).size.width / 2.5,
               ),
               Text(
                 "Cashier",
