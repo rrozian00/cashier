@@ -1,18 +1,16 @@
-import 'package:cashier/core/theme/cubit/theme_cubit.dart';
-import 'package:cashier/features/order/history_order/bloc/history_order_bloc.dart';
-import 'package:flutter/cupertino.dart';
-
-import '../../order/history_order/views/history_order_view.dart';
-
-import '../../product/bloc/product_bloc.dart';
-import '../../user/blocs/employee/bloc/employee_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../core/theme/cubit/theme_cubit.dart';
+import '../../order/history_order/bloc/history_order_bloc.dart';
+
 import '../../../core/theme/colors.dart';
 import '../../../routes/app_pages.dart';
+import '../../order/history_order/views/history_order_view.dart';
+import '../../product/bloc/product_bloc.dart';
+import '../../user/blocs/employee/bloc/employee_bloc.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -20,13 +18,7 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        // leading: IconButton(
-        //     onPressed: () {
-        //       context.read<ThemeCubit>().toggleTheme();
-        //     },
-        //     icon: Icon(Icons.palette_outlined)),
         title: Text('Pengaturan'),
       ),
       body: SafeArea(
@@ -123,19 +115,19 @@ class SettingsView extends StatelessWidget {
                                           .read<ThemeCubit>()
                                           .chooseTheme(true);
                                     },
-                                    child: Text("Dark")),
+                                    child: Text("Gelap")),
                                 ElevatedButton(
                                     onPressed: () {
                                       context
                                           .read<ThemeCubit>()
                                           .chooseTheme(false);
                                     },
-                                    child: Text("Light")),
+                                    child: Text("Terang")),
                               ],
                             ),
-                            OutlinedButton(
+                            TextButton(
                                 onPressed: () => Navigator.pop(context),
-                                child: Text("Ok"))
+                                child: Text("Simpan"))
                           ],
                         ),
                       );
