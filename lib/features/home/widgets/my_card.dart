@@ -1,5 +1,3 @@
-// Widget Custom untuk Menampilkan Data dalam Card yang Elegan
-import 'package:cashier/core/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,7 +22,6 @@ class MyCard extends StatelessWidget {
         height: 150,
         width: 300,
         decoration: BoxDecoration(
-          color: white,
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(

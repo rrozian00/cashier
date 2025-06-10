@@ -14,4 +14,4 @@ final grey = Color(0xFFC6C6C6);
 final yellow = Color(0xFFFCAC12);
 final pink = Color(0xFFFD6F7A);
 final transparent = Colors.transparent;
-final brown = Colors.brown;
+final brown = const Color.fromARGB(255, 223, 181, 166);

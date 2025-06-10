@@ -31,7 +31,7 @@ class _StoreNameState extends State<StoreName> {
               child: Icon(
                 Icons.store_rounded,
                 size: 70,
-                color: oldRed,
+                color: red,
               )),
           BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
@@ -39,7 +39,7 @@ class _StoreNameState extends State<StoreName> {
                 return Text(
                   state.store.name ?? 'Nama Kosong',
                   style: GoogleFonts.pacifico(
-                      fontSize: 30, fontWeight: FontWeight.bold, color: oldRed),
+                      fontSize: 30, fontWeight: FontWeight.bold, color: red),
                 );
               }
               if (state is HomeError) {

@@ -40,9 +40,9 @@ class HomeView extends StatelessWidget {
                     children: [
                       Text(
                         "for simple life, use",
-                        style: GoogleFonts.montserrat(
+                        style: TextStyle(
                           fontSize: 18,
-                          color: brown,
+                          color: Theme.of(context).colorScheme.secondary,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -50,7 +50,7 @@ class HomeView extends StatelessWidget {
                       Text(
                         "Cashier !!",
                         style: GoogleFonts.lobster(
-                          color: black,
+                          // color: black,
                           fontSize: 30,
                           fontWeight: FontWeight.w800,
                         ),
@@ -65,7 +65,7 @@ class HomeView extends StatelessWidget {
                       const Date(),
                     ],
                   ),
-                  SizedBox(height: 40),
+                  // SizedBox(height: 40),
 
                   // // Animasi Logo Toko
                   StoreName(),
@@ -76,7 +76,7 @@ class HomeView extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
-                      "Rekapan untuk anda",
+                      "Terbaru",
                       style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
                     ),
                   ),
