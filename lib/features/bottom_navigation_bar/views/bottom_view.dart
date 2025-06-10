@@ -6,7 +6,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:cashier/features/printer/controllers/printer_controller.dart';
 
 import '../../home/views/home_view.dart';
-import '../../order/views/order_view.dart';
+import '../../order/order/views/order_view.dart';
 import '../../printer/views/printer_view.dart';
 import '../../settings/views/settings_view.dart';
 import '../../store/views/store_view.dart';

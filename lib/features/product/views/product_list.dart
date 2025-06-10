@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:cashier/features/order/blocs/order_bloc/order_bloc.dart';
+import 'package:cashier/features/order/order/bloc/order_bloc.dart';
 
 import '../../../core/theme/colors.dart';
 import '../../../core/widgets/home_indicator.dart';
@@ -100,19 +100,20 @@ class _ProductItem extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
+            // color: Theme.of(context).colorScheme.onSecondary,
             boxShadow: [
               BoxShadow(
-                color: softBlack,
+                color: Theme.of(context).colorScheme.secondary,
                 spreadRadius: 4,
                 blurRadius: 6,
               ),
             ],
           ),
           child: InkWell(
+            splashColor: Theme.of(context).colorScheme.primary,
             onLongPress: () =>
                 context.read<OrderBloc>().add(RemoveFromCart(product: product)),
             borderRadius: BorderRadius.circular(12),
-            splashColor: purple,
             onTap: () =>
                 context.read<OrderBloc>().add(AddToCartByTap(product: product)),
             child: Stack(
@@ -138,7 +139,7 @@ class _ProductItem extends StatelessWidget {
                       builder: (context, state) {
                         final item = orderBloc.cart.firstWhereOrNull(
                             (e) => e.product.id == product.id);
-                        final quantity = item?.quantity ?? 0;
+                        final quantity = item?.product.quantity ?? 0;
 
                         return quantity > 0
                             ? Container(

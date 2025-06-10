@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:cashier/core/utils/get_store_id.dart';
 import 'package:cashier/core/utils/get_user_data.dart';
-import 'package:cashier/features/order/models/cart_model.dart';
-import 'package:cashier/features/order/models/order_model.dart';
-import 'package:cashier/features/order/repositories/order_repository.dart';
+import 'package:cashier/features/order/order/models/cart_model.dart';
+import 'package:cashier/features/order/order/models/order_model.dart';
+import 'package:cashier/features/order/order/repositories/order_repository.dart';
 import 'package:cashier/features/store/models/store_model.dart';
 import 'package:cashier/features/user/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -84,7 +84,7 @@ class CheckOutBloc extends Bloc<CheckOutEvent, CheckOutState> {
 
       final orderModel = OrderModel(
         payment: state.paymentAmount.toString(),
-        products: state.cart,
+        products: event.cart,
         refund: (state.paymentAmount - state.totalPrice).toString(),
         total: state.totalPrice.toString(),
         createdAt: createdAt,

@@ -4,11 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/theme/colors.dart';
 import '../../user/blocs/auth/auth_bloc.dart';
-import '../widgets/date.dart';
-import '../widgets/statistic_list.dart';
-import '../widgets/store_name.dart';
+import 'widgets/date.dart';
+import 'widgets/statistic_list.dart';
+import 'widgets/store_name.dart';
 import '../../../routes/app_pages.dart';
 
 class HomeView extends StatelessWidget {
@@ -50,7 +49,7 @@ class HomeView extends StatelessWidget {
                       Text(
                         "Cashier !!",
                         style: GoogleFonts.lobster(
-                          // color: black,
+                          color: Theme.of(context).colorScheme.primary,
                           fontSize: 30,
                           fontWeight: FontWeight.w800,
                         ),
@@ -58,18 +57,18 @@ class HomeView extends StatelessWidget {
                     ],
                   ),
 
-                  SizedBox(height: 100),
+                  SizedBox(height: 50),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       const Date(),
                     ],
                   ),
-                  // SizedBox(height: 40),
+                  SizedBox(height: 10),
 
                   // // Animasi Logo Toko
                   StoreName(),
-                  SizedBox(height: 30),
+                  SizedBox(height: 100),
 
                   // Tanggal Sekarang
 

@@ -166,6 +166,7 @@ class MyText extends StatelessWidget {
             controller: controller,
             keyboardType: textInputType,
             decoration: InputDecoration(
+                enabledBorder: InputBorder.none,
                 suffixIcon: suffixIcon,
                 suffixText: suffix,
                 fillColor: color ?? white,

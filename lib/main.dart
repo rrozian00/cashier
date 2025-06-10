@@ -1,4 +1,3 @@
-import 'package:cashier/core/theme/colors.dart';
 import 'package:cashier/core/theme/cubit/theme_cubit.dart';
 import 'package:cashier/core/theme/my_theme.dart';
 import 'package:firebase_core/firebase_core.dart';

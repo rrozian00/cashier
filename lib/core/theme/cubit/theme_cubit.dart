@@ -19,4 +19,10 @@ class ThemeCubit extends Cubit<bool> {
     await _themeService.setDarkMode(newTheme);
     emit(newTheme);
   }
+
+  Future<void> chooseTheme(bool newTheme) async {
+    // final newTheme = !state;
+    await _themeService.setDarkMode(newTheme);
+    emit(newTheme);
+  }
 }

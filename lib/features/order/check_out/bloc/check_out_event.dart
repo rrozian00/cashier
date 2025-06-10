@@ -25,6 +25,12 @@ class NumberPressed extends CheckOutEvent {
 
 class ClearPressed extends CheckOutEvent {}
 
-class ProcessPayment extends CheckOutEvent {}
+class ProcessPayment extends CheckOutEvent {
+  final List<CartModel> cart;
+
+  const ProcessPayment({required this.cart});
+  @override
+  List<Object> get props => [cart];
+}
 
 class ClearReceipt extends CheckOutEvent {}
