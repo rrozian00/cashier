@@ -1,6 +1,7 @@
 import 'package:cashier/core/theme/cubit/theme_cubit.dart';
 import 'package:cashier/core/theme/theme_service.dart';
 import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
+import 'package:cashier/features/settings/cubit/settings_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../features/bottom_navigation_bar/cubit/bottom_nav_cubit.dart';
@@ -26,4 +27,5 @@ final List<BlocProvider> appProviders = [
       create: (context) => HistoryOrderBloc(context: context)),
   BlocProvider<CheckOutBloc>(create: (context) => CheckOutBloc()),
   BlocProvider<ThemeCubit>(create: (context) => ThemeCubit(ThemeService())),
+  BlocProvider<SettingsCubit>(create: (context) => SettingsCubit()),
 ];

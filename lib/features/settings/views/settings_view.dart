@@ -1,3 +1,4 @@
+import 'package:cashier/features/settings/cubit/settings_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -142,8 +143,13 @@ class SettingsView extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
-      floatingActionButton: Text(
-        "v.2.0.0",
+      floatingActionButton: BlocBuilder<SettingsCubit, String>(
+        builder: (context, state) {
+          return Text(
+            state,
+            style: TextStyle(color: Theme.of(context).disabledColor),
+          );
+        },
       ),
     );
   }
