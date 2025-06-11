@@ -11,17 +11,9 @@ class StoreView extends GetView<StoreController> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          TextButton(
-              onPressed: () => controller.editDialog(context),
-              child: Text(
-                "Ubah Toko",
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
-              ))
-        ],
-        // titleText: "Profil Toko",
         title: Text("Profil Toko"),
       ),
       body: Obx(() {
@@ -43,7 +35,7 @@ class StoreView extends GetView<StoreController> {
                       children: [
                         Image.asset(
                           "assets/images/store.png",
-                          color: Theme.of(context).colorScheme.primary,
+                          color: colorScheme.secondary,
                           width: 100,
                         )
                       ],
@@ -51,18 +43,24 @@ class StoreView extends GetView<StoreController> {
                     SizedBox(
                       height: 30,
                     ),
-                    myList(
+                    _MyList(
                         icon: Icons.store,
                         subtitle: controller.store.value?.name ?? '',
                         title: "Nama Toko"),
-                    myList(
+                    _MyList(
                         icon: Icons.location_on,
                         subtitle: controller.store.value?.address ?? '',
                         title: "Alamat Toko"),
-                    myList(
+                    _MyList(
                         icon: Icons.phone_android,
                         subtitle: controller.store.value?.phone ?? '',
                         title: "No HP Toko"),
+                    SizedBox(height: 50),
+                    ElevatedButton(
+                        onPressed: () => controller.editDialog(context),
+                        child: Text(
+                          "Ubah Toko",
+                        ))
                   ],
                 ),
               ),
@@ -72,7 +70,7 @@ class StoreView extends GetView<StoreController> {
       }),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Obx(() => Visibility(
-            visible: controller.store.value == null,
+            visible: controller.store.value != null,
             child: ElevatedButton(
               // width: 180,
               // height: 45,
@@ -83,18 +81,27 @@ class StoreView extends GetView<StoreController> {
           )),
     );
   }
+}
 
-  Widget myList({
-    required String title,
-    required String subtitle,
-    required IconData icon,
-  }) {
+class _MyList extends StatelessWidget {
+  const _MyList({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+  });
+
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
           minTileHeight: 0,
           leading: Icon(
+            color: Theme.of(context).colorScheme.secondary,
             icon,
           ),
           title: Text(
@@ -103,7 +110,7 @@ class StoreView extends GetView<StoreController> {
           ),
           subtitle: Text(
             subtitle,
-            style: TextStyle(),
+            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
           ),
         ),
         Divider()

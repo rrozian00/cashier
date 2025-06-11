@@ -8,7 +8,7 @@ import '../bloc/home_bloc.dart';
 import 'widgets/date.dart';
 import 'widgets/statistic_list.dart';
 import 'widgets/store_name.dart';
-import 'widgets/tag_line.dart';
+import 'widgets/tag_lines.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -26,36 +26,30 @@ class HomeView extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Tanggal Sekarang
-                    const Date(),
-                    //Tag Line
-                    TagLineWidget(),
-                  ],
-                ),
-                Column(
-                  spacing: 15,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // // Animasi Logo Toko
-                    StoreName(),
-                    SizedBox(height: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  // Tanggal Sekarang
+                  const Date(),
 
-                    // Statistik Keuangan
-                    StatisticList(),
-                  ],
-                )
-              ],
-            ),
+                  //Tag Line
+                  TagLineWidget(),
+                ],
+              ),
+              // // Animasi Logo Toko
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  StoreName(),
+                  SizedBox(height: 10),
+
+                  // Statistik Keuangan
+                  StatisticList(),
+                ],
+              )
+            ],
           ),
         ),
       ),

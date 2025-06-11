@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../core/theme/colors.dart';
 import '../../../core/utils/get_store_id.dart';
 import '../../../core/widgets/home_indicator.dart';
-
 import '../../../core/widgets/my_text_field.dart';
 import '../models/store_model.dart';
 
@@ -16,10 +15,10 @@ class StoreController extends GetxController {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   final store = Rxn<StoreModel>(null);
-  final name = "".obs;
-  final address = "".obs;
-  final phone = "".obs;
-  final logoUrl = "".obs;
+  final name = TextEditingController();
+  final address = TextEditingController();
+  final phone = TextEditingController();
+  final logoUrl = TextEditingController();
 
   var isLoading = false.obs;
 
@@ -31,11 +30,11 @@ class StoreController extends GetxController {
 
       final store = StoreModel(
         id: storeId, // Set ID secara eksplisit
-        name: name.value,
+        name: name.text,
         ownerId: uid,
-        address: address.value,
-        phone: phone.value,
-        logoUrl: logoUrl.value,
+        address: address.text,
+        phone: phone.text,
+        logoUrl: logoUrl.text,
         createdAt: createdAt,
       );
 
@@ -57,10 +56,10 @@ class StoreController extends GetxController {
   }
 
   void clearField() {
-    name.value = '';
-    address.value = '';
-    phone.value = '';
-    logoUrl.value = '';
+    name.clear();
+    address.clear();
+    phone.clear();
+    logoUrl.clear();
   }
 
   void updateStore() async {
@@ -69,9 +68,9 @@ class StoreController extends GetxController {
 
       final oldStore = store.value;
       final update = oldStore?.copyWith(
-        name: name.value,
-        address: address.value,
-        phone: phone.value,
+        name: name.text,
+        address: address.text,
+        phone: phone.text,
       );
 
       await _firestore
@@ -88,9 +87,9 @@ class StoreController extends GetxController {
   }
 
   void editDialog(BuildContext context) {
-    name.value = store.value?.name ?? '';
-    address.value = store.value?.address ?? '';
-    phone.value = store.value?.phone ?? '';
+    name.text = store.value?.name ?? '';
+    address.text = store.value?.address ?? '';
+    phone.text = store.value?.phone ?? '';
 
     Get.bottomSheet(
       isScrollControlled: true,

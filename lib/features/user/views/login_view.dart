@@ -67,9 +67,8 @@ class LoginView extends StatelessWidget {
                       child: Text(
                           "Silahkan Login dengan e-mail Anda,\nJika belum punya akun silahkan klik Daftar!"),
                     ),
-                    MyText(
+                    MyTextField(
                       filled: true,
-                      color: white,
                       textCapitalization: TextCapitalization.none,
                       textInputType: TextInputType.emailAddress,
                       controller: emailC,
@@ -92,7 +91,7 @@ class LoginView extends StatelessWidget {
                             : true;
                         final hasToggle = state is UnauthenticatedState;
 
-                        return MyText(
+                        return MyTextField(
                           suffixIcon: IconButton(
                             onPressed: hasToggle
                                 ? () =>
@@ -105,7 +104,6 @@ class LoginView extends StatelessWidget {
                             ),
                           ),
                           filled: true,
-                          color: white,
                           textCapitalization: TextCapitalization.none,
                           controller: passwordC,
                           label: "Password",

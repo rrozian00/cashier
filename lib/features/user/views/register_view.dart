@@ -1,12 +1,11 @@
-import '../../../routes/app_pages.dart';
+import 'package:cashier/core/widgets/my_text_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/theme/colors.dart';
 import '../../../core/widgets/my_appbar.dart';
-
-import '../../../core/widgets/my_text_field.dart';
+import '../../../routes/app_pages.dart';
 import '../blocs/register/register_bloc.dart';
 import '../models/user_model.dart';
 import 'login_view.dart';
@@ -44,7 +43,7 @@ class RegisterView extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  MyText(
+                  MyTextField(
                     filled: true,
                     controller: nameC,
                     label: "Nama",
@@ -56,7 +55,7 @@ class RegisterView extends StatelessWidget {
                       return null;
                     },
                   ),
-                  MyText(
+                  MyTextField(
                     filled: true,
                     textCapitalization: TextCapitalization.none,
                     textInputAction: TextInputAction.next,
@@ -71,7 +70,7 @@ class RegisterView extends StatelessWidget {
                       return null;
                     },
                   ),
-                  MyText(
+                  MyTextField(
                     filled: true,
                     textCapitalization: TextCapitalization.none,
                     textInputAction: TextInputAction.next,
@@ -88,7 +87,7 @@ class RegisterView extends StatelessWidget {
                       return null;
                     },
                   ),
-                  MyText(
+                  MyTextField(
                     filled: true,
                     textCapitalization: TextCapitalization.none,
                     textInputAction: TextInputAction.next,
@@ -105,7 +104,7 @@ class RegisterView extends StatelessWidget {
                       return null;
                     },
                   ),
-                  MyText(
+                  MyTextField(
                     filled: true,
                     controller: addressC,
                     label: "Alamat",
@@ -117,7 +116,7 @@ class RegisterView extends StatelessWidget {
                       return null;
                     },
                   ),
-                  MyText(
+                  MyTextField(
                     filled: true,
                     textInputAction: TextInputAction.next,
                     controller: phoneNumberC,

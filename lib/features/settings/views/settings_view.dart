@@ -4,14 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/theme/cubit/theme_cubit.dart';
-import '../../order/history_order/bloc/history_order_bloc.dart';
-
 import '../../../core/theme/colors.dart';
+import '../../../core/theme/cubit/theme_cubit.dart';
 import '../../../routes/app_pages.dart';
+import '../../order/history_order/bloc/history_order_bloc.dart';
 import '../../order/history_order/views/history_order_view.dart';
 import '../../product/bloc/product_bloc.dart';
 import '../../user/blocs/employee/bloc/employee_bloc.dart';
+import '../cubit/settings_cubit.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -23,132 +23,138 @@ class SettingsView extends StatelessWidget {
         title: Text('Pengaturan'),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: ListView(
-            children: [
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.profile);
-                },
-                title: "Profil",
-                icon: Icons.person,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.store);
-                },
-                title: "Toko",
-                icon: Icons.store,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.employee);
-                  context.read<EmployeeBloc>().add(GetEmployeeRequested());
-                },
-                title: "Karyawan",
-                icon: Icons.person_outline_rounded,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.product);
-                  context.read<ProductBloc>().add(ProductGetRequested());
-                },
-                title: "Produk",
-                icon: Icons.receipt_outlined,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.expense);
-                },
-                title: "Pengeluaran",
-                icon: Icons.shopping_cart,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.printer);
-                },
-                title: "Printer",
-                icon: Icons.print,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.inputManual);
-                },
-                title: "Input Manual",
-                icon: Icons.checklist_rounded,
-              ),
-              _Listile(
-                onPress: () {
-                  context
-                      .read<HistoryOrderBloc>()
-                      .add(ShowInitial(context: context));
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HistoryOrderView(),
-                      ));
-                },
-                title: "Riwayat",
-                icon: Icons.history_toggle_off_rounded,
-              ),
-              _Listile(
-                onPress: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: Column(
-                          spacing: 35,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "Pilih Tema",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ListView(
+                children: [
+                  _Listile(
+                    onPress: () {
+                      Get.toNamed(Routes.profile);
+                    },
+                    title: "Profil",
+                    icon: Icons.person,
+                  ),
+                  _Listile(
+                    onPress: () {
+                      Get.toNamed(Routes.store);
+                    },
+                    title: "Toko",
+                    icon: Icons.store,
+                  ),
+                  _Listile(
+                    onPress: () {
+                      Get.toNamed(Routes.employee);
+                      context.read<EmployeeBloc>().add(GetEmployeeRequested());
+                    },
+                    title: "Karyawan",
+                    icon: Icons.person_outline_rounded,
+                  ),
+                  _Listile(
+                    onPress: () {
+                      Get.toNamed(Routes.product);
+                      context.read<ProductBloc>().add(ProductGetRequested());
+                    },
+                    title: "Produk",
+                    icon: Icons.receipt_outlined,
+                  ),
+                  _Listile(
+                    onPress: () {
+                      Get.toNamed(Routes.expense);
+                    },
+                    title: "Pengeluaran",
+                    icon: Icons.shopping_cart,
+                  ),
+                  _Listile(
+                    onPress: () {
+                      Get.toNamed(Routes.printer);
+                    },
+                    title: "Printer",
+                    icon: Icons.print,
+                  ),
+                  _Listile(
+                    onPress: () {
+                      Get.toNamed(Routes.inputManual);
+                    },
+                    title: "Input Manual",
+                    icon: Icons.checklist_rounded,
+                  ),
+                  _Listile(
+                    onPress: () {
+                      context
+                          .read<HistoryOrderBloc>()
+                          .add(ShowInitial(context: context));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HistoryOrderView(),
+                          ));
+                    },
+                    title: "Riwayat",
+                    icon: Icons.history_toggle_off_rounded,
+                  ),
+                  _Listile(
+                    onPress: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: Column(
+                              spacing: 35,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                ElevatedButton(
-                                    onPressed: () {
-                                      context
-                                          .read<ThemeCubit>()
-                                          .chooseTheme(true);
-                                    },
-                                    child: Text("Gelap")),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      context
-                                          .read<ThemeCubit>()
-                                          .chooseTheme(false);
-                                    },
-                                    child: Text("Terang")),
+                                Text(
+                                  "Pilih Tema",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          context
+                                              .read<ThemeCubit>()
+                                              .chooseTheme(true);
+                                        },
+                                        child: Text("Gelap")),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          context
+                                              .read<ThemeCubit>()
+                                              .chooseTheme(false);
+                                        },
+                                        child: Text("Terang")),
+                                  ],
+                                ),
+                                TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text("Simpan"))
                               ],
                             ),
-                            TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Text("Simpan"))
-                          ],
-                        ),
+                          );
+                        },
                       );
                     },
-                  );
-                },
-                title: "Tema",
-                icon: Icons.palette_outlined,
+                    title: "Tema",
+                    icon: Icons.palette_outlined,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            BlocBuilder<SettingsCubit, String>(
+              builder: (context, state) {
+                return Text(
+                  state,
+                  style: TextStyle(color: Theme.of(context).disabledColor),
+                );
+              },
+            ),
+          ],
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
-      floatingActionButton: BlocBuilder<VersionCubit, List<String>>(
-        builder: (context, state) {
-          return Text(
-            "Version: ${state[0]}, Build: ${state[1]}",
-          );
-        },
       ),
     );
   }

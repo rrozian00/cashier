@@ -1,10 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import '../../../../../core/theme/colors.dart';
-import '../../../../../core/widgets/my_appbar.dart';
 
 import '../../../../../core/widgets/my_text_field.dart';
 import '../../../../../routes/app_pages.dart';
@@ -29,14 +25,13 @@ class AddEmployeeView extends StatelessWidget {
       listener: (context, state) {
         if (state is EmployeeAddSuccess) {
           Navigator.pushReplacementNamed(context, Routes.login);
-          // context.read<EmployeeBloc>().add(GetEmployeeRequested());
+          context.read<EmployeeBloc>().add(GetEmployeeRequested());
         } else if (state is EmployeeFailed) {
           throw Exception(state.message);
         }
       },
       child: Scaffold(
-        backgroundColor: softGrey,
-        appBar: MyAppBar(titleText: "Tambah Karyawan"),
+        appBar: AppBar(title: Text("Tambah Karyawan")),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -44,7 +39,7 @@ class AddEmployeeView extends StatelessWidget {
               key: _formKey,
               child: Column(
                 children: [
-                  MyText(
+                  MyTextField(
                     controller: nameC,
                     label: "Nama",
                     hint: "Nama",
@@ -56,14 +51,14 @@ class AddEmployeeView extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: 10),
-                  MyText(
+                  MyTextField(
                       textCapitalization: TextCapitalization.none,
                       controller: emailC,
                       textInputType: TextInputType.emailAddress,
                       label: "Email",
                       hint: "Email"),
                   SizedBox(height: 10),
-                  MyText(
+                  MyTextField(
                     obscure: true,
                     textCapitalization: TextCapitalization.none,
                     controller: passwordC,
@@ -71,19 +66,19 @@ class AddEmployeeView extends StatelessWidget {
                     hint: "Password",
                   ),
                   SizedBox(height: 10),
-                  MyText(
+                  MyTextField(
                     controller: addressC,
                     label: "Alamat",
                     hint: "Alamat",
                   ),
                   SizedBox(height: 10),
-                  MyText(
+                  MyTextField(
                       controller: phoneC,
                       textInputType: TextInputType.phone,
                       label: "No HP",
                       hint: "No HP"),
                   SizedBox(height: 10),
-                  MyText(
+                  MyTextField(
                       suffix: "( % )",
                       controller: salaryC,
                       textInputType: TextInputType.number,
@@ -115,10 +110,6 @@ class AddEmployeeView extends StatelessWidget {
                             }
                             return Text(
                               "Simpan",
-                              style: GoogleFonts.poppins(
-                                  color: white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400),
                             );
                           },
                         ));

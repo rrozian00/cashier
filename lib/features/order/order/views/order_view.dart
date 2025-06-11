@@ -1,19 +1,16 @@
-import 'package:cashier/features/product/models/product_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:cashier/core/theme/cubit/theme_cubit.dart';
-import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
 
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/rupiah_converter.dart';
 import '../../../../core/utils/scanner_page.dart';
 import '../../../product/bloc/product_bloc.dart';
+import '../../../product/models/product_model.dart';
 import '../../../product/views/product_list.dart';
-import '../bloc/order_bloc.dart';
+import '../../check_out/bloc/check_out_bloc.dart';
 import '../../check_out/views/check_out_view.dart';
+import '../bloc/order_bloc.dart';
 
 class OrderView extends StatelessWidget {
   const OrderView({super.key});
@@ -25,39 +22,51 @@ class OrderView extends StatelessWidget {
         final orderBloc = context.read<OrderBloc>();
 
         return Scaffold(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          appBar: AppBar(
-            leading: IconButton(
-                onPressed: () {
-                  context.read<ThemeCubit>().toggleTheme();
-                },
-                icon: Icon(Icons.palette_outlined)),
-            title: Text("Pilih Produk"),
-            actions: [
-              IconButton(
-                color: blue,
-                onPressed: () => orderBloc.add(ClearCart()),
-                icon: Icon(Icons.clear,
-                    color: Theme.of(context).colorScheme.error),
-              ),
-            ],
-          ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Shopping Cart
-                  Expanded(
-                    flex: 4,
-                    child: _buildCartList(context, orderBloc),
-                  ),
-                  _buildTotalPriceSection(context, orderBloc),
-                  const Divider(),
-                  _buildActionButtons(context, orderBloc),
-                ],
+          // appBar: AppBar(
+          //   // leading: IconButton(
+          //   //     onPressed: () {
+          //   //       context.read<ThemeCubit>().toggleTheme();
+          //   //     },
+          //   //     icon: Icon(Icons.palette_outlined)),
+          //   title: Text("Keranjang"),
+          //   actions: [
+          // IconButton(
+          //   color: blue,
+          //   onPressed: () => orderBloc.add(ClearCart()),
+          //   icon: Icon(Icons.clear,
+          //       color: Theme.of(context).colorScheme.error),
+          // ),
+          //   ],
+          // ),
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: SafeArea(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          color: blue,
+                          onPressed: () => orderBloc.add(ClearCart()),
+                          icon: Icon(Icons.clear,
+                              color: Theme.of(context).colorScheme.error),
+                        ),
+                      ],
+                    ),
+                    // Shopping Cart
+                    Expanded(
+                      flex: 4,
+                      child: _buildCartList(context, orderBloc),
+                    ),
+                    _buildTotalPriceSection(context, orderBloc),
+                    const Divider(),
+                    _buildActionButtons(context, orderBloc),
+                  ],
+                ),
               ),
             ),
           ),
@@ -241,6 +250,7 @@ class OrderView extends StatelessWidget {
               : Container(),
           orderBloc.cart.isNotEmpty
               ? ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: green),
                   onPressed: () {
                     Navigator.push(
                         context,

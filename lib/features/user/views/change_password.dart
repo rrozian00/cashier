@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/theme/colors.dart';
 import '../../../core/widgets/home_indicator.dart';
-
 import '../../../core/widgets/my_text_field.dart';
 import '../blocs/auth/auth_bloc.dart';
 
@@ -18,15 +16,14 @@ class ChangePasswordView extends StatefulWidget {
 
 class _ChangePasswordViewState extends State<ChangePasswordView> {
   final TextEditingController email = TextEditingController();
-
   final TextEditingController oldPass = TextEditingController();
-
   final TextEditingController newPass = TextEditingController();
-
   final TextEditingController newPassAgain = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthLoadingState) {
@@ -34,7 +31,6 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
         }
       },
       child: Scaffold(
-        backgroundColor: softGrey,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
           child: Column(
@@ -46,30 +42,31 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                     Center(
                       child: Text(
                         "Ubah Password",
-                        style: GoogleFonts.poppins(fontSize: 20, color: purple),
+                        style: GoogleFonts.poppins(
+                            fontSize: 20, color: colorScheme.primary),
                       ),
                     ),
                     SizedBox(height: 20),
-                    MyText(
+                    MyTextField(
                       textCapitalization: TextCapitalization.none,
                       textInputType: TextInputType.emailAddress,
                       label: "Email",
                       hint: "Email",
                       controller: email,
                     ),
-                    MyText(
+                    MyTextField(
                       label: "Password Lama",
                       hint: "Password Lama",
                       controller: oldPass,
                       obscure: true,
                     ),
-                    MyText(
+                    MyTextField(
                       label: "Password Baru",
                       hint: "Password Baru",
                       controller: newPass,
                       obscure: true,
                     ),
-                    MyText(
+                    MyTextField(
                       label: "Ulangi Password Baru",
                       hint: "Ulangi Password Baru",
                       controller: newPassAgain,

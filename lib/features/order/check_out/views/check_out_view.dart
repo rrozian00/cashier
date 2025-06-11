@@ -1,10 +1,11 @@
-import 'package:cashier/features/order/order/bloc/order_bloc.dart';
-import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
-import 'package:cashier/features/order/order/utils/show_receipt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+import '../../../../core/widgets/my_alert_dialog.dart';
+import '../bloc/check_out_bloc.dart';
+import '../../order/bloc/order_bloc.dart';
+import '../../order/utils/show_receipt.dart';
 
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/rupiah_converter.dart';
@@ -53,15 +54,15 @@ class CheckOutView extends StatelessWidget {
                 height: 55,
                 width: 340,
                 decoration: BoxDecoration(
-                  border: Border.all(),
+                  // border: Border.all(),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Center(
                   child: Text(
-                    "Total  ${rupiahConverter(state.totalPrice)}",
-                    style: GoogleFonts.poppins(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
+                    "Total :  ${rupiahConverter(state.totalPrice)}",
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w600,
                       color: state.canProcess ? green : red,
                     ),
                   ),
@@ -90,10 +91,10 @@ class CheckOutView extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         child: Text(
                           rupiahConverter(int.tryParse(state.displayText) ?? 0),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 50,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.deepPurple,
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
                       );
@@ -127,7 +128,7 @@ class CheckOutView extends StatelessWidget {
                         'C'
                       ];
 
-                      return ElevatedButton(
+                      return OutlinedButton(
                         onPressed: () {
                           final bloc = context.read<CheckOutBloc>();
                           if (buttons[index] == 'C') {
@@ -139,9 +140,9 @@ class CheckOutView extends StatelessWidget {
                         child: Center(
                           child: Text(
                             buttons[index],
-                            style: const TextStyle(
-                              color: Colors.deepPurple,
-                              fontSize: 40,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 25,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -158,23 +159,26 @@ class CheckOutView extends StatelessWidget {
           builder: (context, state) {
             if (state.canProcess) {
               return ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: green),
                   child: Text("PROSES"),
-                  // width: 180,
-                  // text: "PROSES",
                   onPressed: () {
                     context
                         .read<CheckOutBloc>()
                         .add(ProcessPayment(cart: orderBloc.cart));
                   });
             } else {
-              return Text(
-                "Masukkan jumlah pembayaran",
-                style: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: red,
-                ),
-              );
+              return ElevatedButton(
+                  child: Text("PROSES"),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return MySingleAlertDialog(
+                            contentText:
+                                "Masukkan jumlah pembayaran terlebih dahulu.");
+                      },
+                    );
+                  });
             }
           },
         ),

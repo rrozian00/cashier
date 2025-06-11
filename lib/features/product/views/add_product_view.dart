@@ -7,8 +7,6 @@ import 'package:get/get.dart';
 import '../../../core/theme/colors.dart';
 import '../../../core/utils/rupiah_converter.dart';
 import '../../../core/utils/scanner_page.dart';
-import '../../../core/widgets/my_appbar.dart';
-
 import '../bloc/product_bloc.dart';
 
 class AddProductView extends StatelessWidget {
@@ -22,9 +20,8 @@ class AddProductView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: softGrey,
-      appBar: MyAppBar(
-        titleText: "Tambah Produk",
+      appBar: AppBar(
+        title: Text("Tambah Produk"),
       ),
       body: BlocConsumer<ProductBloc, ProductState>(
         listener: (context, state) {

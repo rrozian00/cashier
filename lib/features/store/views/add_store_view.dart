@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/widgets/my_appbar.dart';
-
 import '../../../core/widgets/my_text_field.dart';
 import '../controllers/store_controller.dart';
 
@@ -12,7 +10,7 @@ class AddStoreView extends GetView<StoreController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(titleText: "Tambah Toko"),
+      appBar: AppBar(title: Text("Tambah Toko")),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -20,6 +18,7 @@ class AddStoreView extends GetView<StoreController> {
           children: [
             // Nama Toko
             MyTextField(
+              hint: "Nama Toko",
               label: "Nama Toko",
               controller: controller.name,
             ),
@@ -27,13 +26,18 @@ class AddStoreView extends GetView<StoreController> {
             SizedBox(height: 10),
 
             // Alamat
-            MyTextField(controller: controller.address, label: "Alamat"),
+            MyTextField(
+              controller: controller.address,
+              label: "Alamat",
+              hint: "Alamat",
+            ),
 
             SizedBox(height: 10),
 
             // Nomor HP
             MyTextField(
               label: "No HP",
+              hint: "No HP",
               controller: controller.phone,
               textInputType: TextInputType.phone,
             ),
@@ -43,6 +47,7 @@ class AddStoreView extends GetView<StoreController> {
             // Logo URL
             MyTextField(
               label: "Logo",
+              hint: "Logo",
               controller: controller.logoUrl,
             ),
 
