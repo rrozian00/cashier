@@ -39,7 +39,7 @@ class HomeView extends StatelessWidget {
                     children: [
                       Text(
                         "for simple life, use",
-                        style: GoogleFonts.montserrat(
+                        style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).colorScheme.secondary,
                           fontWeight: FontWeight.w600,
@@ -75,7 +75,7 @@ class HomeView extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
-                      "Rekapan untuk anda",
+                      "Terbaru",
                       style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
                     ),
                   ),

@@ -4,6 +4,15 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+def flutterProperties=new Properties()
+def flutterPropertiesFile=rootProject.file("local.properties")
+if (flutterPropertiesFile.exists()) {
+    flutterPropertiesFile.withInputStream { stream ->
+        flutterProperties.load(stream)
+    }
+}
+
+
 android {
     namespace = "com.natureship.cashier"
     compileSdk = 35 
@@ -21,8 +30,8 @@ android {
         applicationId = "com.natureship.cashier"
         minSdk = 23 
         targetSdk = 34 
-        versionCode = 10
-        versionName = "3.0.0"
+        versionCode = flutterProperties.getProperty("flutter.versionCode").toInteger()
+        versionName = flutterProperties.getProperty("flutter.versionName")
 
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
