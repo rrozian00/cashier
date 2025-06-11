@@ -1,3 +1,4 @@
+import 'package:cashier/features/settings/cubit/version_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -142,8 +143,12 @@ class SettingsView extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
-      floatingActionButton: Text(
-        "v.2.0.0",
+      floatingActionButton: BlocBuilder<VersionCubit, List<String>>(
+        builder: (context, state) {
+          return Text(
+            "Version: ${state[0]}, Build: ${state[1]}",
+          );
+        },
       ),
     );
   }

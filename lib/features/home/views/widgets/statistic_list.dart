@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/rupiah_converter.dart';
@@ -11,23 +12,35 @@ class StatisticList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          MyCard(
-            image: "assets/images/empty.png",
-            // title: "Total Pendapatan Hari Ini",
-            title: "UNDER MAINTENANCE",
-            subtitle: rupiahConverterDouble(12000), //TODO:
-            color: green,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Text(
+              "Terbaru",
+              style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+            ),
           ),
-          MyCard(
-            image: "assets/images/empty.png",
-            title: "UNDER MAINTENANCE",
-            // title: "Total Pengeluaran Hari Ini",
-            subtitle: rupiahConverterDouble(12000), //TODO:
-            color: green,
+          Row(
+            children: [
+              MyCard(
+                image: "assets/images/empty.png",
+                // title: "Total Pendapatan Hari Ini",
+                title: "UNDER MAINTENANCE",
+                subtitle: rupiahConverterDouble(12000), //TODO:
+                color: green,
+              ),
+              MyCard(
+                image: "assets/images/empty.png",
+                title: "UNDER MAINTENANCE",
+                // title: "Total Pengeluaran Hari Ini",
+                subtitle: rupiahConverterDouble(12000), //TODO:
+                color: green,
+              ),
+              // SizedBox(height: 16),
+            ],
           ),
-          // SizedBox(height: 16),
         ],
       ),
     );

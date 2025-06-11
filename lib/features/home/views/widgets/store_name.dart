@@ -1,46 +1,48 @@
-import 'package:cashier/core/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../bloc/home_bloc.dart';
 
-class StoreName extends StatefulWidget {
+class StoreName extends StatelessWidget {
   const StoreName({super.key});
 
   @override
-  State<StoreName> createState() => _StoreNameState();
-}
-
-class _StoreNameState extends State<StoreName> {
-  @override
-  void initState() {
-    context.read<HomeBloc>().add(HomeGetStoreReq());
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final colorThis = Theme.of(context).colorScheme.error;
+    context.read<HomeBloc>().add(HomeGetStoreReq());
+
+    final colorThis = Theme.of(context).colorScheme.secondary;
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          AnimatedContainer(
-              duration: Duration(milliseconds: 800),
-              curve: Curves.easeInOut,
-              child: Icon(
-                Icons.store_rounded,
-                size: 70,
-              )),
+          Icon(
+            shadows: [
+              Shadow(
+                blurRadius: 2,
+                color: Theme.of(context).colorScheme.primary,
+                offset: Offset(1, 1),
+              )
+            ],
+            Icons.store_rounded,
+            color: colorThis,
+            size: 70,
+          ),
           BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
               if (state is HomeSuccess) {
                 return Text(
                   state.store.name ?? 'Nama Kosong',
                   style: GoogleFonts.pacifico(
-                      fontSize: 30,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 2,
+                          color: Theme.of(context).colorScheme.primary,
+                          offset: Offset(1, 1),
+                        )
+                      ],
+                      fontSize: 40,
                       fontWeight: FontWeight.bold,
                       color: colorThis),
                 );

@@ -12,12 +12,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LoginView extends StatelessWidget {
   LoginView({super.key});
 
-  final TextEditingController emailC = TextEditingController();
-  final TextEditingController passwordC = TextEditingController();
-  // final TextEditingController emailC =
-  //     TextEditingController(text: "rrozian00@gmail.com");
-  // final TextEditingController passwordC =
-  //     TextEditingController(text: "1231231");
+  // final TextEditingController emailC = TextEditingController();
+  // final TextEditingController passwordC = TextEditingController();
+  final TextEditingController emailC =
+      TextEditingController(text: "rrozian00@gmail.com");
+  final TextEditingController passwordC =
+      TextEditingController(text: "1231231");
 
   final _formKey = GlobalKey<FormState>();
 
