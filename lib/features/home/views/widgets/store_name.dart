@@ -20,7 +20,11 @@ class _StoreNameState extends State<StoreName> {
 
   @override
   Widget build(BuildContext context) {
-    final colorThis = Theme.of(context).colorScheme.error;
+    final colorThis = Theme.of(context).colorScheme.secondary;
+    final shadow = Shadow(
+        blurRadius: 2,
+        color: Theme.of(context).colorScheme.primary,
+        offset: Offset(1, 1));
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -30,6 +34,8 @@ class _StoreNameState extends State<StoreName> {
               duration: Duration(milliseconds: 800),
               curve: Curves.easeInOut,
               child: Icon(
+                shadows: [shadow],
+                color: colorThis,
                 Icons.store_rounded,
                 size: 70,
               )),
@@ -39,7 +45,8 @@ class _StoreNameState extends State<StoreName> {
                 return Text(
                   state.store.name ?? 'Nama Kosong',
                   style: GoogleFonts.pacifico(
-                      fontSize: 30,
+                      shadows: [shadow],
+                      fontSize: 45,
                       fontWeight: FontWeight.bold,
                       color: colorThis),
                 );

@@ -6,15 +6,19 @@ class Date extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: Text(
-        DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(DateTime.now()),
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.end,
+      spacing: 5,
+      children: [
+        Icon(Icons.date_range_rounded),
+        Text(
+          DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(DateTime.now()),
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+          ),
         ),
-      ),
+      ],
     );
   }
 }
