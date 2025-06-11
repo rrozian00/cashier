@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,7 +41,6 @@ class ProfileView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           title: Text("Profil"),
           actions: [
@@ -48,9 +48,7 @@ class ProfileView extends StatelessWidget {
               builder: (context, state) {
                 if (state is AuthLoggedState) {
                   return IconButton(
-                    icon: Icon(
-                      Icons.edit_square,
-                    ),
+                    icon: Icon(CupertinoIcons.pencil_ellipsis_rectangle),
                     onPressed: () => showModalBottomSheet(
                       clipBehavior: Clip.hardEdge,
                       scrollControlDisabledMaxHeightRatio: 0.9,
@@ -109,13 +107,21 @@ class ProfileView extends StatelessWidget {
                 ),
               ),
             ),
-            _buildProfileItem(Icons.person, "Nama", user.name ?? "-"),
+            _BuildProfileItem(
+                icon: Icons.person, title: "Nama", value: user.name ?? "-"),
             Divider(),
-            _buildProfileItem(Icons.email, "Email", user.email ?? "-"),
+            _BuildProfileItem(
+                icon: Icons.email, title: "Email", value: user.email ?? "-"),
             Divider(),
-            _buildProfileItem(Icons.location_on, "Alamat", user.address ?? "-"),
+            _BuildProfileItem(
+                icon: Icons.location_on,
+                title: "Alamat",
+                value: user.address ?? "-"),
             Divider(),
-            _buildProfileItem(Icons.phone, "Telepon", user.phoneNumber ?? "-"),
+            _BuildProfileItem(
+                icon: Icons.phone,
+                title: "Telepon",
+                value: user.phoneNumber ?? "-"),
             Divider(),
             SizedBox(height: 20),
             Row(
@@ -153,7 +159,6 @@ class ProfileView extends StatelessWidget {
                     );
                   },
                   child: Text("Keluar"),
-                  // text: "Keluar",
                 ),
               ],
             ),
@@ -164,13 +169,28 @@ class ProfileView extends StatelessWidget {
   }
 
   /// Widget untuk Item Profil
-  Widget _buildProfileItem(IconData icon, String title, String value) {
+}
+
+class _BuildProfileItem extends StatelessWidget {
+  const _BuildProfileItem({
+    required this.icon,
+    required this.title,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String title;
+  final String value;
+  @override
+  Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(
         icon,
       ),
       title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: Text(value, key: ValueKey(value), style: TextStyle()),
+      subtitle: Text(value,
+          key: ValueKey(value),
+          style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
     );
   }
 }

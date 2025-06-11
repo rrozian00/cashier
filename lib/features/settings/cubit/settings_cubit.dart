@@ -12,7 +12,8 @@ class SettingsCubit extends Cubit<String> {
   Future<void> loadAppVersion() async {
     try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      emit('Version: ${packageInfo.version}+${packageInfo.buildNumber}');
+      emit(
+          'Version: ${packageInfo.version}, Build: ${packageInfo.buildNumber}');
     } catch (e) {
       emit("Version Unavailable");
     }

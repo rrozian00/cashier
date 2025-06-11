@@ -1,17 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cashier/core/widgets/home_indicator.dart';
+import 'package:cashier/core/widgets/my_alert_dialog.dart';
+import 'package:cashier/core/widgets/my_text_field.dart';
 import 'package:cashier/features/user/blocs/auth/auth_bloc.dart';
+import 'package:cashier/features/user/blocs/register/register_bloc.dart';
+import 'package:cashier/features/user/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/widgets/home_indicator.dart';
-import 'package:cashier/core/widgets/my_alert_dialog.dart';
-
-import 'package:cashier/core/widgets/my_text_field.dart';
-import 'package:cashier/features/user/blocs/register/register_bloc.dart';
-import 'package:cashier/features/user/models/user_model.dart';
 
 class EditProfileView extends StatefulWidget {
   final UserModel user;
@@ -59,7 +56,6 @@ class _EditProfileViewState extends State<EditProfileView> {
           return Center(child: CircularProgressIndicator());
         }
         return Scaffold(
-          backgroundColor: softGrey,
           resizeToAvoidBottomInset: true,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
@@ -72,17 +68,17 @@ class _EditProfileViewState extends State<EditProfileView> {
                       Center(
                         child: Text(
                           "Ubah Profil",
-                          style:
-                              GoogleFonts.poppins(color: purple, fontSize: 18),
+                          style: GoogleFonts.poppins(fontSize: 18),
                         ),
                       ),
                       SizedBox(height: 15),
-                      MyText(controller: nameC, hint: "Nama", label: "Nama"),
-                      MyText(
+                      MyTextField(
+                          controller: nameC, hint: "Nama", label: "Nama"),
+                      MyTextField(
                           controller: addressC,
                           label: "Alamat",
                           hint: "Alamat"),
-                      MyText(
+                      MyTextField(
                         textInputType: TextInputType.number,
                         controller: phoneNumberC,
                         label: "No HP",

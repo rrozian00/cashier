@@ -102,7 +102,7 @@ class MySingleAlertDialog extends GetView {
             Icon(
               Icons.warning_amber_rounded,
               size: 100,
-              // color: Colors.amber,
+              color: Theme.of(context).colorScheme.error,
             ),
             Text(
               contentText,

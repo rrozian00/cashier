@@ -1,13 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cashier/core/theme/colors.dart';
+import 'package:cashier/core/widgets/home_indicator.dart';
+import 'package:cashier/core/widgets/my_text_field.dart';
+import 'package:cashier/features/user/blocs/employee/bloc/employee_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/widgets/home_indicator.dart';
-
-import 'package:cashier/core/widgets/my_text_field.dart';
-import 'package:cashier/features/user/blocs/employee/bloc/employee_bloc.dart';
 
 class EditEmployee extends StatefulWidget {
   final String id;
@@ -63,19 +61,19 @@ class _EditEmployeeState extends State<EditEmployee> {
                 SizedBox(
                   height: 25,
                 ),
-                MyText(
+                MyTextField(
                   label: "Nama",
                   controller: nameC,
                 ),
-                MyText(
+                MyTextField(
                   label: "No HP",
                   controller: phoneC,
                 ),
-                MyText(
+                MyTextField(
                   label: "Alamat",
                   controller: addressC,
                 ),
-                MyText(
+                MyTextField(
                   suffix: "%",
                   label: "Gaji",
                   controller: salaryC,
