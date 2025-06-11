@@ -1,10 +1,10 @@
-import 'package:cashier/core/theme/cubit/theme_cubit.dart';
-import 'package:cashier/core/theme/theme_service.dart';
-import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
-import 'package:cashier/features/settings/cubit/settings_cubit.dart';
+import '../theme/cubit/theme_cubit.dart';
+import '../theme/theme_service.dart';
+import '../../features/order/check_out/bloc/check_out_bloc.dart';
+import '../../features/settings/cubit/settings_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../features/bottom_navigation_bar/cubit/bottom_nav_cubit.dart';
+import '../../features/bottom_navbar/cubit/bottom_nav_cubit.dart';
 import '../../features/expense/bloc/expense_bloc.dart';
 import '../../features/home/bloc/home_bloc.dart';
 import '../../features/order/history_order/bloc/history_order_bloc.dart';

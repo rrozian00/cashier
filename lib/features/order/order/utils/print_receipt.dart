@@ -1,5 +1,5 @@
-import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
-import 'package:cashier/features/order/order/models/cart_model.dart';
+import '../../check_out/bloc/check_out_bloc.dart';
+import '../models/cart_model.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';

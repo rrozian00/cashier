@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:cashier/core/theme/theme_service.dart';
+import '../theme_service.dart';
 import 'package:equatable/equatable.dart';
 
 part 'theme_state.dart';

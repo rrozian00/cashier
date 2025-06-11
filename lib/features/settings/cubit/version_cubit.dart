@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:cashier/core/app_version/app_version.dart';
+import '../../../core/app_version/app_version.dart';
 import 'package:equatable/equatable.dart';
 
 part 'version_state.dart';

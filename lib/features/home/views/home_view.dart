@@ -8,7 +8,7 @@ import '../bloc/home_bloc.dart';
 import 'widgets/date.dart';
 import 'widgets/statistic_list.dart';
 import 'widgets/store_name.dart';
-import 'widgets/tag_lines.dart';
+import 'widgets/tag_line.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -35,18 +35,17 @@ class HomeView extends StatelessWidget {
                   const Date(),
 
                   //Tag Line
-                  TagLineWidget(),
+                  const TagLineWidget(),
                 ],
               ),
-              // // Animasi Logo Toko
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  StoreName(),
-                  SizedBox(height: 10),
+                  // Animasi Logo Toko
+                  const StoreName(),
 
                   // Statistik Keuangan
-                  StatisticList(),
+                  const StatisticList(),
                 ],
               )
             ],

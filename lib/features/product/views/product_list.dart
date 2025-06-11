@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:cashier/features/order/order/bloc/order_bloc.dart';
+import '../../order/order/bloc/order_bloc.dart';
 
 import '../../../core/theme/colors.dart';
 import '../../../core/widgets/home_indicator.dart';

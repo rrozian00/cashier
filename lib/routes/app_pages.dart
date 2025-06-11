@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 import '../core/splash_screen/splash_screen.dart';
-import '../features/bottom_navigation_bar/views/bottom_view.dart';
+import '../features/bottom_navbar/views/bottom_view.dart';
 import '../features/expense/views/expense_view.dart';
 import '../features/order/input_manual/bindings/input_manual_binding.dart';
 import '../features/order/history_order/views/history_order_view.dart';

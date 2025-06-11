@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
-import 'package:cashier/core/utils/get_store_id.dart';
-import 'package:cashier/core/utils/get_user_data.dart';
-import 'package:cashier/features/order/order/models/cart_model.dart';
-import 'package:cashier/features/order/order/models/order_model.dart';
-import 'package:cashier/features/order/order/repositories/order_repository.dart';
-import 'package:cashier/features/store/models/store_model.dart';
-import 'package:cashier/features/user/models/user_model.dart';
+import '../../../../core/utils/get_store_id.dart';
+import '../../../../core/utils/get_user_data.dart';
+import '../../order/models/cart_model.dart';
+import '../../order/models/order_model.dart';
+import '../../order/repositories/order_repository.dart';
+import '../../../store/models/store_model.dart';
+import '../../../user/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 

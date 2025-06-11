@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/theme/colors.dart';
 import '../../../core/widgets/my_alert_dialog.dart';
 import '../../../routes/app_pages.dart';
-import '../../bottom_navigation_bar/cubit/bottom_nav_cubit.dart';
+import '../../bottom_navbar/cubit/bottom_nav_cubit.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../models/user_model.dart';
 import 'change_password.dart';
@@ -139,7 +139,8 @@ class ProfileView extends StatelessWidget {
                   },
                   child: Text("Ubah Password"),
                 ),
-                OutlinedButton(
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: red),
                   // width: MediaQuery.of(context).size.width / 2.5,
                   onPressed: () {
                     showDialog(

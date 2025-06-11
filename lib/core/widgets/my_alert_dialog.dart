@@ -32,7 +32,8 @@ class MyAlertDialog extends GetView {
             Icon(
               Icons.warning_amber_rounded,
               size: 100,
-              // color: Colors.yellow,
+              // color: Theme.of(context).colorScheme.error,
+              color: Color(0xFFFFC107),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -59,10 +60,9 @@ class MyAlertDialog extends GetView {
                   child: Text("Batal"),
                 ),
                 ElevatedButton(
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: onConfirmColor),
                   child: Text(onConfirmText ?? "Simpan"),
-                  // color: onConfirmColor,
-                  // width: 100,
-                  // text: onConfirmText ?? "Simpan",
                   onPressed: () {
                     onConfirm();
                     Get.back();

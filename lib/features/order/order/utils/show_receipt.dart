@@ -136,7 +136,7 @@ class ShowReceipt extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ElevatedButton(
+                  OutlinedButton(
                     onPressed: () {
                       context.read<CheckOutBloc>().add(ClearReceipt());
                       context.read<OrderBloc>().add(ClearCart());
@@ -144,7 +144,7 @@ class ShowReceipt extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueAccent,
+                      // backgroundColor: Colors.blueAccent,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 32, vertical: 12),
                       shape: RoundedRectangleBorder(
@@ -153,8 +153,6 @@ class ShowReceipt extends StatelessWidget {
                     ),
                     child: Text(
                       "Tutup",
-                      style: GoogleFonts.poppins(
-                          fontSize: 12, color: Colors.white),
                     ),
                   ),
                   ElevatedButton(
@@ -168,7 +166,7 @@ class ShowReceipt extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueAccent,
+                      // backgroundColor: Colors.blueAccent,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 32, vertical: 12),
                       shape: RoundedRectangleBorder(
@@ -177,8 +175,6 @@ class ShowReceipt extends StatelessWidget {
                     ),
                     child: Text(
                       "Print Struk",
-                      style: GoogleFonts.poppins(
-                          fontSize: 12, color: Colors.white),
                     ),
                   ),
                 ],
@@ -191,33 +187,6 @@ class ShowReceipt extends StatelessWidget {
     );
   }
 }
-
-// Future<void> showReceipt() async {
-//   final userData = await getUserData();
-//   if (userData == null) return;
-
-//   final store = await getStore();
-//   if (store == null) return;
-
-//   String storeName = store.name ?? '';
-//   String address = store.address ?? '';
-//   String kasir = userData.name ?? '';
-//   debugPrint(
-//       "Isi Keranjang sebelum tampilkan struk: ${keranjangBelanja.toList()}");
-
-//   if (keranjangBelanja.isEmpty) {
-//     Get.snackbar("Error", "Keranjang masih kosong!");
-//     return;
-//   }
-
-//   Get.bottomSheet(
-//     enableDrag: false,
-//     isDismissible: false,
-//     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-
-//     isScrollControlled: true,
-//   );
-// }
 
 // Fungsi untuk membuat baris total dengan tampilan lebih rapi
 Widget _buildRow(String title, int value, {bool bold = false}) {
