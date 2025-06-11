@@ -27,13 +27,13 @@ class StatisticList extends StatelessWidget {
               MyCard(
                 image: "assets/images/empty.png",
                 // title: "Total Pendapatan Hari Ini",
-                title: "UNDER MAINTENANCE",
+                title: "COMMING SOON",
                 subtitle: rupiahConverterDouble(12000), //TODO:
                 color: green,
               ),
               MyCard(
                 image: "assets/images/empty.png",
-                title: "UNDER MAINTENANCE",
+                title: "COMMING SOON",
                 // title: "Total Pengeluaran Hari Ini",
                 subtitle: rupiahConverterDouble(12000), //TODO:
                 color: green,

@@ -25,131 +25,141 @@ class SettingsView extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(top: 10.0),
-          child: ListView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.profile);
-                },
-                title: "Profil",
-                icon: Icons.person,
+              Expanded(
+                child: ListView(
+                  children: [
+                    _Listile(
+                      onPress: () {
+                        Get.toNamed(Routes.profile);
+                      },
+                      title: "Profil",
+                      icon: Icons.person,
+                    ),
+                    _Listile(
+                      onPress: () {
+                        Get.toNamed(Routes.store);
+                      },
+                      title: "Toko",
+                      icon: Icons.store,
+                    ),
+                    _Listile(
+                      onPress: () {
+                        Get.toNamed(Routes.employee);
+                        context
+                            .read<EmployeeBloc>()
+                            .add(GetEmployeeRequested());
+                      },
+                      title: "Karyawan",
+                      icon: Icons.person_outline_rounded,
+                    ),
+                    _Listile(
+                      onPress: () {
+                        Get.toNamed(Routes.product);
+                        context.read<ProductBloc>().add(ProductGetRequested());
+                      },
+                      title: "Produk",
+                      icon: Icons.receipt_outlined,
+                    ),
+                    _Listile(
+                      onPress: () {
+                        Get.toNamed(Routes.expense);
+                      },
+                      title: "Pengeluaran",
+                      icon: Icons.shopping_cart,
+                    ),
+                    _Listile(
+                      onPress: () {
+                        Get.toNamed(Routes.printer);
+                      },
+                      title: "Printer",
+                      icon: Icons.print,
+                    ),
+                    _Listile(
+                      onPress: () {
+                        Get.toNamed(Routes.inputManual);
+                      },
+                      title: "Input Manual",
+                      icon: Icons.checklist_rounded,
+                    ),
+                    _Listile(
+                      onPress: () {
+                        context
+                            .read<HistoryOrderBloc>()
+                            .add(ShowInitial(context: context));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HistoryOrderView(),
+                            ));
+                      },
+                      title: "Riwayat",
+                      icon: Icons.history_toggle_off_rounded,
+                    ),
+                    _Listile(
+                      onPress: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: Column(
+                                spacing: 35,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    "Pilih Tema",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            context
+                                                .read<ThemeCubit>()
+                                                .chooseTheme(true);
+                                          },
+                                          child: Text("Gelap")),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            context
+                                                .read<ThemeCubit>()
+                                                .chooseTheme(false);
+                                          },
+                                          child: Text("Terang")),
+                                    ],
+                                  ),
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text("Simpan"))
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      title: "Tema",
+                      icon: Icons.palette_outlined,
+                    ),
+                  ],
+                ),
               ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.store);
-                },
-                title: "Toko",
-                icon: Icons.store,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.employee);
-                  context.read<EmployeeBloc>().add(GetEmployeeRequested());
-                },
-                title: "Karyawan",
-                icon: Icons.person_outline_rounded,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.product);
-                  context.read<ProductBloc>().add(ProductGetRequested());
-                },
-                title: "Produk",
-                icon: Icons.receipt_outlined,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.expense);
-                },
-                title: "Pengeluaran",
-                icon: Icons.shopping_cart,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.printer);
-                },
-                title: "Printer",
-                icon: Icons.print,
-              ),
-              _Listile(
-                onPress: () {
-                  Get.toNamed(Routes.inputManual);
-                },
-                title: "Input Manual",
-                icon: Icons.checklist_rounded,
-              ),
-              _Listile(
-                onPress: () {
-                  context
-                      .read<HistoryOrderBloc>()
-                      .add(ShowInitial(context: context));
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HistoryOrderView(),
-                      ));
-                },
-                title: "Riwayat",
-                icon: Icons.history_toggle_off_rounded,
-              ),
-              _Listile(
-                onPress: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: Column(
-                          spacing: 35,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "Pilih Tema",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                ElevatedButton(
-                                    onPressed: () {
-                                      context
-                                          .read<ThemeCubit>()
-                                          .chooseTheme(true);
-                                    },
-                                    child: Text("Gelap")),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      context
-                                          .read<ThemeCubit>()
-                                          .chooseTheme(false);
-                                    },
-                                    child: Text("Terang")),
-                              ],
-                            ),
-                            TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Text("Simpan"))
-                          ],
-                        ),
-                      );
-                    },
+              BlocBuilder<SettingsCubit, String>(
+                builder: (context, state) {
+                  return Text(
+                    "Version:${state[0]}",
+                    style: TextStyle(color: Theme.of(context).disabledColor),
                   );
                 },
-                title: "Tema",
-                icon: Icons.palette_outlined,
               ),
             ],
           ),
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
-      floatingActionButton: BlocBuilder<SettingsCubit, String>(
-        builder: (context, state) {
-          return Text(
-            state,
-            style: TextStyle(color: Theme.of(context).disabledColor),
-          );
-        },
       ),
     );
   }
