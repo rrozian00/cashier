@@ -1,3 +1,5 @@
+import 'package:cashier/features/store/bloc/store_bloc.dart';
+
 import '../theme/cubit/theme_cubit.dart';
 import '../theme/theme_service.dart';
 import '../../features/order/check_out/bloc/check_out_bloc.dart';
@@ -28,4 +30,5 @@ final List<BlocProvider> appProviders = [
   BlocProvider<CheckOutBloc>(create: (context) => CheckOutBloc()),
   BlocProvider<ThemeCubit>(create: (context) => ThemeCubit(ThemeService())),
   BlocProvider<SettingsCubit>(create: (context) => SettingsCubit()),
+  BlocProvider<StoreBloc>(create: (context) => StoreBloc()),
 ];

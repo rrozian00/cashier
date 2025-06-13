@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget noData({
   required String title,
   required String message,
-  IconData icon = Icons.hourglass_empty_rounded, // Default icon
+  IconData icon = CupertinoIcons.trash_slash, // Default icon
 }) {
   return Center(
     child: Column(

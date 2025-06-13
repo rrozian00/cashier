@@ -1,5 +1,3 @@
-import 'core/theme/cubit/theme_cubit.dart';
-import 'core/theme/my_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'core/app_providers/app_providers.dart';
+import 'core/theme/cubit/theme_cubit.dart';
+import 'core/theme/my_theme.dart';
 import 'firebase_options.dart';
 import 'routes/app_pages.dart';
 

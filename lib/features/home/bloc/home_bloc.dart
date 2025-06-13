@@ -14,19 +14,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final StoreRepository storeRepository = StoreRepository();
 
   HomeBloc() : super(HomeInitial()) {
-    on<HomeGetStoreReq>((event, emit) async {
-      emit(HomeLoading());
-      final user = await authRepository.getCurrentUser() as UserModel;
-      final String storeId = user.storeId!;
-      final storeDoc = await storeRepository.getStore(storeId);
-      storeDoc.fold(
-        (failure) {
-          emit(HomeError(message: failure.message));
-        },
-        (store) {
-          emit(HomeSuccess(user: user, store: store));
-        },
-      );
-    });
+    // on<HomeGetStoreReq>((event, emit) async {
+    //   emit(HomeLoading());
+    //   final user = await authRepository.getCurrentUser() as UserModel;
+    //   final String storeId = user.storeId!;
+    //   final storeDoc = await storeRepository.getStore(storeId);
+    //   storeDoc.fold(
+    //     (failure) {
+    //       emit(HomeError(message: failure.message));
+    //     },
+    //     (store) {
+    //       emit(HomeSuccess(user: user, store: store));
+    //     },
+    //   );
+    // });
   }
 }

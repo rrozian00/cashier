@@ -101,12 +101,12 @@ class AppPages {
     // ),
     GetPage(
       name: _Paths.store,
-      page: () => const StoreView(),
+      page: () => StoreView(),
       binding: StoreBinding(),
     ),
     GetPage(
       name: _Paths.addStore,
-      page: () => const AddStoreView(),
+      page: () => AddStoreView(),
       binding: StoreBinding(),
     ),
     GetPage(

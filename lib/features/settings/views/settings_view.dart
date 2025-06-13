@@ -1,3 +1,4 @@
+import 'package:cashier/features/store/bloc/store_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -38,6 +39,7 @@ class SettingsView extends StatelessWidget {
                   _Listile(
                     onPress: () {
                       Get.toNamed(Routes.store);
+                      context.read<StoreBloc>().add(GetStoresList());
                     },
                     title: "Toko",
                     icon: Icons.store,
