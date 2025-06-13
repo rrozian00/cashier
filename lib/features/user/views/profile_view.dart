@@ -70,7 +70,8 @@ class ProfileView extends StatelessWidget {
 
             if (state is AuthLoggedState) {
               final user = state.user;
-              return _buildProfileBody(context, user, state.verification);
+              return _buildProfileBody(
+                  context, user, state.verification, state.user.email ?? '');
             }
 
             return Center(child: Text("Gagal memuat state"));
@@ -81,7 +82,7 @@ class ProfileView extends StatelessWidget {
   }
 
   Widget _buildProfileBody(
-      BuildContext context, UserModel user, bool verification) {
+      BuildContext context, UserModel user, bool verification, String email) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: SingleChildScrollView(
@@ -134,7 +135,9 @@ class ProfileView extends StatelessWidget {
                       clipBehavior: Clip.hardEdge,
                       scrollControlDisabledMaxHeightRatio: 0.9,
                       context: context,
-                      builder: (_) => ChangePasswordView(),
+                      builder: (_) => ChangePasswordView(
+                        email: email,
+                      ),
                     );
                   },
                   child: Text("Ubah Password"),

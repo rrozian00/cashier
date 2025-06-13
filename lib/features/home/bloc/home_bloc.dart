@@ -10,23 +10,29 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final AuthRepository authRepository = AuthRepository();
-  final StoreRepository storeRepository = StoreRepository();
+  final authRepository = AuthRepository();
+  final storeRepository = StoreRepository();
 
   HomeBloc() : super(HomeInitial()) {
-    // on<HomeGetStoreReq>((event, emit) async {
-    //   emit(HomeLoading());
-    //   final user = await authRepository.getCurrentUser() as UserModel;
-    //   final String storeId = user.storeId!;
-    //   final storeDoc = await storeRepository.getStore(storeId);
-    //   storeDoc.fold(
-    //     (failure) {
-    //       emit(HomeError(message: failure.message));
-    //     },
-    //     (store) {
-    //       emit(HomeSuccess(user: user, store: store));
-    //     },
-    //   );
-    // });
+    on<HomeGetStoreReq>((event, emit) async {
+      emit(HomeLoading());
+
+      final user = await authRepository.getCurrentUser() as UserModel;
+      final storeDoc = await storeRepository.getStore(user.id!);
+      storeDoc.fold(
+        (failure) {
+          emit(HomeError(message: failure.message));
+        },
+        (stores) {
+          for (var storeResult in stores) {
+            if (storeResult.isActive == true) {
+              final store = storeResult;
+              emit(HomeSuccess(user: user, store: store));
+              break;
+            }
+          }
+        },
+      );
+    });
   }
 }

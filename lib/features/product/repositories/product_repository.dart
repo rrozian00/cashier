@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cashier/features/store/models/store_model.dart';
+
 import '../../../core/utils/get_user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
@@ -75,16 +77,27 @@ class ProductRepository {
 
   Future<Either<Failure, List<ProductModel>>> getProducts() async {
     try {
-      String? storeId;
-
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
         return Left(Failure("User tidak terautentikasi."));
       }
 
-      final userDoc = await _firestore.collection('users').doc(userId).get();
-      if (userDoc.data() != null) {
-        storeId = userDoc.data()?['storeId'];
+      final stores = await _firestore
+          .collection('stores')
+          .where("ownerId", isEqualTo: userId)
+          .where("isActive", isEqualTo: true)
+          .get()
+          .then(
+            (value) => value.docs
+                .map(
+                  (e) => StoreModel.fromMap(e.data()),
+                )
+                .toList(),
+          );
+      final storeId = stores.first.id;
+
+      if (storeId == null) {
+        return Left(Failure("Store ID tidak ditemukan."));
       }
 
       final snapshot =
@@ -105,16 +118,27 @@ class ProductRepository {
     required String imagePath,
   }) async {
     Map<String, dynamic>? result;
-    String? storeId;
-
     final userId = _auth.currentUser?.uid;
     if (userId == null) {
       return Left(Failure("User tidak terautentikasi."));
     }
 
-    final userDoc = await _firestore.collection('users').doc(userId).get();
-    if (userDoc.data() != null) {
-      storeId = userDoc.data()?['storeId'];
+    final stores = await _firestore
+        .collection('stores')
+        .where("ownerId", isEqualTo: userId)
+        .where("isActive", isEqualTo: true)
+        .get()
+        .then(
+          (value) => value.docs
+              .map(
+                (e) => StoreModel.fromMap(e.data()),
+              )
+              .toList(),
+        );
+    final storeId = stores.first.id;
+
+    if (storeId == null) {
+      return Left(Failure("Store ID tidak ditemukan."));
     }
 
     File? imageFile = File(imagePath);
@@ -168,16 +192,28 @@ class ProductRepository {
 
   //hapus
   Future<void> deleteProduct(String id) async {
-    String? storeId;
-
     final userId = _auth.currentUser?.uid;
     if (userId == null) {
-      return;
+      throw Exception("User tidak terautentikasi.");
     }
 
-    final userDoc = await _firestore.collection('users').doc(userId).get();
-    if (userDoc.data() != null) {
-      storeId = userDoc.data()?['storeId'];
+    final stores = await _firestore
+        .collection('stores')
+        .where("ownerId", isEqualTo: userId)
+        .where("isActive", isEqualTo: true)
+        .get()
+        .then(
+          (value) => value.docs
+              .map(
+                (e) => StoreModel.fromMap(e.data()),
+              )
+              .toList(),
+        );
+    final storeId = stores.first.id;
+    print("storeid nya:$storeId");
+
+    if (storeId == null) {
+      throw Exception("User tidak terautentikasi.");
     }
 
     final doc =
@@ -267,6 +303,7 @@ class ProductRepository {
     }
   }
 
+  //get product
   Future<Either<Failure, ProductModel>> getProductByBarcode(
       String barcode) async {
     try {
@@ -275,8 +312,20 @@ class ProductRepository {
         return Left(Failure("User tidak terautentikasi."));
       }
 
-      final userDoc = await _firestore.collection('users').doc(userId).get();
-      final storeId = userDoc.data()?['storeId'];
+      final stores = await _firestore
+          .collection('stores')
+          .where("ownerId", isEqualTo: userId)
+          .where("isActive", isEqualTo: true)
+          .get()
+          .then(
+            (value) => value.docs
+                .map(
+                  (e) => StoreModel.fromMap(e.data()),
+                )
+                .toList(),
+          );
+      final storeId = stores.first.id;
+      print("storeid nya:$storeId");
 
       if (storeId == null) {
         return Left(Failure("Store ID tidak ditemukan."));

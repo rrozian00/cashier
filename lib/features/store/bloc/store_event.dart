@@ -9,19 +9,29 @@ sealed class StoreEvent extends Equatable {
 
 final class GetStoresList extends StoreEvent {}
 
+final class MakeStoreActive extends StoreEvent {
+  final String id;
+
+  const MakeStoreActive({required this.id});
+  @override
+  List<Object> get props => [id];
+}
+
 final class UpdateStore extends StoreEvent {
+  final String id;
   final String name;
   final String address;
   final String phone;
 
   const UpdateStore({
+    required this.id,
     required this.name,
     required this.address,
     required this.phone,
   });
 
   @override
-  List<Object> get props => [name, address, phone];
+  List<Object> get props => [id, name, address, phone];
 }
 
 final class AddStore extends StoreEvent {

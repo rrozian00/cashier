@@ -15,6 +15,8 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   StoreBloc() : super(StoreInitial()) {
     on<GetStoresList>(_onGetStoreList);
     on<AddStore>(_onAddStore);
+    on<MakeStoreActive>(_onMakeStoreActive);
+    on<UpdateStore>(_onUpdateStore);
   }
 
   Future<void> _onGetStoreList(
@@ -40,5 +42,23 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       logoUrl: event.logoUrl,
     );
     emit(AddStoreSuccess());
+  }
+
+  Future<void> _onMakeStoreActive(
+      MakeStoreActive event, Emitter<StoreState> emit) async {
+    emit(StoreLoading());
+    await storeRepo.activatedStore(event.id);
+    emit(UpdateStoreSuccess());
+  }
+
+  Future<void> _onUpdateStore(
+      UpdateStore event, Emitter<StoreState> emit) async {
+    emit(StoreLoading());
+    await storeRepo.updateStore(
+        id: event.id,
+        name: event.name,
+        address: event.address,
+        phone: event.phone);
+    emit(UpdateStoreSuccess());
   }
 }

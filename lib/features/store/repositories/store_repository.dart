@@ -56,4 +56,60 @@ class StoreRepository {
       throw Exception("Unexpected error : $e");
     }
   }
+
+  Future<void> activatedStore(String id) async {
+    try {
+      final ownerId = _auth.currentUser?.uid;
+      if (_auth.currentUser == null) return;
+
+      final stores = await _firestore
+          .collection("stores")
+          .where("ownerId", isEqualTo: ownerId)
+          .where("id", isNotEqualTo: id)
+          .get()
+          .then(
+            (value) => value.docs
+                .map(
+                  (e) => StoreModel.fromMap(e.data()),
+                )
+                .toList(),
+          );
+
+      for (var store in stores) {
+        final ids = store.id;
+        await _firestore
+            .collection("stores")
+            .doc(ids)
+            .update({"isActive": false});
+      }
+
+      await _firestore.collection("stores").doc(id).update({
+        "isActive": true,
+      });
+    } on FirebaseException catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> updateStore({
+    required String id,
+    required String name,
+    required String address,
+    required String phone,
+  }) async {
+    try {
+      final old = await _firestore.collection("stores").doc(id).get().then(
+            (value) => StoreModel.fromMap(value.data()!),
+          );
+      final newData = old.copyWith(
+        name: name,
+        address: address,
+        phone: phone,
+      );
+
+      await _firestore.collection("stores").doc(id).update(newData.toMap());
+    } catch (e) {
+      print(e);
+    }
+  }
 }

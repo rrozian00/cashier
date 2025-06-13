@@ -75,10 +75,16 @@ class ProductView extends StatelessWidget {
                             ),
                             child: ListTile(
                               leading: CircleAvatar(
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.secondary,
                                 child: datas.image != null &&
                                         datas.image!.isNotEmpty
                                     ? ClipOval(
-                                        child: Image.network(datas.image ?? ''),
+                                        child: Image.network(
+                                            fit: BoxFit.cover,
+                                            height: double.infinity,
+                                            width: double.infinity,
+                                            datas.image ?? ''),
                                       )
                                     : Image.asset(
                                         'assets/icons/icon.png',

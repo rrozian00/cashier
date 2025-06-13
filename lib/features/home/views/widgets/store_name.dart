@@ -31,6 +31,11 @@ class StoreName extends StatelessWidget {
           ),
           BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
+              if (state is HomeLoading) {
+                return Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
+              }
               if (state is HomeSuccess) {
                 return Text(
                   state.store.name ?? 'Nama Kosong',

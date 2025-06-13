@@ -1,7 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 class StoreModel {
   String? id;
@@ -10,8 +7,9 @@ class StoreModel {
   String? address;
   String? phone;
   String? logoUrl;
-  Timestamp? createdAt;
+  bool? isActive;
   List<dynamic>? employees;
+  Timestamp? createdAt;
 
   StoreModel({
     this.id,
@@ -20,6 +18,7 @@ class StoreModel {
     this.address,
     this.phone,
     this.logoUrl,
+    this.isActive,
     this.createdAt,
     this.employees,
   });
@@ -61,6 +60,7 @@ class StoreModel {
     String? address,
     String? phone,
     String? logoUrl,
+    bool? isActive,
     Timestamp? createdAt,
     List<dynamic>? employees,
   }) {
@@ -71,6 +71,7 @@ class StoreModel {
       address: address ?? this.address,
       phone: phone ?? this.phone,
       logoUrl: logoUrl ?? this.logoUrl,
+      isActive: isActive ?? this.isActive,
       createdAt: createdAt ?? this.createdAt,
       employees: employees ?? this.employees,
     );
@@ -84,6 +85,7 @@ class StoreModel {
       'address': address,
       'phone': phone,
       'logoUrl': logoUrl,
+      'isActive': isActive,
       'createdAt': createdAt,
       'employees': employees,
     };
@@ -97,42 +99,12 @@ class StoreModel {
       address: map['address'] != null ? map['address'] as String : null,
       phone: map['phone'] != null ? map['phone'] as String : null,
       logoUrl: map['logoUrl'] != null ? map['logoUrl'] as String : null,
+      isActive: map['isActive'] != null ? map['isActive'] as bool : null,
       createdAt:
           map['createdAt'] != null ? map['createdAt'] as Timestamp : null,
       employees: map['employees'] != null
           ? List<dynamic>.from((map['employees'] as List<dynamic>))
           : null,
     );
-  }
-
-  @override
-  String toString() {
-    return 'StoreModel(id: $id, name: $name, ownerId: $ownerId, address: $address, phone: $phone, logoUrl: $logoUrl, createdAt: $createdAt, employees: $employees)';
-  }
-
-  @override
-  bool operator ==(covariant StoreModel other) {
-    if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.name == name &&
-        other.ownerId == ownerId &&
-        other.address == address &&
-        other.phone == phone &&
-        other.logoUrl == logoUrl &&
-        other.createdAt == createdAt &&
-        listEquals(other.employees, employees);
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        name.hashCode ^
-        ownerId.hashCode ^
-        address.hashCode ^
-        phone.hashCode ^
-        logoUrl.hashCode ^
-        createdAt.hashCode ^
-        employees.hashCode;
   }
 }

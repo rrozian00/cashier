@@ -13,6 +13,8 @@ final class StoreLoading extends StoreState {}
 
 final class AddStoreSuccess extends StoreState {}
 
+final class UpdateStoreSuccess extends StoreState {}
+
 final class GetStoreSuccess extends StoreState {
   final List<StoreModel> stores;
 

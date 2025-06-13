@@ -14,65 +14,87 @@ class StoreDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Profil Toko"),
-      ),
-      body: SafeArea(child: BlocBuilder<StoreBloc, StoreState>(
-        builder: (context, state) {
-          final curentState = state as GetStoreSuccess;
-          final data = curentState.stores[index];
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Padding(
+    return BlocListener<StoreBloc, StoreState>(
+      listener: (context, state) {
+        if (state is UpdateStoreSuccess) {
+          Navigator.pop(context);
+          Navigator.pop(context);
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Profil Toko"),
+        ),
+        body: SafeArea(child: BlocBuilder<StoreBloc, StoreState>(
+          builder: (context, state) {
+            if (state is StoreLoading) {
+              return Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            }
+            final curentState = state as GetStoreSuccess;
+            final data = curentState.stores[index];
+            return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/images/store.png",
-                          color: colorScheme.secondary,
-                          width: 100,
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    _MyList(
-                        icon: Icons.store,
-                        subtitle: data.name ?? '',
-                        title: "Nama Toko"),
-                    _MyList(
-                        icon: Icons.location_on,
-                        subtitle: data.address ?? '',
-                        title: "Alamat Toko"),
-                    _MyList(
-                        icon: Icons.phone_android,
-                        subtitle: data.phone ?? '',
-                        title: "No HP Toko"),
-                    SizedBox(height: 50),
-                    ElevatedButton(
-                        onPressed: () {
-                          editStoreDialog(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/images/store.png",
+                            color: colorScheme.secondary,
+                            width: 100,
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      _MyList(
+                          icon: Icons.store,
+                          subtitle: data.name ?? '',
+                          title: "Nama Toko"),
+                      _MyList(
+                          icon: Icons.location_on,
+                          subtitle: data.address ?? '',
+                          title: "Alamat Toko"),
+                      _MyList(
+                          icon: Icons.phone_android,
+                          subtitle: data.phone ?? '',
+                          title: "No HP Toko"),
+                      SizedBox(height: 50),
+                      ElevatedButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                              showDragHandle: true,
+                              enableDrag: true,
+                              clipBehavior: Clip.hardEdge,
+                              isScrollControlled: true,
                               context: context,
-                              name: data.name ?? '',
-                              address: data.address ?? '',
-                              phone: data.phone ?? '');
-                        },
-                        child: Text(
-                          "Ubah Toko",
-                        ))
-                  ],
+                              builder: (context) => EditStore(
+                                  id: data.id!,
+                                  name: data.name ?? '',
+                                  address: data.address ?? '',
+                                  phone: data.phone ?? ''),
+                            );
+                          },
+                          child: Text(
+                            "Ubah Toko",
+                          ))
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
-      )),
+            );
+          },
+        )),
+      ),
     );
   }
 }

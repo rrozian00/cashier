@@ -8,17 +8,24 @@ import '../../../core/widgets/my_text_field.dart';
 import '../blocs/auth/auth_bloc.dart';
 
 class ChangePasswordView extends StatefulWidget {
-  const ChangePasswordView({super.key});
+  const ChangePasswordView({super.key, required this.email});
 
+  final String email;
   @override
   State<ChangePasswordView> createState() => _ChangePasswordViewState();
 }
 
 class _ChangePasswordViewState extends State<ChangePasswordView> {
-  final TextEditingController email = TextEditingController();
+  late TextEditingController email;
   final TextEditingController oldPass = TextEditingController();
   final TextEditingController newPass = TextEditingController();
   final TextEditingController newPassAgain = TextEditingController();
+
+  @override
+  void initState() {
+    email = TextEditingController(text: widget.email);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +55,9 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                     ),
                     SizedBox(height: 20),
                     MyTextField(
+                      filled: true,
+                      fill: Theme.of(context).colorScheme.onSecondary,
+                      readOnly: true,
                       textCapitalization: TextCapitalization.none,
                       textInputType: TextInputType.emailAddress,
                       label: "Email",
