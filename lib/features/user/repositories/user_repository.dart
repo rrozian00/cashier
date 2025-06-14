@@ -1,76 +1,62 @@
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../../../core/errors/failure.dart';
 import '../models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/rendering.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 
 class UserRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<void> createUser(UserModel user, String password) async {
-    final userCredential = await _auth.createUserWithEmailAndPassword(
-        email: user.email!, password: password);
+  final Supabase _supabase = Supabase.instance;
 
-    final data = UserModel(
-        id: userCredential.user?.uid,
-        storeId: user.storeId,
-        email: user.email,
-        name: user.name,
-        address: user.address,
-        salary: user.salary,
-        role: "owner",
-        phoneNumber: user.phoneNumber,
-        photo: user.photo,
-        createdAt: user.createdAt);
+  Future<Either<Failure, User?>> login(String email, String password) async {
+    try {
+      final res = await Supabase.instance.client.auth
+          .signInWithPassword(email: email, password: password);
 
-    await _firestore.collection("users").doc(data.id).set(data.toMap());
+      if (res.user != null) {
+        return Right(res.user);
+      }
+    } on AuthApiException catch (e) {
+      print(e);
+      return Left(Failure(e.code!));
+    }
+    return Left(Failure("ubex error"));
   }
 
-  Future<void> createEmployee(UserModel user, String password) async {
+  Future<void> createUser(UserModel user, String password) async {
+    // final userCredential = await _auth.createUserWithEmailAndPassword(
+    //     email: user.email!, password: password);
+
     try {
-      final userCredential = await _auth.createUserWithEmailAndPassword(
-          email: user.email!, password: password);
+      //Supabase
+      final res = await _supabase.client.auth.signUp(
+        email: user.email,
+        password: password,
+      );
+      if (res.user != null) {
+        final data = UserModel(
+            // id: userCredential.user?.uid,
+            id: res.user?.id,
+            storeId: user.storeId,
+            email: user.email,
+            name: user.name,
+            address: user.address,
+            salary: user.salary,
+            role: "owner",
+            phoneNumber: user.phoneNumber,
+            photo: user.photo,
+            createdAt: user.createdAt);
 
-      final data = UserModel(
-          id: userCredential.user?.uid,
-          storeId: user.storeId,
-          email: user.email,
-          name: user.name,
-          address: user.address,
-          salary: user.salary,
-          role: "employee",
-          phoneNumber: user.phoneNumber,
-          photo: user.photo,
-          createdAt: user.createdAt);
-
-      final QuerySnapshot<Map<String, dynamic>> userQuery = await _firestore
-          .collection('users')
-          .where('email', isEqualTo: user.email)
-          .get();
-      if (userQuery.docs.isNotEmpty) {
-        throw Exception("Email sudah ada");
+        await _firestore.collection("users").doc(data.id).set(data.toMap());
+        print("Register berhasil, ${res.user!.email}");
+      } else if (res.session == null) {
+        print("Perlu verifikasi email");
       }
-
-      if (user.storeId == null) {
-        throw Exception("Store tidak ditemukan");
-      }
-      await _firestore
-          .collection("users")
-          .doc(userCredential.user?.uid)
-          .set(data.toMap());
-
-      await _firestore.collection("stores").doc(user.storeId).update({
-        "employees": FieldValue.arrayUnion([userCredential.user?.uid])
-      });
     } catch (e) {
-      debugPrint("Error saat membuat karyawan: $e");
-      if (e is FirebaseException) {
-        throw Exception("Firebase Error: ${e.message}");
-      } else {
-        throw Exception("Gagal membuat karyawan: ${e.toString()}");
-      }
+      print(e);
     }
   }
 
@@ -113,42 +99,5 @@ class UserRepository {
     } catch (e) {
       return Left(Failure("Unexpected error ${e.toString()}"));
     }
-  }
-
-  Future<Either<Failure, List<UserModel>>> getEmployees() async {
-    final userId = _auth.currentUser?.uid;
-    if (userId == null) {
-      return Left(Failure("User with id $userId not found"));
-    }
-
-    final userEither = await getUser(userId);
-
-    final user = userEither.getOrElse(
-      () => throw Exception("Unexpected null user"),
-    );
-
-    final storeDoc =
-        await _firestore.collection('stores').doc(user.storeId).get();
-
-    final employeesData = storeDoc.data()?['employees'] as List<dynamic>?;
-
-    if (employeesData == null) {
-      return Left(Failure("Employees null"));
-    }
-
-    final employeeQuery = await _firestore
-        .collection("users")
-        .where(FieldPath.documentId, whereIn: employeesData)
-        .get();
-
-    // Convert setiap item di array ke UserModel
-    final employees =
-        employeeQuery.docs.map((d) => UserModel.fromMap(d.data())).toList();
-
-    return Right(employees);
-  }
-
-  Future<void> deleteEmployee(String id) async {
-    await _firestore.collection('users').doc(id).delete();
   }
 }

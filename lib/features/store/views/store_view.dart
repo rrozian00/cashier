@@ -86,10 +86,6 @@ class StoreView extends StatelessWidget {
                         },
                       ),
                     ),
-                    ElevatedButton(
-                        onPressed: () =>
-                            Navigator.pushNamed(context, Routes.addStore),
-                        child: Text("Tambah Toko"))
                   ],
                 ),
               ));
@@ -102,6 +98,10 @@ class StoreView extends StatelessWidget {
             return Text("404");
           },
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: ElevatedButton(
+            onPressed: () => Navigator.pushNamed(context, Routes.addStore),
+            child: Text("Tambah Toko")),
       ),
     );
   }

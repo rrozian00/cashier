@@ -26,162 +26,152 @@ class EmployeeListView extends StatelessWidget {
                 child: CircularProgressIndicator.adaptive(),
               );
             }
+            if (state is EmployeeFailed && state.message == "employee null") {
+              return noData(
+                  title: "Tidak ada karyawan ditemukan",
+                  message: "Silahkan tambah karyawan.");
+            }
+            if (state is EmployeeFailed) {
+              return noData(
+                  icon: Icons.error, title: "Error", message: state.message);
+            }
             if (state is EmployeeGetSuccess) {
               final employees = state.employees;
               if (employees.isNotEmpty) {
-                return Column(
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: SizedBox(
-                          height: 20,
-                        )),
-                    Expanded(
-                      flex: 50,
-                      child: ListView.builder(
-                        itemCount: state.employees.length,
-                        itemBuilder: (context, index) {
-                          final data = state.employees[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 3),
-                            child: Flexible(
-                              child: Card(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                elevation: 4,
-                                borderOnForeground: true,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: ListTile(
-                                  leading: Text(
-                                    "${index + 1}",
-                                    style: GoogleFonts.roboto(
-                                      // color: blue,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
+                return ListView.builder(
+                  itemCount: state.employees.length,
+                  itemBuilder: (context, index) {
+                    final data = state.employees[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 3),
+                      child: Card(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        elevation: 4,
+                        borderOnForeground: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: ListTile(
+                          leading: Text(
+                            "${index + 1}",
+                            style: GoogleFonts.roboto(
+                              // color: blue,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onTap: () {
+                            Get.bottomSheet(
+                                backgroundColor: white,
+                                isScrollControlled: true,
+                                DetailEmlpoyee(
+                                  data: data,
+                                ));
+                          },
+                          trailing: Wrap(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    backgroundColor: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    showDragHandle: true,
+                                    isScrollControlled: true,
+                                    clipBehavior: Clip.hardEdge,
+                                    context: context,
+                                    builder: (context) => EditEmployee(
+                                      id: data.id ?? '',
+                                      name: data.name ?? '',
+                                      address: data.address ?? '',
+                                      phone: data.phoneNumber ?? '',
+                                      salary: data.salary ?? '',
                                     ),
-                                  ),
-                                  onTap: () {
-                                    Get.bottomSheet(
-                                        backgroundColor: white,
-                                        isScrollControlled: true,
-                                        DetailEmlpoyee(
-                                          data: data,
-                                        ));
-                                  },
-                                  trailing: Wrap(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          Get.bottomSheet(
-                                              clipBehavior: Clip.hardEdge,
-                                              EditEmployee(
-                                                id: data.id ?? '',
-                                                name: data.name ?? '',
-                                                address: data.address ?? '',
-                                                phone: data.phoneNumber ?? '',
-                                                salary: data.salary ?? '',
-                                              ));
-                                        },
-                                        icon: Icon(
-                                          Icons.edit,
-                                          // color: blue,
-                                        ),
-                                      ),
-                                      IconButton(
-                                        onPressed: () {
-                                          Get.dialog(AlertDialog(
-                                            content: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text(
-                                                  "Hapus",
-                                                  style:
-                                                      TextStyle(fontSize: 23),
-                                                ),
-                                                SizedBox(
-                                                  height: 25,
-                                                ),
-                                                Text(
-                                                    "Apakah anda yakin akan menghapus ${data.name} ?"),
-                                                SizedBox(
-                                                  height: 25,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    ElevatedButton(
-                                                        child: Text("Batal"),
-                                                        // width: 110,
-                                                        // text: "Batal",
-                                                        onPressed: () =>
-                                                            Get.back()),
-                                                    ElevatedButton(
-                                                        child: Text("Hapus"),
-                                                        // width: 110,
-                                                        // text: "Hapus",
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                          context
-                                                              .read<
-                                                                  EmployeeBloc>()
-                                                              .add(DeleteEmployeeRequested(
-                                                                  data.id!));
-                                                          context
-                                                              .read<
-                                                                  EmployeeBloc>()
-                                                              .add(
-                                                                  GetEmployeeRequested());
-                                                        }),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ));
-                                        },
-                                        icon: Icon(
-                                          Icons.delete,
-                                          color: red,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  title: Text(
-                                    data.name ?? '',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  subtitle: Text(
-                                    data.email ?? '',
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary),
-                                  ),
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.edit,
+                                  // color: blue,
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                              IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            "Hapus",
+                                            style: TextStyle(fontSize: 23),
+                                          ),
+                                          SizedBox(
+                                            height: 25,
+                                          ),
+                                          Text(
+                                              textAlign: TextAlign.center,
+                                              "Apakah anda yakin akan menghapus ${data.name} dari Karyawan ?"),
+                                          SizedBox(
+                                            height: 25,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              ElevatedButton(
+                                                  child: Text("Batal"),
+                                                  onPressed: () => Get.back()),
+                                              ElevatedButton(
+                                                  child: Text("Hapus"),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    context
+                                                        .read<EmployeeBloc>()
+                                                        .add(
+                                                            DeleteEmployeeRequested(
+                                                                data.id!));
+                                                    context
+                                                        .read<EmployeeBloc>()
+                                                        .add(
+                                                            GetEmployeeRequested());
+                                                  }),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: red,
+                                ),
+                              ),
+                            ],
+                          ),
+                          title: Text(
+                            data.name ?? '',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            data.email ?? '',
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.secondary),
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    );
+                  },
                 );
               }
             }
-            return noData(
-                title: "Tidak ada data Karyawan",
-                message: "Silahkan Tambah Karyawan");
+            return Text("404");
           },
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ElevatedButton(
-        // width: 220,
-        // height: 45,
         onPressed: () => Get.toNamed(Routes.addEmployee),
         child: Text("Tambah Karyawan"),
       ),

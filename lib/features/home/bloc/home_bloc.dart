@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:cashier/core/utils/get_user_data.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../store/models/store_model.dart';
@@ -17,7 +18,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeGetStoreReq>((event, emit) async {
       emit(HomeLoading());
 
-      final user = await authRepository.getCurrentUser() as UserModel;
+      final user = await getUserData();
+      if (user == null) return;
       final storeDoc = await storeRepository.getStore(user.id!);
       storeDoc.fold(
         (failure) {

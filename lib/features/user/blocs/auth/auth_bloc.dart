@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cashier/core/errors/failure.dart';
+import 'package:cashier/core/utils/get_user_data.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../models/user_model.dart';
 import '../../repositories/auth_repository.dart';
@@ -18,7 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc() : super(UnauthenticatedState(true)) {
     on<AuthCheckStatusEvent>((event, emit) async {
-      final user = await authRepository.getCurrentUser();
+      final user = await getUserData();
       final verif = await authRepository.checkVerification();
       if (user != null) {
         emit(AuthLoggedState(user, verif));
@@ -32,7 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthLoadingState());
         await authRepository.sendVerification();
         final verif = await authRepository.checkVerification();
-        final user = await authRepository.getCurrentUser();
+        final user = await getUserData();
         if (user != null) {
           emit(AuthLoggedState(user, verif));
         }
@@ -52,30 +52,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoadingState());
-    try {
-      final user = await authRepository.login(event.email, event.password);
-      if (user != null) {
-        String userId = user.uid;
-        final userEither = await userRepository.getUser(userId);
-        final userDoc = userEither.getOrElse(
-          () => throw Exception("Unexpected null"),
-        );
 
-        final verif = await authRepository.checkVerification();
-
-        emit(AuthLoggedState(userDoc, verif));
-
-        if (userDoc.role == 'owner') {
-          debugPrint("Login sebagai Owner");
-        } else if (userDoc.role == 'employee') {
-          debugPrint("Login sebagai Karyawan");
-        }
-      }
-    } on FirebaseException catch (e) {
-      emit(AuthFailedState(e.message ?? "Firebase error"));
-    } catch (e) {
-      emit(AuthFailedState(e.toString()));
+    final result = await userRepository.login(event.email, event.password);
+    if (result.isLeft()) {
+      final failure = result.swap().getOrElse(
+            () => Failure("Login gagal"),
+          );
+      emit(AuthFailedState(failure.message));
+      return;
     }
+    final user = result.getOrElse(() => null);
+    if (user == null) {
+      emit(AuthFailedState("user null"));
+      return;
+    }
+
+    final userEither = await userRepository.getUser(user.id);
+    final userDoc = userEither.getOrElse(() => throw Exception("null"));
+    final verif = user.emailConfirmedAt != null;
+    emit(AuthLoggedState(userDoc, verif));
   }
 
   Future<void> _onChangePass(
@@ -85,7 +80,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoadingState());
     await authRepository.changePassword(
       email: event.email,
-      oldPassword: event.oldPass,
       newPassword: event.newPass,
     );
     emit(ChangePassSuccess());
@@ -96,7 +90,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoadingState());
-    await authRepository.logout();
+    // await authRepository.logout();
     emit(UnauthenticatedState(true));
   }
 

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/rupiah_converter.dart';
-import '../../../core/widgets/my_appbar.dart';
 
 import '../bloc/product_bloc.dart';
 import '../models/product_model.dart';
@@ -55,9 +54,8 @@ class _EditProductViewState extends State<EditProductView> {
         }
       },
       child: Scaffold(
-        backgroundColor: softGrey,
-        appBar: MyAppBar(
-          titleText: "Edit Produk",
+        appBar: AppBar(
+          title: Text("Edit Produk"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),

@@ -14,6 +14,9 @@ class LoginView extends StatelessWidget {
 
   // final TextEditingController emailC = TextEditingController();
   // final TextEditingController passwordC = TextEditingController();
+  // final TextEditingController emailC =
+  //     TextEditingController(text: "rrozian123@gmail.com");
+  // final TextEditingController passwordC = TextEditingController(text: "123123");
   final TextEditingController emailC =
       TextEditingController(text: "rrozian00@gmail.com");
   final TextEditingController passwordC =
@@ -25,10 +28,9 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
+        print("state di login: $state");
         if (state is AuthLoggedState) {
-          Get.offAllNamed(
-            Routes.bottom,
-          );
+          Navigator.pushNamed(context, Routes.bottom);
         } else if (state is AuthFailedState) {
           debugPrint(state.message.toString());
           Get.offAllNamed(Routes.login);

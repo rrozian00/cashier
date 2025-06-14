@@ -1,13 +1,13 @@
+import 'package:cashier/core/utils/get_user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../core/errors/failure.dart';
 import '../models/store_model.dart';
 
 class StoreRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
+
   Future<Either<Failure, List<StoreModel>>> getStore(String ownerId) async {
     try {
       final storeDoc = await _firestore
@@ -23,10 +23,29 @@ class StoreRepository {
             .toList();
         return Right(store);
       }
-      return Left(Failure('Store with ID $ownerId not found.'));
+      return Left(Failure('Store with ownerId $ownerId not found.'));
     } catch (e) {
       return Left(Failure("Unexpected error ${e.toString()}"));
     }
+  }
+
+  Future<StoreModel?> getActiveStore(String ownerId) async {
+    try {
+      final store = await _firestore
+          .collection("stores")
+          .where("ownerId", isEqualTo: ownerId)
+          .where("isActive", isEqualTo: true)
+          .get()
+          .then((value) => value.docs
+              .map(
+                (e) => StoreModel.fromMap(e.data()),
+              )
+              .first);
+      return store;
+    } catch (e) {
+      print(e);
+    }
+    return null;
   }
 
   Future<void> addStore({
@@ -36,14 +55,16 @@ class StoreRepository {
     required String logoUrl,
   }) async {
     try {
-      final uid = _auth.currentUser?.uid;
-      if (_auth.currentUser == null) return;
+      // final uid = _auth.currentUser?.uid;
+      final user = await getUserData();
+      if (user == null) return;
 
       final docRef = _firestore.collection("stores").doc();
 
       final store = StoreModel(
+        isActive: false,
         id: docRef.id,
-        ownerId: uid,
+        ownerId: user.id,
         name: name,
         address: address,
         phone: phone,
@@ -59,12 +80,11 @@ class StoreRepository {
 
   Future<void> activatedStore(String id) async {
     try {
-      final ownerId = _auth.currentUser?.uid;
-      if (_auth.currentUser == null) return;
-
+      final user = await getUserData();
+      if (user == null) return;
       final stores = await _firestore
           .collection("stores")
-          .where("ownerId", isEqualTo: ownerId)
+          .where("ownerId", isEqualTo: user.id)
           .where("id", isNotEqualTo: id)
           .get()
           .then(

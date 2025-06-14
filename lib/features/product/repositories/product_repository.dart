@@ -1,21 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cashier/features/store/models/store_model.dart';
-
-import '../../../core/utils/get_user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/errors/failure.dart';
+import '../../../core/utils/get_user_data.dart';
+import '../../store/models/store_model.dart';
+import '../../store/repositories/store_repository.dart';
 import '../models/product_model.dart';
 
 class ProductRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _supabaseAuth = Supabase.instance.client.auth;
 
   Future<Map<String, dynamic>> _uploadImageToCloudinary(File imageFile) async {
     try {
@@ -77,7 +78,7 @@ class ProductRepository {
 
   Future<Either<Failure, List<ProductModel>>> getProducts() async {
     try {
-      final userId = _auth.currentUser?.uid;
+      final userId = _supabaseAuth.currentUser?.id;
       if (userId == null) {
         return Left(Failure("User tidak terautentikasi."));
       }
@@ -118,7 +119,7 @@ class ProductRepository {
     required String imagePath,
   }) async {
     Map<String, dynamic>? result;
-    final userId = _auth.currentUser?.uid;
+    final userId = _supabaseAuth.currentUser?.id;
     if (userId == null) {
       return Left(Failure("User tidak terautentikasi."));
     }
@@ -192,7 +193,7 @@ class ProductRepository {
 
   //hapus
   Future<void> deleteProduct(String id) async {
-    final userId = _auth.currentUser?.uid;
+    final userId = _supabaseAuth.currentUser?.id;
     if (userId == null) {
       throw Exception("User tidak terautentikasi.");
     }
@@ -213,7 +214,7 @@ class ProductRepository {
     print("storeid nya:$storeId");
 
     if (storeId == null) {
-      throw Exception("User tidak terautentikasi.");
+      throw Exception("User Store id tidak ditemukan.");
     }
 
     final doc =
@@ -237,40 +238,42 @@ class ProductRepository {
     String newPrice,
     String newImage,
   ) async {
-    String? storeId;
+    try {
+      final repo = StoreRepository();
+      final userId = _supabaseAuth.currentUser?.id;
+      if (userId == null) {
+        return;
+      }
+      final store = await repo.getActiveStore(userId);
+      if (store == null) {
+        throw Exception("Store ID tidak ditemukan!");
+      }
+      final storeId = store.id;
+      // 🔹 Ambil data lama dari Firestore
+      final docSnapshot =
+          await _firestore.collection('stores/$storeId/products').doc(id).get();
 
-    final userId = _auth.currentUser?.uid;
-    if (userId == null) {
-      return;
+      if (!docSnapshot.exists) {
+        throw Exception("Menu tidak ditemukan!");
+      }
+
+      final oldData = ProductModel.fromMap(docSnapshot.data()!);
+
+      // 🔹 Gunakan copyWith untuk update hanya field yang diubah
+      final updatedData = oldData.copyWith(
+        name: newName,
+        price: newPrice.replaceAll(RegExp(r'[^\d]'), ''),
+        image: newImage,
+      );
+
+      // 🔹 Update ke Firestore
+      await _firestore
+          .collection('stores/$storeId/products')
+          .doc(id)
+          .update(updatedData.toMap());
+    } catch (e) {
+      print(e);
     }
-
-    final userDoc = await _firestore.collection('users').doc(userId).get();
-    if (userDoc.data() != null) {
-      storeId = userDoc.data()?['storeId'];
-    }
-
-    // 🔹 Ambil data lama dari Firestore
-    final docSnapshot =
-        await _firestore.collection('stores/$storeId/products').doc(id).get();
-
-    if (!docSnapshot.exists) {
-      throw Exception("Menu tidak ditemukan!");
-    }
-
-    final oldData = ProductModel.fromMap(docSnapshot.data()!);
-
-    // 🔹 Gunakan copyWith untuk update hanya field yang diubah
-    final updatedData = oldData.copyWith(
-      name: newName,
-      price: newPrice.replaceAll(RegExp(r'[^\d]'), ''),
-      image: newImage,
-    );
-
-    // 🔹 Update ke Firestore
-    await _firestore
-        .collection('stores/$storeId/products')
-        .doc(id)
-        .update(updatedData.toMap());
   }
 
   Stream<Either<Failure, List<ProductModel>>> watchProducts() async* {
@@ -307,7 +310,7 @@ class ProductRepository {
   Future<Either<Failure, ProductModel>> getProductByBarcode(
       String barcode) async {
     try {
-      final userId = _auth.currentUser?.uid;
+      final userId = _supabaseAuth.currentUser?.id;
       if (userId == null) {
         return Left(Failure("User tidak terautentikasi."));
       }

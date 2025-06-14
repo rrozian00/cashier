@@ -30,10 +30,16 @@ final class AuthLoggedState extends AuthState {
   final bool verification;
   final UserModel user;
 
-  const AuthLoggedState(this.user, this.verification);
+  const AuthLoggedState(
+    this.user,
+    this.verification,
+  );
 
   @override
-  List<Object> get props => [user, verification];
+  List<Object> get props => [
+        user,
+        verification,
+      ];
 }
 
 // final class AuthSendedVerificationState extends AuthState {

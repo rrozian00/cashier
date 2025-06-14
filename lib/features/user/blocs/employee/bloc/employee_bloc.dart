@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:cashier/features/user/repositories/employee_repo.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../models/user_model.dart';
@@ -9,13 +10,14 @@ part 'employee_state.dart';
 
 class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
   final UserRepository _userRepository = UserRepository();
+  final EmployeeRepo _employeeRepo = EmployeeRepo();
 
   EmployeeBloc() : super(EmployeeInitial()) {
     //add
     on<AddEmployeePressed>((event, emit) async {
       try {
         emit(EmployeeLoading());
-        await _userRepository.createEmployee(event.employee, event.password);
+        await _employeeRepo.createEmployee(event.employee, event.password);
         emit(EmployeeAddSuccess(employee: event.employee));
       } catch (e) {
         emit(EmployeeFailed(message: e.toString()));
@@ -25,19 +27,17 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
     //get
     on<GetEmployeeRequested>(
       (event, emit) async {
-        try {
-          emit(EmployeeLoading());
-          final employeesEither = await _userRepository.getEmployees();
+        emit(EmployeeLoading());
+        final employeesEither = await _employeeRepo.getEmployees();
 
-          employeesEither.fold(
-            (error) => error.message,
-            (employees) {
-              emit(EmployeeGetSuccess(employees: employees));
-            },
-          );
-        } catch (e) {
-          emit(EmployeeFailed(message: e.toString()));
-        }
+        employeesEither.fold(
+          (error) {
+            emit(EmployeeFailed(message: error.message));
+          },
+          (employees) {
+            emit(EmployeeGetSuccess(employees: employees));
+          },
+        );
       },
     );
 
@@ -59,7 +59,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
     on<DeleteEmployeeRequested>(
       (event, emit) async {
         emit(EmployeeLoading());
-        await _userRepository.deleteEmployee(event.id);
+        await _employeeRepo.deleteEmployee(event.id);
       },
     );
   }

@@ -1,11 +1,10 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/widgets/home_indicator.dart';
-import 'package:cashier/core/widgets/my_text_field.dart';
-import 'package:cashier/features/user/blocs/employee/bloc/employee_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../../../../core/theme/colors.dart';
+import '../../../../../core/widgets/my_text_field.dart';
+import '../bloc/employee_bloc.dart';
 
 class EditEmployee extends StatefulWidget {
   final String id;
@@ -43,76 +42,71 @@ class _EditEmployeeState extends State<EditEmployee> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: softGrey,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 15),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.6,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                homeIndicator(),
-                Text(
-                  "Edit Karyawan",
-                  style: GoogleFonts.roboto(color: purple, fontSize: 16),
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                MyTextField(
-                  label: "Nama",
-                  controller: nameC,
-                ),
-                MyTextField(
-                  label: "No HP",
-                  controller: phoneC,
-                ),
-                MyTextField(
-                  label: "Alamat",
-                  controller: addressC,
-                ),
-                MyTextField(
-                  suffix: "%",
-                  label: "Gaji",
-                  controller: salaryC,
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ElevatedButton(
-                      child: Text("Batal"),
-                      onPressed: () => Navigator.pop(context),
-                      // text: "Batal",
-                      // width: 110,
-                    ),
-                    ElevatedButton(
-                      // width: 110,
-                      child: Text("Simpan"),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        context.read<EmployeeBloc>().add(EditEmployeePressed(
-                              id: widget.id,
-                              name: nameC.text,
-                              address: addressC.text,
-                              phone: phoneC.text,
-                              salary: salaryC.text,
-                            ));
-                        context
-                            .read<EmployeeBloc>()
-                            .add(GetEmployeeRequested());
-                      },
-                      // text: "Simpan",
-                    ),
-                  ],
-                )
-              ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(
+            left: 10.0,
+            right: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // homeIndicator(),
+            Text(
+              "Edit Karyawan",
+              style: GoogleFonts.roboto(color: purple, fontSize: 16),
             ),
-          ),
+            SizedBox(
+              height: 25,
+            ),
+            MyTextField(
+              label: "Nama",
+              controller: nameC,
+            ),
+            MyTextField(
+              label: "No HP",
+              controller: phoneC,
+            ),
+            MyTextField(
+              label: "Alamat",
+              controller: addressC,
+            ),
+            MyTextField(
+              suffix: "%",
+              label: "Gaji",
+              controller: salaryC,
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  child: Text("Batal"),
+                  onPressed: () => Navigator.pop(context),
+                  // text: "Batal",
+                  // width: 110,
+                ),
+                ElevatedButton(
+                  // width: 110,
+                  child: Text("Simpan"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    context.read<EmployeeBloc>().add(EditEmployeePressed(
+                          id: widget.id,
+                          name: nameC.text,
+                          address: addressC.text,
+                          phone: phoneC.text,
+                          salary: salaryC.text,
+                        ));
+                    context.read<EmployeeBloc>().add(GetEmployeeRequested());
+                  },
+                  // text: "Simpan",
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );

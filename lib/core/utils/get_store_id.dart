@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,15 +7,16 @@ import 'get_user_data.dart';
 
 Future<String> getStoreId() async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final FirebaseAuth auth = FirebaseAuth.instance;
 
   final storeId = ''.obs;
-  final userId = auth.currentUser?.uid;
-  if (userId == null) return "";
+  // final userId = auth.currentUser?.uid;
+  // if (user == null) return "";
+  final user = await getUserData();
+  if (user == null) return "";
 
   final ownerStore = await firestore
       .collection('stores')
-      .where('ownerId', isEqualTo: userId)
+      .where('ownerId', isEqualTo: user.id)
       .get();
 
   if (ownerStore.docs.isNotEmpty) {
@@ -26,7 +26,7 @@ Future<String> getStoreId() async {
     // Jika bukan owner, cek apakah user adalah karyawan
     QuerySnapshot<Map<String, dynamic>> employeeStore = await firestore
         .collection('stores')
-        .where('employees', arrayContains: userId)
+        .where('employees', arrayContains: user.id)
         .get();
 
     if (employeeStore.docs.isNotEmpty) {
@@ -39,12 +39,11 @@ Future<String> getStoreId() async {
 
 Future<StoreModel?> getStoreData() async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final FirebaseAuth auth = FirebaseAuth.instance;
 
-  final userId = auth.currentUser?.uid;
-  if (userId == null) return null;
-
-  debugPrint("userId on getStoreData: $userId");
+  // final userId = auth.currentUser?.uid;
+  // if (userId == null) return null;
+  final user = await getUserData();
+  if (user == null) return null;
 
   final userData = await getUserData();
   if (userData == null) {
@@ -57,7 +56,7 @@ Future<StoreModel?> getStoreData() async {
   if (userRole == "owner") {
     final ownerStore = await firestore
         .collection('stores')
-        .where('ownerId', isEqualTo: userId)
+        .where('ownerId', isEqualTo: user.id)
         .get();
 
     if (ownerStore.docs.isNotEmpty) {
@@ -69,7 +68,7 @@ Future<StoreModel?> getStoreData() async {
   } else {
     final employeeStore = await firestore
         .collection('stores')
-        .where('employees', arrayContains: userId)
+        .where('employees', arrayContains: user.id)
         .get();
 
     if (employeeStore.docs.isNotEmpty) {
