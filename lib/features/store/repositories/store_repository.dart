@@ -30,7 +30,7 @@ class StoreRepository {
     }
   }
 
-  Future<Either<Failure, List<StoreModel>>> getStoreAsEmployee(
+  Future<Either<Failure, StoreModel>> getStoreAsEmployee(
       String employeeId) async {
     try {
       final storeDoc = await _firestore
@@ -44,7 +44,7 @@ class StoreRepository {
               (e) => StoreModel.fromMap(e.data()),
             )
             .toList();
-        return Right(store);
+        return Right(store.first);
       }
       return Left(Failure('null'));
     } catch (e) {

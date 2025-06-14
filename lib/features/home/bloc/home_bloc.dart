@@ -41,18 +41,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           (failure) {
             emit(HomeError(message: failure.message));
           },
-          (stores) {
-            for (var storeResult in stores) {
-              if (storeResult.isActive == true) {
-                final store = storeResult;
-                emit(HomeSuccess(user: user, store: store));
-                break;
-              }
-            }
+          (store) {
+            emit(HomeSuccess(user: user, store: store));
           },
         );
       }
-      //else
     });
   }
 }
