@@ -26,7 +26,7 @@ class EmployeeListView extends StatelessWidget {
                 child: CircularProgressIndicator.adaptive(),
               );
             }
-            if (state is EmployeeFailed && state.message == "employee null") {
+            if (state is EmployeeFailed && state.message == "null") {
               return noData(
                   title: "Tidak ada karyawan ditemukan",
                   message: "Silahkan tambah karyawan.");

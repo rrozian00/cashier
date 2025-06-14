@@ -13,12 +13,12 @@ final class EmployeeLoading extends EmployeeState {}
 
 //ADD
 final class EmployeeAddSuccess extends EmployeeState {
-  final UserModel employee;
+  // final UserModel employee;
 
-  const EmployeeAddSuccess({required this.employee});
+  // const EmployeeAddSuccess({required this.employee});
 
-  @override
-  List<Object> get props => [employee];
+  // @override
+  // List<Object> get props => [employee];
 }
 
 //GET

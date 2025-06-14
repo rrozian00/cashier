@@ -17,24 +17,42 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeInitial()) {
     on<HomeGetStoreReq>((event, emit) async {
       emit(HomeLoading());
-
       final user = await getUserData();
       if (user == null) return;
-      final storeDoc = await storeRepository.getStore(user.id!);
-      storeDoc.fold(
-        (failure) {
-          emit(HomeError(message: failure.message));
-        },
-        (stores) {
-          for (var storeResult in stores) {
-            if (storeResult.isActive == true) {
-              final store = storeResult;
-              emit(HomeSuccess(user: user, store: store));
-              break;
+      if (user.role == "owner") {
+        final storeDoc = await storeRepository.getStoreAsOwner(user.id!);
+        storeDoc.fold(
+          (failure) {
+            emit(HomeError(message: failure.message));
+          },
+          (stores) {
+            for (var storeResult in stores) {
+              if (storeResult.isActive == true) {
+                final store = storeResult;
+                emit(HomeSuccess(user: user, store: store));
+                break;
+              }
             }
-          }
-        },
-      );
+          },
+        );
+      } else {
+        final storeDoc = await storeRepository.getStoreAsEmployee(user.id!);
+        storeDoc.fold(
+          (failure) {
+            emit(HomeError(message: failure.message));
+          },
+          (stores) {
+            for (var storeResult in stores) {
+              if (storeResult.isActive == true) {
+                final store = storeResult;
+                emit(HomeSuccess(user: user, store: store));
+                break;
+              }
+            }
+          },
+        );
+      }
+      //else
     });
   }
 }

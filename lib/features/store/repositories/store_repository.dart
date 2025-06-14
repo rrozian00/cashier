@@ -1,14 +1,15 @@
-import 'package:cashier/core/utils/get_user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../core/errors/failure.dart';
+import '../../../core/utils/get_user_data.dart';
 import '../models/store_model.dart';
 
 class StoreRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<Either<Failure, List<StoreModel>>> getStore(String ownerId) async {
+  Future<Either<Failure, List<StoreModel>>> getStoreAsOwner(
+      String ownerId) async {
     try {
       final storeDoc = await _firestore
           .collection("stores")
@@ -23,9 +24,31 @@ class StoreRepository {
             .toList();
         return Right(store);
       }
-      return Left(Failure('Store with ownerId $ownerId not found.'));
+      return Left(Failure('null'));
     } catch (e) {
-      return Left(Failure("Unexpected error ${e.toString()}"));
+      return Left(Failure("Error : ${e.toString()}"));
+    }
+  }
+
+  Future<Either<Failure, List<StoreModel>>> getStoreAsEmployee(
+      String employeeId) async {
+    try {
+      final storeDoc = await _firestore
+          .collection("stores")
+          .where("employees", arrayContains: employeeId)
+          .get();
+
+      if (storeDoc.docs.isNotEmpty) {
+        final store = storeDoc.docs
+            .map(
+              (e) => StoreModel.fromMap(e.data()),
+            )
+            .toList();
+        return Right(store);
+      }
+      return Left(Failure('null'));
+    } catch (e) {
+      return Left(Failure("Error : ${e.toString()}"));
     }
   }
 
@@ -43,9 +66,8 @@ class StoreRepository {
               .first);
       return store;
     } catch (e) {
-      print(e);
+      throw Exception("Error: ${e.toString()}");
     }
-    return null;
   }
 
   Future<void> addStore({
@@ -74,7 +96,7 @@ class StoreRepository {
 
       await docRef.set(store.toMap());
     } catch (e) {
-      throw Exception("Unexpected error : $e");
+      throw Exception("Error: $e");
     }
   }
 
@@ -107,7 +129,7 @@ class StoreRepository {
         "isActive": true,
       });
     } on FirebaseException catch (e) {
-      print(e);
+      throw Exception("Error: ${e.toString()}");
     }
   }
 
@@ -129,7 +151,7 @@ class StoreRepository {
 
       await _firestore.collection("stores").doc(id).update(newData.toMap());
     } catch (e) {
-      print(e);
+      throw Exception("Error: ${e.toString()}");
     }
   }
 }

@@ -11,8 +11,6 @@ final class RegisterInitial extends RegisterState {}
 
 final class RegisterLoadingState extends RegisterState {}
 
-final class EditSuccessState extends RegisterState {}
-
 final class RegisterSuccessState extends RegisterState {
   final UserModel user;
 

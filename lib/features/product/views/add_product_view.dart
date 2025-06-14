@@ -118,6 +118,7 @@ class AddProductView extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   TextField(
+                    controller: name,
                     textInputAction: TextInputAction.next,
                     textCapitalization: TextCapitalization.characters,
                     onChanged: (value) => name.text = value,

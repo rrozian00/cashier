@@ -1,13 +1,13 @@
-import '../../../core/theme/colors.dart';
-
-import '../../../core/widgets/my_text_field.dart';
-import '../blocs/auth/auth_bloc.dart';
-import 'register_view.dart';
-import '../../../routes/app_pages.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../core/widgets/my_text_field.dart';
+import '../../../routes/app_pages.dart';
+import '../blocs/auth/auth_bloc.dart';
+import '../blocs/login/login_cubit.dart';
+import 'register_view.dart';
 
 class LoginView extends StatelessWidget {
   LoginView({super.key});
@@ -19,8 +19,7 @@ class LoginView extends StatelessWidget {
   // final TextEditingController passwordC = TextEditingController(text: "123123");
   final TextEditingController emailC =
       TextEditingController(text: "rrozian00@gmail.com");
-  final TextEditingController passwordC =
-      TextEditingController(text: "1231231");
+  final TextEditingController passwordC = TextEditingController(text: "123123");
 
   final _formKey = GlobalKey<FormState>();
 
@@ -28,17 +27,15 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        print("state di login: $state");
         if (state is AuthLoggedState) {
-          Navigator.pushNamed(context, Routes.bottom);
+          Navigator.pushReplacementNamed(context, Routes.bottom);
         } else if (state is AuthFailedState) {
+          Navigator.pushReplacementNamed(context, Routes.login);
           debugPrint(state.message.toString());
-          Get.offAllNamed(Routes.login);
           Get.snackbar("Error", state.message);
         }
       },
       child: Scaffold(
-        backgroundColor: softGrey,
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -55,6 +52,7 @@ class LoginView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Image.asset(
+                          color: Theme.of(context).colorScheme.primary,
                           'assets/icons/icon.png',
                           width: 100,
                         ),
@@ -86,19 +84,12 @@ class LoginView extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    BlocBuilder<AuthBloc, AuthState>(
-                      builder: (context, state) {
-                        final isObscure = state is UnauthenticatedState
-                            ? state.isObsecure
-                            : true;
-                        final hasToggle = state is UnauthenticatedState;
-
+                    BlocBuilder<LoginCubit, bool>(
+                      builder: (context, isObscure) {
                         return MyTextField(
                           suffixIcon: IconButton(
-                            onPressed: hasToggle
-                                ? () =>
-                                    context.read<AuthBloc>().add(SeePassword())
-                                : null,
+                            onPressed: () =>
+                                context.read<LoginCubit>().changeObsecure(),
                             icon: Icon(
                               isObscure
                                   ? Icons.visibility_off_outlined

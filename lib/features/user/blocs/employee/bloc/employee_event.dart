@@ -8,16 +8,31 @@ sealed class EmployeeEvent extends Equatable {
 }
 
 final class AddEmployeePressed extends EmployeeEvent {
-  final UserModel employee;
+  final String name;
+  final String email;
   final String password;
+  final String address;
+  final String phone;
+  final String salary;
 
   const AddEmployeePressed({
-    required this.employee,
+    required this.name,
+    required this.email,
     required this.password,
+    required this.address,
+    required this.phone,
+    required this.salary,
   });
 
   @override
-  List<Object> get props => [employee, password];
+  List<Object> get props => [
+        name,
+        email,
+        password,
+        address,
+        phone,
+        salary,
+      ];
 }
 
 final class EditEmployeePressed extends EmployeeEvent {

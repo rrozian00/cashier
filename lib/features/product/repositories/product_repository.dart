@@ -15,7 +15,6 @@ import '../models/product_model.dart';
 
 class ProductRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
   final _supabaseAuth = Supabase.instance.client.auth;
 
   Future<Map<String, dynamic>> _uploadImageToCloudinary(File imageFile) async {
@@ -78,27 +77,40 @@ class ProductRepository {
 
   Future<Either<Failure, List<ProductModel>>> getProducts() async {
     try {
-      final userId = _supabaseAuth.currentUser?.id;
+      final user = await getUserData();
+      final userId = user?.id;
       if (userId == null) {
         return Left(Failure("User tidak terautentikasi."));
       }
+      final String storeId;
 
-      final stores = await _firestore
-          .collection('stores')
-          .where("ownerId", isEqualTo: userId)
-          .where("isActive", isEqualTo: true)
-          .get()
-          .then(
-            (value) => value.docs
-                .map(
-                  (e) => StoreModel.fromMap(e.data()),
-                )
-                .toList(),
-          );
-      final storeId = stores.first.id;
-
-      if (storeId == null) {
-        return Left(Failure("Store ID tidak ditemukan."));
+      if (user?.role == 'owner') {
+        final stores = await _firestore
+            .collection('stores')
+            .where("ownerId", isEqualTo: userId)
+            .where("isActive", isEqualTo: true)
+            .get()
+            .then(
+              (value) => value.docs
+                  .map(
+                    (e) => StoreModel.fromMap(e.data()),
+                  )
+                  .toList(),
+            );
+        storeId = stores.first.id!;
+      } else {
+        final stores = await _firestore
+            .collection('stores')
+            .where("employees", arrayContains: user?.id)
+            .get()
+            .then(
+              (value) => value.docs
+                  .map(
+                    (e) => StoreModel.fromMap(e.data()),
+                  )
+                  .toList(),
+            );
+        storeId = stores.first.id!;
       }
 
       final snapshot =
@@ -310,30 +322,42 @@ class ProductRepository {
   Future<Either<Failure, ProductModel>> getProductByBarcode(
       String barcode) async {
     try {
-      final userId = _supabaseAuth.currentUser?.id;
+      final user = await getUserData();
+      final userId = user?.id;
       if (userId == null) {
         return Left(Failure("User tidak terautentikasi."));
       }
 
-      final stores = await _firestore
-          .collection('stores')
-          .where("ownerId", isEqualTo: userId)
-          .where("isActive", isEqualTo: true)
-          .get()
-          .then(
-            (value) => value.docs
-                .map(
-                  (e) => StoreModel.fromMap(e.data()),
-                )
-                .toList(),
-          );
-      final storeId = stores.first.id;
-      print("storeid nya:$storeId");
+      final String storeId;
 
-      if (storeId == null) {
-        return Left(Failure("Store ID tidak ditemukan."));
+      if (user?.role == 'owner') {
+        final stores = await _firestore
+            .collection('stores')
+            .where("ownerId", isEqualTo: userId)
+            .where("isActive", isEqualTo: true)
+            .get()
+            .then(
+              (value) => value.docs
+                  .map(
+                    (e) => StoreModel.fromMap(e.data()),
+                  )
+                  .toList(),
+            );
+        storeId = stores.first.id!;
+      } else {
+        final stores = await _firestore
+            .collection('stores')
+            .where("employees", arrayContains: user?.id)
+            .get()
+            .then(
+              (value) => value.docs
+                  .map(
+                    (e) => StoreModel.fromMap(e.data()),
+                  )
+                  .toList(),
+            );
+        storeId = stores.first.id!;
       }
-
       final snapshot = await _firestore
           .collection('stores/$storeId/products')
           .where('barcode', isEqualTo: barcode)

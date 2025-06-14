@@ -25,7 +25,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     final userData = await getUserData();
     final ownerId = userData?.id;
     if (ownerId != null) {
-      final storesData = await storeRepo.getStore(ownerId);
+      final storesData = await storeRepo.getStoreAsOwner(ownerId);
       storesData.fold(
         (err) => emit(StoreError(message: err.message)),
         (stores) => emit(GetStoreSuccess(stores: stores)),

@@ -27,21 +27,24 @@ class StoreView extends StatelessWidget {
                 child: CircularProgressIndicator.adaptive(),
               );
             }
-            if (state is GetStoreSuccess && state.stores.isEmpty) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                spacing: 30,
-                children: [
-                  noData(
-                    title: "Tidak ada Toko ditemukan",
-                    message: "Silahkan buat Toko Anda.",
-                  ),
-                  ElevatedButton(
-                      onPressed: () =>
-                          Navigator.pushNamed(context, Routes.addStore),
-                      child: Text("Tambah Toko"))
-                ],
+            // if (state is GetStoreSuccess && state.stores.isEmpty) {
+            //   return Column(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     spacing: 30,
+            //     children: [
+
+            //       ElevatedButton(
+            //           onPressed: () =>
+            //               Navigator.pushNamed(context, Routes.addStore),
+            //           child: Text("Tambah Toko"))
+            //     ],
+            //   );
+            // }
+            if (state is StoreError && state.message == 'null') {
+              return noData(
+                title: "Tidak ada Toko ditemukan",
+                message: "Silahkan buat Toko Anda.",
               );
             }
             if (state is GetStoreSuccess) {

@@ -1,4 +1,6 @@
 import 'package:cashier/features/store/bloc/store_bloc.dart';
+import 'package:cashier/features/user/blocs/edit_user/edit_user_bloc.dart';
+import 'package:cashier/features/user/blocs/login/login_cubit.dart';
 
 import '../theme/cubit/theme_cubit.dart';
 import '../theme/theme_service.dart';
@@ -31,4 +33,6 @@ final List<BlocProvider> appProviders = [
   BlocProvider<ThemeCubit>(create: (context) => ThemeCubit(ThemeService())),
   BlocProvider<SettingsCubit>(create: (context) => SettingsCubit()),
   BlocProvider<StoreBloc>(create: (context) => StoreBloc()),
+  BlocProvider<LoginCubit>(create: (context) => LoginCubit()),
+  BlocProvider<EditUserBloc>(create: (context) => EditUserBloc()),
 ];

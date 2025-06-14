@@ -3,6 +3,7 @@ import 'package:cashier/core/widgets/home_indicator.dart';
 import 'package:cashier/core/widgets/my_alert_dialog.dart';
 import 'package:cashier/core/widgets/my_text_field.dart';
 import 'package:cashier/features/user/blocs/auth/auth_bloc.dart';
+import 'package:cashier/features/user/blocs/edit_user/edit_user_bloc.dart';
 import 'package:cashier/features/user/blocs/register/register_bloc.dart';
 import 'package:cashier/features/user/models/user_model.dart';
 import 'package:flutter/material.dart';
@@ -42,9 +43,9 @@ class _EditProfileViewState extends State<EditProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RegisterBloc, RegisterState>(
+    return BlocConsumer<EditUserBloc, EditUserState>(
       listener: (context, state) {
-        if (state is EditSuccessState) {
+        if (state is EditUserSuccess) {
           //  Navigator.popUntil(
           //         context, (route) => route.settings.name == Routes.profile)
           Get.back();
@@ -99,8 +100,9 @@ class _EditProfileViewState extends State<EditProfileView> {
                             onPressed: () {
                               Get.dialog(MyAlertDialog(
                                 onConfirm: () {
-                                  context.read<RegisterBloc>().add(
+                                  context.read<EditUserBloc>().add(
                                         EditRequestedEvent(
+                                          id: widget.user.id!,
                                           name: nameC.text,
                                           address: addressC.text,
                                           phone: phoneNumberC.text,

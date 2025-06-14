@@ -20,23 +20,3 @@ final class RegisterRequestedEvent extends RegisterEvent {
   @override
   List<Object?> get props => [user, password];
 }
-
-// Event untuk edit
-final class EditRequestedEvent extends RegisterEvent {
-  final String name;
-  final String address;
-  final String phone;
-
-  const EditRequestedEvent({
-    required this.name,
-    required this.address,
-    required this.phone,
-  });
-
-  @override
-  List<Object?> get props => [
-        name,
-        address,
-        phone,
-      ];
-}

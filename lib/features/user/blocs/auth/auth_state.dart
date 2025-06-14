@@ -8,20 +8,7 @@ sealed class AuthState extends Equatable {
 }
 
 //Auth
-final class UnauthenticatedState extends AuthState {
-  final bool isObsecure;
-
-  const UnauthenticatedState(this.isObsecure);
-
-  UnauthenticatedState copyWith({
-    bool? isObsecure,
-  }) {
-    return UnauthenticatedState(isObsecure ?? this.isObsecure);
-  }
-
-  @override
-  List<Object> get props => [isObsecure];
-}
+final class UnauthenticatedState extends AuthState {}
 
 //Login
 final class AuthLoadingState extends AuthState {}
@@ -42,18 +29,18 @@ final class AuthLoggedState extends AuthState {
       ];
 }
 
-// final class AuthSendedVerificationState extends AuthState {
-//   final UserModel user;
-//   final bool verification;
+final class AuthSendedVerificationState extends AuthState {
+  final UserModel user;
+  final bool verification;
 
-//   const AuthSendedVerificationState({
-//     required this.verification,
-//     required this.user,
-//   });
+  const AuthSendedVerificationState({
+    required this.verification,
+    required this.user,
+  });
 
-//   @override
-//   List<Object> get props => [verification, user];
-// }
+  @override
+  List<Object> get props => [verification, user];
+}
 
 //Logout
 final class AuthLogoutState extends AuthState {}

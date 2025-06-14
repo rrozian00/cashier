@@ -1,4 +1,3 @@
-import 'package:cashier/features/store/bloc/store_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -10,6 +9,7 @@ import '../../../routes/app_pages.dart';
 import '../../order/history_order/bloc/history_order_bloc.dart';
 import '../../order/history_order/views/history_order_view.dart';
 import '../../product/bloc/product_bloc.dart';
+import '../../store/bloc/store_bloc.dart';
 import '../../user/blocs/employee/bloc/employee_bloc.dart';
 import '../cubit/settings_cubit.dart';
 
@@ -19,9 +19,9 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Pengaturan'),
-      ),
+      // appBar: AppBar(
+      //   title: Text('Pengaturan'),
+      // ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

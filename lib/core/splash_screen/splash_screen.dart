@@ -22,8 +22,6 @@ class SplashScreen extends StatelessWidget {
             if (context.mounted) {
               Navigator.pushReplacementNamed(context, Routes.bottom);
             }
-
-            debugPrint("harusnya udah route");
           } catch (e) {
             debugPrint("error route:$e");
           }

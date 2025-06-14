@@ -1,10 +1,8 @@
-import '../../../core/widgets/my_text_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../core/widgets/my_appbar.dart';
+import '../../../core/widgets/my_text_field.dart';
 import '../../../routes/app_pages.dart';
 import '../blocs/register/register_bloc.dart';
 import '../models/user_model.dart';
@@ -33,8 +31,7 @@ class RegisterView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: softGrey,
-        appBar: MyAppBar(titleText: "Registrasi Akun"),
+        appBar: AppBar(title: Text("Registrasi Akun")),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(

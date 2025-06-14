@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:cashier/features/user/repositories/employee_repo.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../models/user_model.dart';
+import '../../../repositories/employee_repo.dart';
 import '../../../repositories/user_repository.dart';
 
 part 'employee_event.dart';
@@ -17,8 +17,14 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
     on<AddEmployeePressed>((event, emit) async {
       try {
         emit(EmployeeLoading());
-        await _employeeRepo.createEmployee(event.employee, event.password);
-        emit(EmployeeAddSuccess(employee: event.employee));
+        await _employeeRepo.createEmployee(
+            name: event.name,
+            email: event.email,
+            password: event.password,
+            address: event.address,
+            phone: event.phone,
+            salary: event.salary);
+        emit(EmployeeAddSuccess());
       } catch (e) {
         emit(EmployeeFailed(message: e.toString()));
       }
@@ -47,7 +53,6 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         emit(EmployeeLoading());
         await _userRepository.editUser(
           id: event.id,
-          newSalary: event.salary,
           newName: event.name,
           newAddress: event.address,
           newPhone: event.phone,

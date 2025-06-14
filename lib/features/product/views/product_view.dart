@@ -150,10 +150,8 @@ class ProductView extends StatelessWidget {
             }
           },
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: ElevatedButton(
-          // height: 45,
-          // width: 180,
-          // text: "Tambah Produk",
           child: Text("Tambah"),
           onPressed: () => Navigator.pushNamed(context, Routes.addMenus),
         ),

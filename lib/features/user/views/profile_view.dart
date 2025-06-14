@@ -21,16 +21,6 @@ class ProfileView extends StatelessWidget {
       listener: (context, state) {
         if (state is UnauthenticatedState) {
           Navigator.pushReplacementNamed(context, Routes.login);
-        } else if (state is AuthLoggedState) {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return MySingleAlertDialog(
-                  onCancelText: "Kembali",
-                  contentText:
-                      "Link verifikasi sudah dikirim ke email ${state.user.email},\nSilahkan cek email anda !");
-            },
-          );
         }
         if (state is ChangePassSuccess) {
           if (context.mounted) {
@@ -56,6 +46,9 @@ class ProfileView extends StatelessWidget {
                       builder: (context) => EditProfileView(user: state.user),
                     ),
                   );
+                } else if (state is AuthLoggedState &&
+                    state.verification == false) {
+                  return Icon(Icons.edit);
                 }
                 return SizedBox.shrink();
               },

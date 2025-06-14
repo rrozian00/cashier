@@ -1,10 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/widgets/my_text_field.dart';
-import '../../../../../routes/app_pages.dart';
-import '../../../models/user_model.dart';
 import '../../auth/auth_bloc.dart';
 import '../bloc/employee_bloc.dart';
 
@@ -24,10 +21,16 @@ class AddEmployeeView extends StatelessWidget {
     return BlocListener<EmployeeBloc, EmployeeState>(
       listener: (context, state) {
         if (state is EmployeeAddSuccess) {
-          Navigator.pushReplacementNamed(context, Routes.login);
+          // Navigator.pushReplacementNamed(context, Routes.login);
+          Navigator.pop(context);
           context.read<EmployeeBloc>().add(GetEmployeeRequested());
         } else if (state is EmployeeFailed) {
-          throw Exception(state.message);
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: Text(state.message),
+            ),
+          );
         }
       },
       child: Scaffold(
@@ -91,17 +94,13 @@ class AddEmployeeView extends StatelessWidget {
                         return ElevatedButton(onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             context.read<EmployeeBloc>().add(AddEmployeePressed(
-                                employee: UserModel(
-                                    id: state.user.id,
-                                    role: state.user.role,
-                                    storeId: state.user.storeId,
-                                    name: nameC.text,
-                                    email: emailC.text,
-                                    phoneNumber: phoneC.text,
-                                    address: addressC.text,
-                                    salary: salaryC.text,
-                                    createdAt: Timestamp.now()),
-                                password: passwordC.text));
+                                  name: nameC.text,
+                                  email: emailC.text,
+                                  phone: phoneC.text,
+                                  address: addressC.text,
+                                  salary: salaryC.text,
+                                  password: passwordC.text,
+                                ));
                           }
                         }, child: BlocBuilder<EmployeeBloc, EmployeeState>(
                           builder: (context, state) {

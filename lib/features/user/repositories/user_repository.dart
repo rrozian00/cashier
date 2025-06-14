@@ -1,14 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/errors/failure.dart';
 import '../models/user_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartz/dartz.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 
 class UserRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   final Supabase _supabase = Supabase.instance;
 
   Future<Either<Failure, User?>> login(String email, String password) async {
@@ -20,10 +19,10 @@ class UserRepository {
         return Right(res.user);
       }
     } on AuthApiException catch (e) {
-      print(e);
+      // debugPrint("Error login: ${e.code}");
       return Left(Failure(e.code!));
     }
-    return Left(Failure("ubex error"));
+    return Left(Failure("Unexpected error"));
   }
 
   Future<void> createUser(UserModel user, String password) async {
@@ -65,7 +64,6 @@ class UserRepository {
     required String newName,
     required String newAddress,
     required String newPhone,
-    required String newSalary,
   }) async {
     final docRef = _firestore
         .collection('users')
@@ -82,20 +80,19 @@ class UserRepository {
       name: newName,
       address: newAddress,
       phoneNumber: newPhone,
-      salary: newSalary,
     );
 
-    await docRef.set(updateUser);
+    await docRef.update(updateUser.toMap());
   }
 
-  Future<Either<Failure, UserModel>> getUser(String uid) async {
+  Future<Either<Failure, UserModel>> getUser(String id) async {
     try {
-      final doc = await _firestore.collection("users").doc(uid).get();
+      final doc = await _firestore.collection("users").doc(id).get();
       if (doc.exists) {
         final user = UserModel.fromMap(doc.data()!);
         return Right(user);
       }
-      return Left(Failure("User with ID $uid not found"));
+      return Left(Failure("User with ID $id not found"));
     } catch (e) {
       return Left(Failure("Unexpected error ${e.toString()}"));
     }
