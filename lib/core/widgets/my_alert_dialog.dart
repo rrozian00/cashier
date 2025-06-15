@@ -78,6 +78,11 @@ class MyAlertDialog extends GetView {
 }
 
 class MySingleAlertDialog extends GetView {
+  final VoidCallback? onCancel;
+  final String? onCancelText;
+  final String contentText;
+  final Color? onCancelColor;
+
   const MySingleAlertDialog({
     super.key,
     this.onCancel,
@@ -85,11 +90,6 @@ class MySingleAlertDialog extends GetView {
     this.onCancelColor,
     this.onCancelText,
   });
-
-  final VoidCallback? onCancel;
-  final String? onCancelText;
-  final String contentText;
-  final Color? onCancelColor;
 
   @override
   Widget build(BuildContext context) {

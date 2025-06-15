@@ -1,6 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
@@ -84,45 +81,5 @@ class UserModel {
       createdAt:
           map['createdAt'] != null ? map['createdAt'] as Timestamp : null,
     );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory UserModel.fromJson(String source) =>
-      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  String toString() {
-    return 'UserModel(id: $id, storeId: $storeId, email: $email, name: $name, address: $address, salary: $salary, role: $role, phoneNumber: $phoneNumber, photo: $photo, createdAt: $createdAt)';
-  }
-
-  @override
-  bool operator ==(covariant UserModel other) {
-    if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.storeId == storeId &&
-        other.email == email &&
-        other.name == name &&
-        other.address == address &&
-        other.salary == salary &&
-        other.role == role &&
-        other.phoneNumber == phoneNumber &&
-        other.photo == photo &&
-        other.createdAt == createdAt;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        storeId.hashCode ^
-        email.hashCode ^
-        name.hashCode ^
-        address.hashCode ^
-        salary.hashCode ^
-        role.hashCode ^
-        phoneNumber.hashCode ^
-        photo.hashCode ^
-        createdAt.hashCode;
   }
 }
