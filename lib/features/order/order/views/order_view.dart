@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/rupiah_converter.dart';
 import '../../../../core/utils/scanner_page.dart';
 import '../../../product/bloc/product_bloc.dart';
@@ -31,7 +30,7 @@ class OrderView extends StatelessWidget {
           //   title: Text("Keranjang"),
           //   actions: [
           // IconButton(
-          //   color: blue,
+          //   color: Colors.blue,
           //   onPressed: () => orderBloc.add(ClearCart()),
           //   icon: Icon(Icons.clear,
           //       color: Theme.of(context).colorScheme.error),
@@ -50,7 +49,7 @@ class OrderView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         IconButton(
-                          color: blue,
+                          color: Colors.blue,
                           onPressed: () => orderBloc.add(ClearCart()),
                           icon: Icon(Icons.clear,
                               color: Theme.of(context).colorScheme.error),
@@ -156,10 +155,9 @@ class OrderView extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 3.0),
             child: Card(
-              shadowColor: Theme.of(context).colorScheme.secondary,
+              // shadowColor: Theme.of(context).colorScheme.primary,
               elevation: 4,
-              color: Theme.of(context).colorScheme.onPrimary,
-              // color: white,
+              color: Theme.of(context).colorScheme.secondary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -250,7 +248,8 @@ class OrderView extends StatelessWidget {
               : Container(),
           orderBloc.cart.isNotEmpty
               ? ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: green),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.tertiary),
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -265,7 +264,6 @@ class OrderView extends StatelessWidget {
                   child: Text(
                     "BAYAR",
                     style: TextStyle(
-                      // color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
                     ),
@@ -293,6 +291,7 @@ class OrderView extends StatelessWidget {
               // text: "Daftar Produk",
               onPressed: () {
                 showModalBottomSheet(
+                  showDragHandle: true,
                   context: context,
                   clipBehavior: Clip.hardEdge,
                   builder: (context) => const ProductList(),

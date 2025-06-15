@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../../core/theme/colors.dart';
 import '../../../../../core/widgets/my_text_field.dart';
 import '../bloc/employee_bloc.dart';
 
@@ -54,7 +53,7 @@ class _EditEmployeeState extends State<EditEmployee> {
             // homeIndicator(),
             Text(
               "Edit Karyawan",
-              style: GoogleFonts.roboto(color: purple, fontSize: 16),
+              style: GoogleFonts.roboto(fontSize: 16),
             ),
             SizedBox(
               height: 25,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/theme/colors.dart';
 import '../../../core/widgets/no_data.dart';
 import '../controllers/printer_controller.dart';
 
@@ -24,7 +23,7 @@ class PrinterView extends GetView<PrinterController> {
               children: [
                 Icon(
                   Icons.print_rounded,
-                  color: green,
+                  color: Colors.green,
                   size: 100,
                 ),
                 Center(
@@ -82,10 +81,9 @@ class PrinterView extends GetView<PrinterController> {
                           },
                         ),
                       ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Text('Silahkan pilih Printer, lalu "Hubungkan"')
+                      SizedBox(height: 30),
+                      Text('Silahkan pilih Printer, lalu "Hubungkan"'),
+                      SizedBox(height: 20),
                     ],
                   ),
                 ),
@@ -130,7 +128,7 @@ class PrinterView extends GetView<PrinterController> {
                   onPressed: controller.disconnectPrinter,
                   // text: "Putuskan",
                   child: Text("Putuskan"),
-                  // style: TextStyle(color: white),
+                  // style: TextStyle(color: Colors.white),
                 )
               : ElevatedButton(
                   // height: 50,

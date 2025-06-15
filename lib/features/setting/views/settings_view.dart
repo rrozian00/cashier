@@ -1,17 +1,16 @@
+import 'package:cashier/features/setting/cubit/version_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../core/theme/cubit/theme_cubit.dart';
+import '../../../core/app_theme/theme_cubit/theme_cubit.dart';
 import '../../../routes/app_pages.dart';
 import '../../order/history_order/bloc/history_order_bloc.dart';
 import '../../order/history_order/views/history_order_view.dart';
 import '../../product/bloc/product_bloc.dart';
 import '../../store/bloc/store_bloc.dart';
 import '../../user/blocs/employee/bloc/employee_bloc.dart';
-import '../cubit/settings_cubit.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -29,14 +28,14 @@ class SettingsView extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  _Listile(
+                  _SettingListile(
                     onPress: () {
                       Get.toNamed(Routes.profile);
                     },
                     title: "Profil",
                     icon: Icons.person,
                   ),
-                  _Listile(
+                  _SettingListile(
                     onPress: () {
                       Get.toNamed(Routes.store);
                       context.read<StoreBloc>().add(GetStoresList());
@@ -44,7 +43,7 @@ class SettingsView extends StatelessWidget {
                     title: "Toko",
                     icon: Icons.store,
                   ),
-                  _Listile(
+                  _SettingListile(
                     onPress: () {
                       Get.toNamed(Routes.employee);
                       context.read<EmployeeBloc>().add(GetEmployeeRequested());
@@ -52,7 +51,7 @@ class SettingsView extends StatelessWidget {
                     title: "Karyawan",
                     icon: Icons.person_outline_rounded,
                   ),
-                  _Listile(
+                  _SettingListile(
                     onPress: () {
                       Get.toNamed(Routes.product);
                       context.read<ProductBloc>().add(ProductGetRequested());
@@ -60,28 +59,7 @@ class SettingsView extends StatelessWidget {
                     title: "Produk",
                     icon: Icons.receipt_outlined,
                   ),
-                  _Listile(
-                    onPress: () {
-                      Get.toNamed(Routes.expense);
-                    },
-                    title: "Pengeluaran",
-                    icon: Icons.shopping_cart,
-                  ),
-                  _Listile(
-                    onPress: () {
-                      Get.toNamed(Routes.printer);
-                    },
-                    title: "Printer",
-                    icon: Icons.print,
-                  ),
-                  _Listile(
-                    onPress: () {
-                      Get.toNamed(Routes.inputManual);
-                    },
-                    title: "Input Manual",
-                    icon: Icons.checklist_rounded,
-                  ),
-                  _Listile(
+                  _SettingListile(
                     onPress: () {
                       context
                           .read<HistoryOrderBloc>()
@@ -95,50 +73,30 @@ class SettingsView extends StatelessWidget {
                     title: "Riwayat",
                     icon: Icons.history_toggle_off_rounded,
                   ),
-                  _Listile(
+                  _SettingListile(
                     onPress: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            content: Column(
-                              spacing: 35,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "Pilih Tema",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          context
-                                              .read<ThemeCubit>()
-                                              .chooseTheme(true);
-                                        },
-                                        child: Text("Gelap")),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          context
-                                              .read<ThemeCubit>()
-                                              .chooseTheme(false);
-                                        },
-                                        child: Text("Terang")),
-                                  ],
-                                ),
-                                TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: Text("Simpan"))
-                              ],
-                            ),
-                          );
-                        },
-                      );
+                      Get.toNamed(Routes.printer);
+                    },
+                    title: "Printer",
+                    icon: Icons.print,
+                  ),
+                  _SettingListile(
+                    onPress: () {
+                      Get.toNamed(Routes.inputManual);
+                    },
+                    title: "Input Manual",
+                    icon: Icons.checklist_rounded,
+                  ),
+                  _SettingListile(
+                    onPress: () {
+                      Get.toNamed(Routes.expense);
+                    },
+                    title: "Pengeluaran",
+                    icon: Icons.shopping_cart,
+                  ),
+                  _SettingListile(
+                    onPress: () {
+                      _showThemeDialog(context);
                     },
                     title: "Tema",
                     icon: Icons.palette_outlined,
@@ -146,7 +104,7 @@ class SettingsView extends StatelessWidget {
                 ],
               ),
             ),
-            BlocBuilder<SettingsCubit, String>(
+            BlocBuilder<VersionCubit, String>(
               builder: (context, state) {
                 return Text(
                   state,
@@ -161,12 +119,50 @@ class SettingsView extends StatelessWidget {
   }
 }
 
-class _Listile extends StatelessWidget {
+void _showThemeDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        content: Column(
+          spacing: 35,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "Pilih Tema",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      context.read<ThemeCubit>().chooseTheme(true);
+                    },
+                    child: Text("Gelap")),
+                ElevatedButton(
+                    onPressed: () {
+                      context.read<ThemeCubit>().chooseTheme(false);
+                    },
+                    child: Text("Terang")),
+              ],
+            ),
+            TextButton(
+                onPressed: () => Navigator.pop(context), child: Text("Simpan"))
+          ],
+        ),
+      );
+    },
+  );
+}
+
+class _SettingListile extends StatelessWidget {
   final VoidCallback? onPress;
   final String? title;
   final IconData? icon;
 
-  const _Listile({
+  const _SettingListile({
     this.onPress,
     this.title,
     this.icon,
@@ -182,31 +178,31 @@ class _Listile extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                  color: Theme.of(context).colorScheme.secondary,
-                  blurStyle: BlurStyle.outer,
-                  spreadRadius: 1,
-                  blurRadius: 1,
-                  offset: Offset(0, 1))
-            ],
-            color: Theme.of(context).colorScheme.onPrimary,
+            // boxShadow: [
+            //   BoxShadow(
+            //       color: Theme.of(context).colorScheme.secondary,
+            //       blurStyle: BlurStyle.outer,
+            //       spreadRadius: 1,
+            //       blurRadius: 1,
+            //       offset: Offset(0, 1))
+            // ],
+            color: Theme.of(context).colorScheme.secondary,
             borderRadius: BorderRadius.circular(15)),
         child: ListTile(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           trailing: Icon(
-            color: grey,
+            color: Colors.grey,
             Icons.navigate_next_rounded,
             size: 35,
           ),
           onTap: onPress,
           contentPadding: EdgeInsets.symmetric(horizontal: 10),
           leading: CircleAvatar(
-            backgroundColor: Theme.of(context).colorScheme.secondary,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             child: Icon(
               icon,
-              color: Theme.of(context).colorScheme.onSecondary,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
           title: Text(

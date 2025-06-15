@@ -1,5 +1,4 @@
-import '../../../../../core/theme/colors.dart';
-import '../../../../../core/widgets/home_indicator.dart';
+
 import '../../../models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,7 +19,6 @@ class DetailEmlpoyee extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            homeIndicator(),
             _buildTable(name: "Nama", value: data.name),
             _buildTable(name: "Alamat", value: data.address),
             _buildTable(name: "Email", value: data.email),
@@ -48,7 +46,7 @@ class DetailEmlpoyee extends StatelessWidget {
             name ?? '',
             style: GoogleFonts.poppins(
               fontSize: 18,
-              color: brown,
+              color: Colors.brown,
             ),
           ),
           Text(
@@ -56,7 +54,7 @@ class DetailEmlpoyee extends StatelessWidget {
             style: GoogleFonts.montserrat(
               fontSize: 18,
               fontWeight: FontWeight.w500,
-              color: black,
+              color: Colors.black,
             ),
           ),
         ]),

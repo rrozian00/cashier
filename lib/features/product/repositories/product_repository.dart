@@ -7,7 +7,7 @@ import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../core/errors/failure.dart';
+import '../../../core/app_errors/failure.dart';
 import '../../../core/utils/get_user_data.dart';
 import '../../store/models/store_model.dart';
 import '../../store/repositories/store_repository.dart';

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../core/errors/failure.dart';
+import '../../../core/app_errors/failure.dart';
 import '../../store/models/store_model.dart';
 import '../../store/repositories/store_repository.dart';
 import '../models/user_model.dart';

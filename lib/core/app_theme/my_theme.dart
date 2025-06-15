@@ -1,32 +1,37 @@
-import 'colors.dart';
 import 'package:flutter/material.dart';
 
-class MyTheme {
-  static const Color _black = Colors.black;
-  static const Color _white = Colors.white;
-  static const Color _grey = Colors.grey;
-  static const Color _darkSurface = Color(0xFF1C1C1E);
-  static const Color _darkOnSurface = Color(0xFFE0E0E0);
+class AppTheme {
+  static const _green = Color(0xFF00A86B);
+  static const _white = Colors.white;
+  static const _black = Colors.black;
+  static const _midBlack = Color.fromARGB(255, 41, 40, 40);
+  static const _softBlack = Color.fromARGB(255, 108, 108, 108);
+  static const _softGrey = Color(0xFFF5F5F5);
+  static const _midGrey = Color.fromARGB(255, 233, 233, 233);
+  static const _grey = Color.fromARGB(255, 122, 122, 122);
 
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: ColorScheme.light(
-        primary: _black,
-        onSecondary: softGrey,
-        secondary: _grey,
-        surface: _white,
-        onPrimary: _white,
-        onSurface: _black,
+        surface: _midGrey,
+        onSurface: _midBlack,
+        primary: _white,
+        onPrimary: _grey,
+        secondary: _softGrey,
+        onSecondary: _softBlack,
         error: Colors.redAccent,
+        tertiary: _green,
+        onTertiary: _white,
       ),
-      scaffoldBackgroundColor: softGrey,
-      appBarTheme: _appBarTheme(softGrey, _black),
-      textTheme: _textTheme(_black),
+      scaffoldBackgroundColor: _midGrey,
+      appBarTheme: _appBarTheme(_midGrey, _black),
+      textTheme: _textTheme(_midBlack),
       cardTheme: _cardTheme(_white, _grey),
       inputDecorationTheme: _inputDecorationTheme(_white, _grey, _black),
-      elevatedButtonTheme: _elevatedButtonTheme(_grey, _white),
+      elevatedButtonTheme: _elevatedButtonTheme(
+          const Color.fromARGB(255, 154, 153, 153), _white),
       outlinedButtonTheme: _outlinedButtonTheme(_grey),
       dividerTheme: _dividerTheme(_grey),
       iconTheme: _iconTheme(_black),
@@ -39,22 +44,24 @@ class MyTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: const ColorScheme.dark(
-        primary: _white,
-        secondary: _grey,
-        surface: _darkSurface,
+        surface: _black,
+        onSurface: _softGrey,
+        primary: _grey,
+        secondary: Color.fromARGB(255, 47, 47, 47),
         onPrimary: _black,
-        onSurface: _darkOnSurface,
         error: Colors.redAccent,
+        tertiary: _green,
+        onTertiary: _white,
       ),
-      scaffoldBackgroundColor: _darkSurface,
-      appBarTheme: _appBarTheme(_darkSurface, _darkOnSurface),
-      textTheme: _textTheme(white),
-      cardTheme: _cardTheme(_darkSurface, _grey),
-      inputDecorationTheme: _inputDecorationTheme(_darkSurface, _grey, _white),
-      elevatedButtonTheme: _elevatedButtonTheme(_white, _black),
+      scaffoldBackgroundColor: _black,
+      appBarTheme: _appBarTheme(_black, _white),
+      textTheme: _textTheme(_white),
+      cardTheme: _cardTheme(_black, _grey),
+      inputDecorationTheme: _inputDecorationTheme(_black, _grey, _white),
+      elevatedButtonTheme: _elevatedButtonTheme(_grey, _black),
       outlinedButtonTheme: _outlinedButtonTheme(_white),
       dividerTheme: _dividerTheme(_grey),
-      iconTheme: _iconTheme(_darkOnSurface),
+      iconTheme: _iconTheme(_white),
       floatingActionButtonTheme: _fabTheme(_white, _black),
     );
   }

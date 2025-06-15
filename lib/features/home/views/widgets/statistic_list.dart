@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/rupiah_converter.dart';
 import 'my_card.dart';
 
@@ -29,14 +28,14 @@ class StatisticList extends StatelessWidget {
                 // title: "Total Pendapatan Hari Ini",
                 title: "COMMING SOON",
                 subtitle: rupiahConverterDouble(12000), //TODO:statistik
-                color: green,
+                color: Colors.green,
               ),
               MyCard(
                 image: "assets/images/empty.png",
                 title: "COMMING SOON",
                 // title: "Total Pengeluaran Hari Ini",
                 subtitle: rupiahConverterDouble(12000),
-                color: green,
+                color: Colors.green,
               ),
               // SizedBox(height: 16),
             ],

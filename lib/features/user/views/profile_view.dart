@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/theme/colors.dart';
 import '../../../core/widgets/my_alert_dialog.dart';
 import '../../../routes/app_pages.dart';
-import '../../bottom_navbar/cubit/bottom_nav_cubit.dart';
+import '../../navbar/cubit/bottom_nav_cubit.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../models/user_model.dart';
 import 'change_password.dart';
@@ -40,6 +39,7 @@ class ProfileView extends StatelessWidget {
                   return IconButton(
                     icon: Icon(CupertinoIcons.pencil_ellipsis_rectangle),
                     onPressed: () => showModalBottomSheet(
+                      showDragHandle: true,
                       clipBehavior: Clip.hardEdge,
                       scrollControlDisabledMaxHeightRatio: 0.9,
                       context: context,
@@ -125,6 +125,7 @@ class ProfileView extends StatelessWidget {
                   // width: MediaQuery.of(context).size.width / 2.5,
                   onPressed: () {
                     showModalBottomSheet(
+                      showDragHandle: true,
                       clipBehavior: Clip.hardEdge,
                       scrollControlDisabledMaxHeightRatio: 0.9,
                       context: context,
@@ -136,7 +137,7 @@ class ProfileView extends StatelessWidget {
                   child: Text("Ubah Password"),
                 ),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: red),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                   // width: MediaQuery.of(context).size.width / 2.5,
                   onPressed: () {
                     showDialog(
@@ -144,8 +145,8 @@ class ProfileView extends StatelessWidget {
                       builder: (context) {
                         return MyAlertDialog(
                           onConfirmText: "Keluar",
-                          onCancelColor: green,
-                          onConfirmColor: red,
+                          onCancelColor: Colors.green,
+                          onConfirmColor: Colors.red,
                           onConfirm: () {
                             context.read<AuthBloc>().add(AuthLogoutEvent());
                             context.read<BottomNavCubit>().updateIndex(0);
@@ -184,10 +185,13 @@ class _BuildProfileItem extends StatelessWidget {
       leading: Icon(
         icon,
       ),
-      title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+      title: Text(title,
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold)),
       subtitle: Text(value,
           key: ValueKey(value),
-          style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary)),
     );
   }
 }

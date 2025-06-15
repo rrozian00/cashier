@@ -1,24 +1,37 @@
-import '../../../history_order/bloc/history_order_bloc.dart';
+import '../bloc/history_order_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-class HistoryOrderHeader extends StatelessWidget
+class HistoryHeaderWidget extends StatelessWidget
     implements PreferredSizeWidget {
-  const HistoryOrderHeader({super.key});
+  const HistoryHeaderWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      title: OutlinedButton(
-        onPressed: () {
-          context
-              .read<HistoryOrderBloc>()
-              .add(ShowMyDateRange(context: context));
+      title: ElevatedButton(
+        onPressed: () async {
+          final DateTimeRange? picked = await showDateRangePicker(
+            context: context,
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2101),
+            initialDateRange:
+                (context.read<HistoryOrderBloc>().state as HistoryOrderLoaded)
+                    .picked,
+          );
+
+          if (picked != null) {
+            if (context.mounted) {
+              context
+                  .read<HistoryOrderBloc>()
+                  .add(ShowMyDateRange(picked: picked));
+            }
+          }
         },
-        style: OutlinedButton.styleFrom(
+        style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         ),
         child: BlocBuilder<HistoryOrderBloc, HistoryOrderState>(
@@ -32,7 +45,7 @@ class HistoryOrderHeader extends StatelessWidget
                 style: GoogleFonts.jetBrainsMono(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  // color: black,
+                  // color: Colors.black,
                 ),
               );
             }
@@ -41,7 +54,7 @@ class HistoryOrderHeader extends StatelessWidget
               style: GoogleFonts.jetBrainsMono(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                // color: black,
+                // color: Colors.black,
               ),
             );
           },

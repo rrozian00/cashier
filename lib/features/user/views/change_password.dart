@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/widgets/home_indicator.dart';
 import '../../../core/widgets/my_text_field.dart';
 import '../blocs/auth/auth_bloc.dart';
 
@@ -42,7 +41,6 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
           padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
           child: Column(
             children: [
-              homeIndicator(),
               Expanded(
                 child: ListView(
                   children: [
@@ -56,7 +54,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                     SizedBox(height: 20),
                     MyTextField(
                       filled: true,
-                      fill: Theme.of(context).colorScheme.onSecondary,
+                      fill: Theme.of(context).colorScheme.onPrimary,
                       readOnly: true,
                       textCapitalization: TextCapitalization.none,
                       textInputType: TextInputType.emailAddress,

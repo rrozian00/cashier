@@ -1,8 +1,5 @@
 import 'package:bloc/bloc.dart';
 import '../theme_service.dart';
-import 'package:equatable/equatable.dart';
-
-part 'theme_state.dart';
 
 class ThemeCubit extends Cubit<bool> {
   final ThemeService _themeService;

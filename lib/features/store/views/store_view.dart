@@ -1,7 +1,7 @@
-import 'package:cashier/core/widgets/no_data.dart';
-import 'package:cashier/features/store/bloc/store_bloc.dart';
-import 'package:cashier/features/store/views/store_detail.dart';
-import 'package:cashier/routes/app_pages.dart';
+import '../../../core/widgets/no_data.dart';
+import '../bloc/store_bloc.dart';
+import 'store_detail.dart';
+import '../../../routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -62,8 +62,8 @@ class StoreView extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 3.0),
                             child: Card(
                               color: data.isActive == true
-                                  ? Theme.of(context).colorScheme.onSecondary
-                                  : null,
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(context).colorScheme.surface,
                               child: ListTile(
                                 trailing: data.isActive == true
                                     ? Text("Aktif")
@@ -79,7 +79,8 @@ class StoreView extends StatelessWidget {
                                     )),
                                 leading: Image.asset(
                                   "assets/images/store.png",
-                                  color: Theme.of(context).colorScheme.primary,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
                                 ),
                                 title: Text(data.name ?? ''),
                                 subtitle: Text(data.address ?? ''),

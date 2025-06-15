@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:cashier/core/utils/get_user_data.dart';
+import '../../../core/utils/get_user_data.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../store/models/store_model.dart';

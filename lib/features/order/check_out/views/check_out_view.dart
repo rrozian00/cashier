@@ -5,9 +5,8 @@ import 'package:get/get.dart';
 import '../../../../core/widgets/my_alert_dialog.dart';
 import '../bloc/check_out_bloc.dart';
 import '../../order/bloc/order_bloc.dart';
-import '../../order/utils/show_receipt.dart';
+import '../../reciept/show_receipt.dart';
 
-import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/rupiah_converter.dart';
 
 // TODO:belum dapat nama toko
@@ -64,7 +63,7 @@ class CheckOutView extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w600,
-                      color: state.canProcess ? green : red,
+                      color: state.canProcess ? Colors.green : Colors.red,
                     ),
                   ),
                 ),
@@ -160,7 +159,8 @@ class CheckOutView extends StatelessWidget {
           builder: (context, state) {
             if (state.canProcess) {
               return ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: green),
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.green),
                   child: Text("PROSES"),
                   onPressed: () {
                     context

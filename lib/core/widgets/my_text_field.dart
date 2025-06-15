@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../theme/colors.dart';
-
 //ini
 class MyTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -82,12 +80,11 @@ class MyTextField extends StatelessWidget {
                   // labelText: label,
                   labelStyle: GoogleFonts.montserrat(
                     fontSize: 14,
-                    color: purple,
                     fontWeight: FontWeight.w500,
                   ),
                   hintText: hint,
                   filled: filled,
-                  fillColor: fill ?? colorScheme.onPrimary,
+                  fillColor: fill ?? colorScheme.secondary,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
                   border: OutlineInputBorder(

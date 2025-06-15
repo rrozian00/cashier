@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/errors/failure.dart';
+import '../../../../core/app_errors/failure.dart';
 import '../../../../core/utils/get_user_data.dart';
 import '../../models/user_model.dart';
 import '../../repositories/auth_repository.dart';

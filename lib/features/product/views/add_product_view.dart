@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../../../core/theme/colors.dart';
 import '../../../core/utils/rupiah_converter.dart';
 import '../../../core/utils/scanner_page.dart';
 import '../bloc/product_bloc.dart';
@@ -54,7 +53,7 @@ class AddProductView extends StatelessWidget {
                         Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: grey.withAlpha(100),
+                            color: Colors.grey.withAlpha(100),
                           ),
                           height: 200,
                           width: 200,
@@ -84,7 +83,6 @@ class AddProductView extends StatelessWidget {
                             child: Icon(
                               Icons.change_circle,
                               size: 50,
-                              color: purple,
                             ))
                       ],
                     ),

@@ -1,6 +1,5 @@
-import 'package:cashier/core/theme/colors.dart';
-import 'package:cashier/core/widgets/my_text_field.dart';
-import 'package:cashier/features/store/bloc/store_bloc.dart';
+import '../../../core/widgets/my_text_field.dart';
+import '../bloc/store_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -58,7 +57,7 @@ class _EditStoreState extends State<EditStore> {
             // homeIndicator(),
             Text(
               "Ubah Toko",
-              style: GoogleFonts.poppins(color: purple, fontSize: 18),
+              style: GoogleFonts.poppins(fontSize: 18),
             ),
             SizedBox(height: 15),
             MyTextField(controller: nameC, label: "Nama Toko"),

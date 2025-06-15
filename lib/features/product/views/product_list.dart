@@ -5,8 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../order/order/bloc/order_bloc.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../core/widgets/home_indicator.dart';
 import '../../../core/widgets/no_data.dart';
 import '../bloc/product_bloc.dart';
 import '../models/product_model.dart';
@@ -17,41 +15,33 @@ class ProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          homeIndicator(),
-          Expanded(
-            child: BlocConsumer<ProductBloc, ProductState>(
-              listener: (context, state) {
-                if (state is ProductFailed) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(state.message)),
-                  );
-                }
-              },
-              builder: (context, state) {
-                if (state is ProductLoading) {
-                  return const Center(
-                      child: CircularProgressIndicator.adaptive());
-                }
+      body: BlocConsumer<ProductBloc, ProductState>(
+        listener: (context, state) {
+          if (state is ProductFailed) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is ProductLoading) {
+            return const Center(child: CircularProgressIndicator.adaptive());
+          }
 
-                if (state is ProductSuccess) {
-                  if (state.products.isEmpty) {
-                    return noData(
-                      icon: Icons.no_sim_rounded,
-                      title: "Produk kosong",
-                      message: "Silahkan tambahkan produk",
-                    );
-                  }
+          if (state is ProductSuccess) {
+            if (state.products.isEmpty) {
+              return noData(
+                icon: Icons.no_sim_rounded,
+                title: "Produk kosong",
+                message: "Silahkan tambahkan produk",
+              );
+            }
 
-                  return _buildProductGrid(state.products);
-                }
+            return _buildProductGrid(state.products);
+          }
 
-                return const SizedBox();
-              },
-            ),
-          ),
-        ],
+          return const SizedBox();
+        },
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () => Navigator.pop(context),
@@ -146,7 +136,7 @@ class _ProductItem extends StatelessWidget {
                                 height: 30,
                                 width: 30,
                                 decoration: BoxDecoration(
-                                  color: red,
+                                  color: Colors.red,
                                   shape: BoxShape.circle,
                                 ),
                                 child: Center(

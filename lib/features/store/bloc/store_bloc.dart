@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:cashier/core/utils/get_user_data.dart';
-import 'package:cashier/features/store/models/store_model.dart';
-import 'package:cashier/features/store/repositories/store_repository.dart';
+import '../../../core/utils/get_user_data.dart';
+import '../models/store_model.dart';
+import '../repositories/store_repository.dart';
 import 'package:equatable/equatable.dart';
 
 part 'store_event.dart';

@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../core/utils/rupiah_converter.dart';
-import '../../../product/models/product_model.dart';
+import '../../../core/utils/rupiah_converter.dart';
+import '../../product/models/product_model.dart';
 import 'print_receipt.dart';
 
 class ShowReceipt extends StatelessWidget {

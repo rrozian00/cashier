@@ -21,6 +21,7 @@ class TagLineWidget extends StatelessWidget {
         ),
         SizedBox(width: 5),
         Image.asset(
+          color: Theme.of(context).colorScheme.primary,
           "assets/icons/icon.png",
           width: 35,
           height: 35,

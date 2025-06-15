@@ -11,40 +11,6 @@ import '../../order/repositories/order_repository.dart';
 part 'history_order_event.dart';
 part 'history_order_state.dart';
 
-// class HistoryOrderBloc extends Bloc<HistoryOrderEvent, HistoryOrderState> {
-//   final orderRepo = OrderRepository();
-//   HistoryOrderBloc() : super(HistoryOrderLoaded(orders: )) {
-//     on<ShowMyDateRange>(_onShowMydateRange);
-//   }
-
-//   Future<void> _onShowMydateRange(
-//       ShowMyDateRange event, Emitter<HistoryOrderState> emit) async {
-//     emit(HistoryOrderLoading());
-//     final DateTimeRange? picked = await showDateRangePicker(
-//         context: event.context,
-//         firstDate: DateTime(2000),
-//         lastDate: DateTime(2101),
-//         initialDateRange: null);
-
-//     if (picked != null) {
-//       final start = picked.start;
-//       final end = picked.end.add(Duration(days: 1));
-//       final result = await orderRepo.getHistoryOrders(
-//           Timestamp.fromDate(start), Timestamp.fromDate(end));
-//       result.fold(
-//         (err) => emit(
-//           HistoryOrderFailed(message: err.message),
-//         ),
-//         (datas) {
-//           emit(HistoryOrderLoaded(
-//             orders: datas,
-//             picked: picked,
-//           ));
-//         },
-//       );
-//     }
-//   }
-// }
 class HistoryOrderBloc extends Bloc<HistoryOrderEvent, HistoryOrderState> {
   final orderRepo = OrderRepository();
   final BuildContext
@@ -80,29 +46,20 @@ class HistoryOrderBloc extends Bloc<HistoryOrderEvent, HistoryOrderState> {
   Future<void> _onShowMydateRange(
       ShowMyDateRange event, Emitter<HistoryOrderState> emit) async {
     emit(HistoryOrderLoading());
-    final DateTimeRange? picked = await showDateRangePicker(
-      context: event.context,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-      initialDateRange:
-          (state as HistoryOrderLoaded).picked, // Gunakan range terakhir
+    final start = event.picked.start;
+    final end = event.picked.end.add(const Duration(days: 1));
+
+    final result = await orderRepo.getHistoryOrders(
+      Timestamp.fromDate(start),
+      Timestamp.fromDate(end),
     );
 
-    if (picked != null) {
-      final start = picked.start;
-      final end = picked.end.add(const Duration(days: 1));
-      final result = await orderRepo.getHistoryOrders(
-        Timestamp.fromDate(start),
-        Timestamp.fromDate(end),
-      );
-
-      result.fold(
-        (err) => emit(HistoryOrderFailed(message: err.message)),
-        (datas) => emit(HistoryOrderLoaded(
-          orders: datas,
-          picked: picked,
-        )),
-      );
-    }
+    result.fold(
+      (err) => emit(HistoryOrderFailed(message: err.message)),
+      (datas) => emit(HistoryOrderLoaded(
+        orders: datas,
+        picked: event.picked,
+      )),
+    );
   }
 }

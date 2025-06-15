@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:cashier/features/user/repositories/user_repository.dart';
+import '../../repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 
 part 'edit_user_event.dart';

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import '../core/splash_screen/splash_screen.dart';
-import '../features/bottom_navbar/views/bottom_view.dart';
+import '../features/splash/splash_screen.dart';
+import '../features/navbar/views/bottom_view.dart';
 import '../features/expense/views/expense_view.dart';
 import '../features/order/history_order/views/history_order_view.dart';
 import '../features/order/input_manual/bindings/input_manual_binding.dart';
@@ -12,7 +12,7 @@ import '../features/printer/views/printer_view.dart';
 import '../features/product/views/add_product_view.dart';
 import '../features/product/views/product_list.dart';
 import '../features/product/views/product_view.dart';
-import '../features/settings/views/settings_view.dart';
+import '../features/setting/views/settings_view.dart';
 import '../features/store/bindings/store_binding.dart';
 import '../features/store/views/add_store_view.dart';
 import '../features/store/views/store_view.dart';

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 
-import '../../../core/errors/failure.dart';
+import '../../../core/app_errors/failure.dart';
 import '../../../core/utils/get_user_data.dart';
 import '../models/store_model.dart';
 

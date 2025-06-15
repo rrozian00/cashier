@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cashier/core/widgets/home_indicator.dart';
+
 import 'package:cashier/core/widgets/my_alert_dialog.dart';
 import 'package:cashier/core/widgets/my_text_field.dart';
 import 'package:cashier/features/user/blocs/auth/auth_bloc.dart';
@@ -62,7 +62,6 @@ class _EditProfileViewState extends State<EditProfileView> {
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
             child: Column(
               children: [
-                homeIndicator(),
                 Expanded(
                   child: ListView(
                     children: [
@@ -95,6 +94,9 @@ class _EditProfileViewState extends State<EditProfileView> {
                             onPressed: () => Get.back(),
                           ),
                           ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.tertiary),
                             // text: "Simpan",
                             child: Text("simpan"),
                             onPressed: () {

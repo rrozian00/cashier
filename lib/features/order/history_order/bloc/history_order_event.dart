@@ -8,15 +8,16 @@ sealed class HistoryOrderEvent extends Equatable {
 }
 
 class ShowMyDateRange extends HistoryOrderEvent {
-  final BuildContext context;
-  const ShowMyDateRange({required this.context});
+  final DateTimeRange picked;
 
+  const ShowMyDateRange({required this.picked});
   @override
-  List<Object> get props => [context];
+  List<Object> get props => [picked];
 }
 
 class ShowInitial extends HistoryOrderEvent {
   final BuildContext context;
+
   const ShowInitial({required this.context});
 
   @override

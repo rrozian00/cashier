@@ -1,4 +1,3 @@
-import '../../../core/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -64,7 +63,7 @@ class _EditProductViewState extends State<EditProductView> {
               children: [
                 Text(
                   "Can not chage product image",
-                  style: TextStyle(color: grey),
+                  style: TextStyle(color: Colors.grey),
                 ),
                 imageC.text.isNotEmpty
                     ? Stack(

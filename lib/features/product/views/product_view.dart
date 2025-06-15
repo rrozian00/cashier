@@ -1,8 +1,8 @@
+import 'package:cashier/features/product/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../../../core/theme/colors.dart';
 import '../../../core/utils/rupiah_converter.dart';
 import '../../../core/widgets/my_alert_dialog.dart';
 import '../../../core/widgets/no_data.dart';
@@ -64,82 +64,9 @@ class ProductView extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final datas = state.products[index];
                         return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 3),
-                          child: Card(
-                            elevation: 4,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            // color: white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.secondary,
-                                child: datas.image != null &&
-                                        datas.image!.isNotEmpty
-                                    ? ClipOval(
-                                        child: Image.network(
-                                            fit: BoxFit.cover,
-                                            height: double.infinity,
-                                            width: double.infinity,
-                                            datas.image ?? ''),
-                                      )
-                                    : Image.asset(
-                                        'assets/icons/icon.png',
-                                        fit: BoxFit.cover,
-                                      ),
-                              ),
-                              title: Text(
-                                datas.name ?? '-',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              subtitle: Text(
-                                rupiahConverter(
-                                  int.tryParse(datas.price ?? "") ?? 0,
-                                ),
-                                style: TextStyle(),
-                              ),
-                              trailing: Wrap(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      Get.dialog(MyAlertDialog(
-                                          onCancelColor: green,
-                                          onConfirmColor: red,
-                                          onConfirmText: "Hapus",
-                                          contentText:
-                                              "Apakah anda yakin akan menghapus produk ini ?",
-                                          onConfirm: () {
-                                            context.read<ProductBloc>().add(
-                                                ProductDeleteRequested(
-                                                    datas.id!));
-                                          }));
-                                    },
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: red,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => EditProductView(
-                                              productData: datas),
-                                        )),
-                                    icon: Icon(
-                                      Icons.edit,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 3),
+                            child: _buildListile(context, datas));
                       },
                     ),
                   ),
@@ -158,4 +85,76 @@ class ProductView extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildListile(BuildContext context, ProductModel datas) {
+  return Card(
+    elevation: 4,
+    color: Theme.of(context).colorScheme.secondary,
+    // color: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(15),
+    ),
+    child: ListTile(
+      leading: CircleAvatar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        child: datas.image != null && datas.image!.isNotEmpty
+            ? ClipOval(
+                child: Image.network(
+                    fit: BoxFit.cover,
+                    height: double.infinity,
+                    width: double.infinity,
+                    datas.image ?? ''),
+              )
+            : Image.asset(
+                'assets/icons/icon.png',
+                fit: BoxFit.cover,
+              ),
+      ),
+      title: Text(
+        datas.name ?? '-',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      subtitle: Text(
+        rupiahConverter(
+          int.tryParse(datas.price ?? "") ?? 0,
+        ),
+        style: TextStyle(),
+      ),
+      trailing: Wrap(
+        children: [
+          IconButton(
+            onPressed: () {
+              Get.dialog(MyAlertDialog(
+                  onCancelColor: Colors.green,
+                  onConfirmColor: Colors.red,
+                  onConfirmText: "Hapus",
+                  contentText: "Apakah anda yakin akan menghapus produk ini ?",
+                  onConfirm: () {
+                    context
+                        .read<ProductBloc>()
+                        .add(ProductDeleteRequested(datas.id!));
+                  }));
+            },
+            icon: Icon(
+              Icons.delete,
+              color: Colors.red,
+            ),
+          ),
+          IconButton(
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditProductView(productData: datas),
+                )),
+            icon: Icon(
+              Icons.edit,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

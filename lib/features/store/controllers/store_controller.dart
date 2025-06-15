@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/theme/colors.dart';
 import '../../../core/utils/get_store_id.dart';
-import '../../../core/widgets/home_indicator.dart';
+
 import '../../../core/widgets/my_text_field.dart';
 import '../models/store_model.dart';
 
@@ -93,7 +92,7 @@ class StoreController extends GetxController {
 
     Get.bottomSheet(
       isScrollControlled: true,
-      backgroundColor: white,
+      backgroundColor: Colors.white,
       SizedBox(
         height: MediaQuery.of(context).size.height * 0.5,
         child: Padding(
@@ -102,10 +101,9 @@ class StoreController extends GetxController {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                homeIndicator(),
                 Text(
                   "Ubah Toko",
-                  style: GoogleFonts.poppins(color: purple, fontSize: 18),
+                  style: GoogleFonts.poppins(fontSize: 18),
                 ),
                 SizedBox(height: 15),
                 MyTextField(controller: name, label: "Nama Toko"),

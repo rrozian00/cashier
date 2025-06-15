@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 
 class BottomNavCubit extends Cubit<int> {
-  BottomNavCubit() : super(2);
+  BottomNavCubit() : super(1);
 
   void updateIndex(int index) => emit(index);
 }
