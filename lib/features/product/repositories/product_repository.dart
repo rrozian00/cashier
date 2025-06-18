@@ -126,81 +126,76 @@ class ProductRepository {
   //add product
   Future<Either<Failure, ProductModel>> addProduct({
     required String name,
+    required String category,
+    required DateTime registeredDate,
+    required DateTime expiredDate,
     required String productCode,
     required String price,
-    required String imagePath,
+    required File? imageFile,
   }) async {
     Map<String, dynamic>? result;
-    final userId = _supabaseAuth.currentUser?.id;
-    if (userId == null) {
-      return Left(Failure("User tidak terautentikasi."));
-    }
-
-    final stores = await _firestore
-        .collection('stores')
-        .where("ownerId", isEqualTo: userId)
-        .where("isActive", isEqualTo: true)
-        .get()
-        .then(
-          (value) => value.docs
-              .map(
-                (e) => StoreModel.fromMap(e.data()),
-              )
-              .toList(),
-        );
-    final storeId = stores.first.id;
-
-    if (storeId == null) {
-      return Left(Failure("Store ID tidak ditemukan."));
-    }
-
-    File? imageFile = File(imagePath);
-
-    if (imageFile.existsSync()) {
-      // Cek ukuran file gambar sebelum kompresi
-      final fileSize = await imageFile.length();
-
-      // Menolak gambar yang lebih besar dari 2MB (2 * 1024 * 1024 bytes)
-      if (fileSize > 1 * 1024 * 1024) {
-        // Get.snackbar("Error",
-        //     "Gambar terlalu besar. Harap pilih gambar yang lebih kecil.");
-        return Left(
-            Failure("Gambar Terlalu besar")); // Tolak file yang terlalu besar
+    try {
+      final userId = _supabaseAuth.currentUser?.id;
+      if (userId == null) {
+        return Left(Failure("User tidak terautentikasi."));
       }
 
-      result = await _uploadImageToCloudinary(imageFile);
-    } else {
-      // Get.snackbar("Error", "Silakan pilih gambar terlebih dahulu");
-      return Left(Failure("Silahkan pilih gambar terlebih dahulu"));
+      final stores = await _firestore
+          .collection('stores')
+          .where("ownerId", isEqualTo: userId)
+          .where("isActive", isEqualTo: true)
+          .get()
+          .then(
+            (value) => value.docs
+                .map(
+                  (e) => StoreModel.fromMap(e.data()),
+                )
+                .toList(),
+          );
+      final storeId = stores.first.id;
+
+      if (storeId == null) {
+        return Left(Failure("Store ID tidak ditemukan."));
+      }
+
+      if (imageFile != null) {
+        result = await _uploadImageToCloudinary(imageFile);
+      } else {
+        result = {};
+      }
+      final isExist = await _firestore
+          .collection('stores/$storeId/products')
+          .where("barcode", isEqualTo: productCode)
+          .get();
+
+      if (isExist.docs.isNotEmpty) {
+        return Left(Failure("Produk sudah ada"));
+      }
+
+      final docRef = _firestore.collection('stores/$storeId/products').doc();
+
+      final createdAt = Timestamp.now();
+      final registerTimestatmp = Timestamp.fromDate(registeredDate);
+      final expiredTimestatmp = Timestamp.fromDate(expiredDate);
+      final data = ProductModel(
+        id: docRef.id,
+        barcode: productCode,
+        category: category,
+        registerDate: registerTimestatmp,
+        expiredDate: expiredTimestatmp,
+        name: name,
+        price: price.replaceAll(RegExp(r'[^\d]'), ''),
+        image: result['secure_url'],
+        publicId: result['public_id'],
+        createdAt: createdAt,
+      );
+
+      await docRef.set(data.toMap());
+
+      return Right(data);
+    } catch (e) {
+      return left(Failure(e.toString()));
     }
-
-    final isExist = await _firestore
-        .collection('stores/$storeId/products')
-        .where("barcode", isEqualTo: productCode)
-        .get();
-
-    if (isExist.docs.isNotEmpty) {
-      // Get.snackbar("Gagal", "Produk sudah ada");
-      return Left(Failure("Produk sudah ada"));
-    }
-
-    final docRef = _firestore.collection('stores/$storeId/products').doc();
-
-    final createdAt = Timestamp.now();
-
-    final data = ProductModel(
-      id: docRef.id,
-      barcode: productCode,
-      name: name,
-      price: price.replaceAll(RegExp(r'[^\d]'), ''),
-      image: result['secure_url'],
-      publicId: result['public_id'],
-      createdAt: createdAt,
-    );
-
-    await docRef.set(data.toMap());
-
-    return Right(data);
   }
 
   //hapus
@@ -223,7 +218,6 @@ class ProductRepository {
               .toList(),
         );
     final storeId = stores.first.id;
-    print("storeid nya:$storeId");
 
     if (storeId == null) {
       throw Exception("User Store id tidak ditemukan.");
@@ -244,13 +238,15 @@ class ProductRepository {
     await _firestore.collection('stores/$storeId/products').doc(id).delete();
   }
 
-  Future<void> editProduct(
-    String id,
-    String newName,
-    String newPrice,
-    String newImage,
-  ) async {
+  Future<void> editProduct({
+    required String id,
+    required String newName,
+    required String newPrice,
+    File? newImage,
+    String? oldPublicId,
+  }) async {
     try {
+      Map<String, dynamic>? result;
       final repo = StoreRepository();
       final userId = _supabaseAuth.currentUser?.id;
       if (userId == null) {
@@ -269,13 +265,20 @@ class ProductRepository {
         throw Exception("Menu tidak ditemukan!");
       }
 
+      if (newImage != null) {
+        if (oldPublicId != null && oldPublicId != "") {
+          await _deleteImageFromCloudinary(oldPublicId);
+        }
+        result = await _uploadImageToCloudinary(newImage);
+      }
       final oldData = ProductModel.fromMap(docSnapshot.data()!);
 
       // 🔹 Gunakan copyWith untuk update hanya field yang diubah
       final updatedData = oldData.copyWith(
         name: newName,
         price: newPrice.replaceAll(RegExp(r'[^\d]'), ''),
-        image: newImage,
+        image: result?['secure_url'],
+        publicId: result?['public_id'],
       );
 
       // 🔹 Update ke Firestore
@@ -284,7 +287,7 @@ class ProductRepository {
           .doc(id)
           .update(updatedData.toMap());
     } catch (e) {
-      print(e);
+      throw Exception(e.toString());
     }
   }
 

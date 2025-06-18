@@ -35,12 +35,14 @@ final class UpdateStore extends StoreEvent {
 }
 
 final class AddStore extends StoreEvent {
+  final String category;
   final String name;
   final String address;
   final String phone;
   final String logoUrl;
 
   const AddStore({
+    required this.category,
     required this.name,
     required this.address,
     required this.phone,
@@ -49,6 +51,7 @@ final class AddStore extends StoreEvent {
 
   @override
   List<Object> get props => [
+        category,
         name,
         address,
         phone,

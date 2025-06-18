@@ -1,9 +1,9 @@
+import 'package:cashier/core/utils/rupiah_converter.dart';
 import 'package:cashier/features/product/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../../../core/utils/rupiah_converter.dart';
 import '../../../core/widgets/my_alert_dialog.dart';
 import '../../../core/widgets/no_data.dart';
 import '../../../routes/app_pages.dart';
@@ -45,7 +45,7 @@ class ProductView extends StatelessWidget {
 
             if (state is ProductSuccess && state.products.isEmpty) {
               return noData(
-                  title: "Pruduk Kosong", message: "Silahkan Tambah Produk !");
+                  title: "Produk Kosong", message: "Silahkan Tambah Produk !");
             }
 
             if (state is ProductSuccess) {
@@ -121,6 +121,7 @@ Widget _buildListile(BuildContext context, ProductModel datas) {
         rupiahConverter(
           int.tryParse(datas.price ?? "") ?? 0,
         ),
+        // datas.image ?? '',
         style: TextStyle(),
       ),
       trailing: Wrap(

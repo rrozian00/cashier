@@ -10,7 +10,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'core/app_providers/app_providers.dart';
 import 'core/app_theme/theme_cubit/theme_cubit.dart';
 import 'core/app_theme/my_theme.dart';
-import 'firebase_options.dart';
+import 'core/firebase/firebase_options.dart';
 import 'routes/app_pages.dart';
 
 void main() async {

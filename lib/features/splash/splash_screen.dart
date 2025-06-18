@@ -13,8 +13,6 @@ class SplashScreen extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       bloc: context.read<AuthBloc>()..add(AuthCheckStatusEvent()),
       listener: (context, state) async {
-        debugPrint("AuthBloc di splash, state: $state");
-
         await Future.delayed(Duration(milliseconds: 500));
 
         if (state is AuthLoggedState) {

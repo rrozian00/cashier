@@ -44,88 +44,76 @@ class _EditProfileViewState extends State<EditProfileView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<EditUserBloc, EditUserState>(
-      listener: (context, state) {
-        if (state is EditUserSuccess) {
-          //  Navigator.popUntil(
-          //         context, (route) => route.settings.name == Routes.profile)
-          Get.back();
-          context.read<AuthBloc>().add(AuthCheckStatusEvent());
-        }
-      },
-      builder: (context, state) {
-        if (state is RegisterLoadingState) {
-          return Center(child: CircularProgressIndicator());
-        }
-        return Scaffold(
-          resizeToAvoidBottomInset: true,
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
-            child: Column(
+        listener: (context, state) {
+      if (state is EditUserSuccess) {
+        //  Navigator.popUntil(
+        //         context, (route) => route.settings.name == Routes.profile)
+        Get.back();
+        context.read<AuthBloc>().add(AuthCheckStatusEvent());
+      }
+    }, builder: (context, state) {
+      if (state is RegisterLoadingState) {
+        return Center(child: CircularProgressIndicator());
+      }
+      return Padding(
+        padding: EdgeInsets.only(
+            right: 10,
+            left: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Center(
+              child: Text(
+                "Ubah Profil",
+                style: GoogleFonts.poppins(fontSize: 18),
+              ),
+            ),
+            SizedBox(height: 15),
+            MyTextField(controller: nameC, hint: "Nama", label: "Nama"),
+            MyTextField(controller: addressC, label: "Alamat", hint: "Alamat"),
+            MyTextField(
+              textInputType: TextInputType.number,
+              controller: phoneNumberC,
+              label: "No HP",
+              hint: "No HP",
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Expanded(
-                  child: ListView(
-                    children: [
-                      Center(
-                        child: Text(
-                          "Ubah Profil",
-                          style: GoogleFonts.poppins(fontSize: 18),
-                        ),
-                      ),
-                      SizedBox(height: 15),
-                      MyTextField(
-                          controller: nameC, hint: "Nama", label: "Nama"),
-                      MyTextField(
-                          controller: addressC,
-                          label: "Alamat",
-                          hint: "Alamat"),
-                      MyTextField(
-                        textInputType: TextInputType.number,
-                        controller: phoneNumberC,
-                        label: "No HP",
-                        hint: "No HP",
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
-                            // text: "Batal",
-                            child: Text("Batal"),
-                            onPressed: () => Get.back(),
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.tertiary),
-                            // text: "Simpan",
-                            child: Text("simpan"),
-                            onPressed: () {
-                              Get.dialog(MyAlertDialog(
-                                onConfirm: () {
-                                  context.read<EditUserBloc>().add(
-                                        EditRequestedEvent(
-                                          id: widget.user.id!,
-                                          name: nameC.text,
-                                          address: addressC.text,
-                                          phone: phoneNumberC.text,
-                                        ),
-                                      );
-                                },
-                                contentText: "Anda yakin akan menyimpan data?",
-                              ));
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 40)
-                    ],
-                  ),
+                ElevatedButton(
+                  // text: "Batal",
+                  child: Text("Batal"),
+                  onPressed: () => Get.back(),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.tertiary),
+                  // text: "Simpan",
+                  child: Text("simpan"),
+                  onPressed: () {
+                    Get.dialog(MyAlertDialog(
+                      onConfirm: () {
+                        context.read<EditUserBloc>().add(
+                              EditRequestedEvent(
+                                id: widget.user.id!,
+                                name: nameC.text,
+                                address: addressC.text,
+                                phone: phoneNumberC.text,
+                              ),
+                            );
+                      },
+                      contentText: "Anda yakin akan menyimpan data?",
+                    ));
+                  },
                 ),
               ],
             ),
-          ),
-        );
-      },
-    );
+            SizedBox(height: 40)
+          ],
+        ),
+      );
+    });
   }
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/utils/rupiah_converter.dart';
 import '../../../core/utils/scanner_page.dart';
@@ -11,13 +12,23 @@ import '../bloc/product_bloc.dart';
 class AddProductView extends StatelessWidget {
   AddProductView({super.key});
 
+  final List<String> categoryList = [
+    "Member",
+    "Produk",
+  ];
+
+  final TextEditingController category = TextEditingController();
+  final TextEditingController registeredDate = TextEditingController();
+  final TextEditingController expiredDate = TextEditingController();
   final TextEditingController name = TextEditingController();
   final TextEditingController productCode = TextEditingController();
-  final TextEditingController image = TextEditingController();
   final TextEditingController price = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    DateTime registerDateTime = DateTime.now();
+    DateTime expiredDateTime = DateTime.now();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Tambah Produk"),
@@ -28,7 +39,7 @@ class AddProductView extends StatelessWidget {
             Navigator.pop(context);
             context.read<ProductBloc>().add(ProductGetRequested());
           }
-          if (state is ProductFailed) {
+          if (state is PickImageError) {
             debugPrint(state.message);
             Get.snackbar("Error", state.message);
           }
@@ -43,6 +54,7 @@ class AddProductView extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: SingleChildScrollView(
               child: Column(
+                spacing: 10,
                 children: [
                   GestureDetector(
                     onTap: () {
@@ -55,8 +67,8 @@ class AddProductView extends StatelessWidget {
                             shape: BoxShape.circle,
                             color: Colors.grey.withAlpha(100),
                           ),
-                          height: 200,
-                          width: 200,
+                          height: 80,
+                          width: 80,
                           child: ClipOval(
                             child: BlocBuilder<ProductBloc, ProductState>(
                               builder: (context, state) {
@@ -66,11 +78,17 @@ class AddProductView extends StatelessWidget {
                                   );
                                 }
                                 if (state is PickImageSuccess) {
-                                  image.text = state.pickedImage;
                                   return Image.file(
                                     File(state.pickedImage),
                                     fit: BoxFit.cover,
                                   );
+                                }
+                                if (state is PickImageError) {
+                                  return Center(
+                                      child: Text(
+                                    "Error",
+                                    style: TextStyle(color: Colors.red),
+                                  ));
                                 }
                                 return Container();
                               },
@@ -81,13 +99,14 @@ class AddProductView extends StatelessWidget {
                             right: 6,
                             bottom: 6,
                             child: Icon(
-                              Icons.change_circle,
-                              size: 50,
+                              Icons.add_a_photo,
+                              size: 25,
                             ))
                       ],
                     ),
                   ),
-                  SizedBox(height: 40),
+
+                  //barcode
                   Row(
                     children: [
                       Expanded(
@@ -114,7 +133,108 @@ class AddProductView extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(height: 8),
+
+                  // Kategori Produk
+                  DropdownButtonFormField(
+                    onChanged: (value) {
+                      value = category.text;
+                      context
+                          .read<ProductBloc>()
+                          .add(ProductCategoryChanged(category: value));
+                    },
+                    items: categoryList.map((e) {
+                      return DropdownMenuItem<String>(
+                        onTap: () {
+                          category.text = e;
+                        },
+                        value: e,
+                        child: Text(e),
+                      );
+                    }).toList(),
+                    validator: (value) {
+                      if (value == null) {
+                        return "Kategori tidak boleh kosong.";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      labelText: "Kategori",
+                      hintText: "Kategori",
+                    ),
+                  ),
+
+                  //📅 tanggal daftar & expired
+                  BlocBuilder<ProductBloc, ProductState>(
+                    builder: (context, state) {
+                      if (state is ProductCategoryUpdated &&
+                          state.category == "Member") {
+                        return Column(
+                          spacing: 10,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: TextField(
+                                  controller: registeredDate,
+                                  decoration: InputDecoration(
+                                      labelText: "Tanggal Mulai"),
+                                )),
+                                IconButton(
+                                    onPressed: () async {
+                                      final dateFormat =
+                                          DateFormat('dd-MM-yyyy');
+                                      final dateResult = await showDatePicker(
+                                          fieldLabelText: "Pilih",
+                                          confirmText: "Simpan",
+                                          cancelText: "Batal",
+                                          context: context,
+                                          firstDate: DateTime(2020),
+                                          lastDate: DateTime.now());
+                                      if (dateResult != null) {
+                                        final date =
+                                            dateFormat.format(dateResult);
+                                        registeredDate.text = date;
+                                        registerDateTime = dateResult;
+                                      }
+                                    },
+                                    icon: Icon(Icons.date_range)),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: TextField(
+                                  controller: expiredDate,
+                                  decoration: InputDecoration(
+                                      labelText: "Tanggal Selesai"),
+                                )),
+                                IconButton(
+                                    onPressed: () async {
+                                      final dateFormat =
+                                          DateFormat('dd-MM-yyyy');
+                                      final dateResult = await showDatePicker(
+                                          confirmText: "Simpan",
+                                          cancelText: "Batal",
+                                          context: context,
+                                          firstDate: DateTime.now(),
+                                          lastDate: DateTime(2030));
+                                      if (dateResult != null) {
+                                        final date =
+                                            dateFormat.format(dateResult);
+                                        expiredDate.text = date;
+                                        expiredDateTime = dateResult;
+                                      }
+                                    },
+                                    icon: Icon(Icons.date_range)),
+                              ],
+                            ),
+                          ],
+                        );
+                      }
+                      return Container();
+                    },
+                  ),
+
                   TextField(
                     controller: name,
                     textInputAction: TextInputAction.next,
@@ -127,7 +247,7 @@ class AddProductView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 8),
+
                   TextField(
                     controller: price,
                     keyboardType: TextInputType.number,
@@ -154,12 +274,14 @@ class AddProductView extends StatelessWidget {
                       child: Text("Simpan"),
                       onPressed: () {
                         context.read<ProductBloc>().add(ProductAddRequested(
+                              registeredDate: registerDateTime,
+                              expiredDate: expiredDateTime,
+                              category: category.text,
                               name: name.text,
                               productCode: productCode.text,
                               price: price.text
                                   .replaceAll('.', '')
                                   .replaceAll('Rp ', ''),
-                              image: image.text,
                             ));
                       }),
                 ],

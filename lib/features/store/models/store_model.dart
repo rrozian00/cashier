@@ -7,6 +7,7 @@ class StoreModel {
   String? address;
   String? phone;
   String? logoUrl;
+  String? category;
   bool? isActive;
   List<dynamic>? employees;
   Timestamp? createdAt;
@@ -18,40 +19,11 @@ class StoreModel {
     this.address,
     this.phone,
     this.logoUrl,
+    this.category,
     this.isActive,
-    this.createdAt,
     this.employees,
+    this.createdAt,
   });
-
-  factory StoreModel.fromJson(Map<String, dynamic> json) {
-    return StoreModel(
-      id: json['id'],
-      name: json['name'] ?? '',
-      ownerId: json['ownerId'] ?? '',
-      address: json['address'] ?? '',
-      phone: json['phone'] ?? '',
-      logoUrl: json['logoUrl'] ?? '',
-      createdAt: json['createdAt'] is Timestamp
-          ? (json['createdAt'] as Timestamp).toDate().toIso8601String()
-          : json['createdAt'],
-      employees: (json['employees'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList(), // Konversi ke List<String>
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'ownerId': ownerId,
-      'address': address,
-      'phone': phone,
-      'logoUrl': logoUrl,
-      'createdAt': createdAt ?? FieldValue.serverTimestamp(),
-      'employees': employees ?? [], // Simpan daftar karyawan
-    };
-  }
 
   StoreModel copyWith({
     String? id,
@@ -60,9 +32,10 @@ class StoreModel {
     String? address,
     String? phone,
     String? logoUrl,
+    String? category,
     bool? isActive,
-    Timestamp? createdAt,
     List<dynamic>? employees,
+    Timestamp? createdAt,
   }) {
     return StoreModel(
       id: id ?? this.id,
@@ -71,9 +44,10 @@ class StoreModel {
       address: address ?? this.address,
       phone: phone ?? this.phone,
       logoUrl: logoUrl ?? this.logoUrl,
+      category: category ?? this.category,
       isActive: isActive ?? this.isActive,
-      createdAt: createdAt ?? this.createdAt,
       employees: employees ?? this.employees,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
@@ -85,9 +59,10 @@ class StoreModel {
       'address': address,
       'phone': phone,
       'logoUrl': logoUrl,
+      'category': category,
       'isActive': isActive,
-      'createdAt': createdAt,
       'employees': employees,
+      'createdAt': createdAt,
     };
   }
 
@@ -99,12 +74,12 @@ class StoreModel {
       address: map['address'] != null ? map['address'] as String : null,
       phone: map['phone'] != null ? map['phone'] as String : null,
       logoUrl: map['logoUrl'] != null ? map['logoUrl'] as String : null,
+      category: map['category'] != null ? map['category'] as String : null,
       isActive: map['isActive'] != null ? map['isActive'] as bool : null,
+      employees:
+          map['employees'] != null ? (map['employees'] as List<dynamic>) : null,
       createdAt:
           map['createdAt'] != null ? map['createdAt'] as Timestamp : null,
-      employees: map['employees'] != null
-          ? List<dynamic>.from((map['employees'] as List<dynamic>))
-          : null,
     );
   }
 }

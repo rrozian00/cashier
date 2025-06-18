@@ -8,6 +8,7 @@ class AddStoreView extends StatelessWidget {
   AddStoreView({super.key});
 
   final name = TextEditingController();
+  final category = TextEditingController();
   final address = TextEditingController();
   final phone = TextEditingController();
   final logoUrl = TextEditingController();
@@ -88,6 +89,7 @@ class AddStoreView extends StatelessWidget {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             context.read<StoreBloc>().add(AddStore(
+                                category: category.text,
                                 name: name.text,
                                 address: address.text,
                                 phone: phone.text,

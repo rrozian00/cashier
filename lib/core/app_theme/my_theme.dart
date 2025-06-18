@@ -15,9 +15,9 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: ColorScheme.light(
-        surface: _midGrey,
+        surface: _white,
         onSurface: _midBlack,
-        primary: _white,
+        primary: _midBlack,
         onPrimary: _grey,
         secondary: _softGrey,
         onSecondary: _softBlack,
@@ -36,6 +36,7 @@ class AppTheme {
       dividerTheme: _dividerTheme(_grey),
       iconTheme: _iconTheme(_black),
       floatingActionButtonTheme: _fabTheme(_black, _white),
+      // textButtonTheme: _textButtonThemeData(_black),
     );
   }
 
@@ -44,11 +45,12 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: const ColorScheme.dark(
-        surface: _black,
+        surface: _softBlack,
         onSurface: _softGrey,
-        primary: _grey,
+        primary: _softGrey,
+        onPrimary: _softGrey,
         secondary: Color.fromARGB(255, 47, 47, 47),
-        onPrimary: _black,
+        onSecondary: _softGrey,
         error: Colors.redAccent,
         tertiary: _green,
         onTertiary: _white,
@@ -58,7 +60,7 @@ class AppTheme {
       textTheme: _textTheme(_white),
       cardTheme: _cardTheme(_black, _grey),
       inputDecorationTheme: _inputDecorationTheme(_black, _grey, _white),
-      elevatedButtonTheme: _elevatedButtonTheme(_grey, _black),
+      elevatedButtonTheme: _elevatedButtonTheme(_grey, _softGrey),
       outlinedButtonTheme: _outlinedButtonTheme(_white),
       dividerTheme: _dividerTheme(_grey),
       iconTheme: _iconTheme(_white),
@@ -120,8 +122,8 @@ class AppTheme {
     );
   }
 
-  static CardTheme _cardTheme(Color cardColor, Color borderColor) {
-    return CardTheme(
+  static CardThemeData _cardTheme(Color cardColor, Color borderColor) {
+    return CardThemeData(
       elevation: 0,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
@@ -185,6 +187,13 @@ class AppTheme {
       ),
     );
   }
+
+  // static TextButtonThemeData _textButtonThemeData(Color tColor) {
+  //   return TextButtonThemeData(
+  //       style: TextButton.styleFrom(
+  //     textStyle: TextStyle(color: tColor),
+  //   ));
+  // }
 
   static DividerThemeData _dividerTheme(Color color) {
     return DividerThemeData(

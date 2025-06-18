@@ -25,6 +25,15 @@ final class ProductDeleteSuccess extends ProductState {}
 
 final class ProductEditSuccess extends ProductState {}
 
+final class PickImageError extends ProductState {
+  final String message;
+
+  const PickImageError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
 final class PickImageSuccess extends ProductState {
   final String pickedImage;
 
@@ -50,4 +59,11 @@ final class ProductFailed extends ProductState {
 
   @override
   List<Object> get props => [message];
+}
+
+final class ProductCategoryUpdated extends ProductState {
+  final String category;
+  const ProductCategoryUpdated({required this.category});
+  @override
+  List<Object> get props => [category];
 }

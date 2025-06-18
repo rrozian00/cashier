@@ -124,6 +124,10 @@ void _showThemeDialog(BuildContext context) {
     context: context,
     builder: (context) {
       return AlertDialog(
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context), child: Text("Simpan"))
+        ],
         backgroundColor: Theme.of(context).colorScheme.secondary,
         content: Column(
           spacing: 35,
@@ -148,8 +152,8 @@ void _showThemeDialog(BuildContext context) {
                     child: Text("Terang")),
               ],
             ),
-            TextButton(
-                onPressed: () => Navigator.pop(context), child: Text("Simpan"))
+            // TextButton(
+            //     onPressed: () => Navigator.pop(context), child: Text("Simpan"))
           ],
         ),
       );
@@ -186,7 +190,7 @@ class _SettingListile extends StatelessWidget {
             //       blurRadius: 1,
             //       offset: Offset(0, 1))
             // ],
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(15)),
         child: ListTile(
           shape:
@@ -199,10 +203,10 @@ class _SettingListile extends StatelessWidget {
           onTap: onPress,
           contentPadding: EdgeInsets.symmetric(horizontal: 10),
           leading: CircleAvatar(
-            backgroundColor: Theme.of(context).colorScheme.surface,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             child: Icon(
               icon,
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
           title: Text(

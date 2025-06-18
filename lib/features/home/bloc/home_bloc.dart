@@ -27,9 +27,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           },
           (stores) {
             for (var storeResult in stores) {
+              if (stores.any((e) => e.isActive == false)) {
+                emit(HomeError(message: "Aktifkan Toko Anda terlebih dahulu."));
+              }
               if (storeResult.isActive == true) {
-                final store = storeResult;
-                emit(HomeSuccess(user: user, store: store));
+                emit(HomeSuccess(user: user, store: storeResult));
                 break;
               }
             }

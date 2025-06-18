@@ -27,20 +27,6 @@ class StoreView extends StatelessWidget {
                 child: CircularProgressIndicator.adaptive(),
               );
             }
-            // if (state is GetStoreSuccess && state.stores.isEmpty) {
-            //   return Column(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     crossAxisAlignment: CrossAxisAlignment.center,
-            //     spacing: 30,
-            //     children: [
-
-            //       ElevatedButton(
-            //           onPressed: () =>
-            //               Navigator.pushNamed(context, Routes.addStore),
-            //           child: Text("Tambah Toko"))
-            //     ],
-            //   );
-            // }
             if (state is StoreError && state.message == 'null') {
               return noData(
                 title: "Tidak ada Toko ditemukan",
@@ -58,16 +44,32 @@ class StoreView extends StatelessWidget {
                         itemCount: state.stores.length,
                         itemBuilder: (context, index) {
                           final data = state.stores[index];
+                          final color = data.isActive == true
+                              ? Theme.of(context).colorScheme.surface
+                              : Theme.of(context).colorScheme.primary;
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 3.0),
                             child: Card(
                               color: data.isActive == true
-                                  ? Theme.of(context).colorScheme.primary
+                                  ? Theme.of(context).colorScheme.onPrimary
                                   : Theme.of(context).colorScheme.surface,
                               child: ListTile(
                                 trailing: data.isActive == true
-                                    ? Text("Aktif")
-                                    : null,
+                                    ? Text(
+                                        "Aktif",
+                                        style: TextStyle(color: color),
+                                      )
+                                    : OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                            padding: EdgeInsets.all(0)),
+                                        onPressed: () {
+                                          context.read<StoreBloc>().add(
+                                              MakeStoreActive(id: data.id!));
+                                        },
+                                        child: Text(
+                                          "Aktifkan",
+                                          style: TextStyle(fontSize: 12),
+                                        )),
                                 onLongPress: () => context
                                     .read<StoreBloc>()
                                     .add(MakeStoreActive(id: data.id!)),
@@ -79,11 +81,16 @@ class StoreView extends StatelessWidget {
                                     )),
                                 leading: Image.asset(
                                   "assets/images/store.png",
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface,
+                                  color: color,
                                 ),
-                                title: Text(data.name ?? ''),
-                                subtitle: Text(data.address ?? ''),
+                                title: Text(
+                                  data.name ?? '',
+                                  style: TextStyle(color: color),
+                                ),
+                                subtitle: Text(
+                                  data.address ?? '',
+                                  style: TextStyle(color: color),
+                                ),
                               ),
                             ),
                           );

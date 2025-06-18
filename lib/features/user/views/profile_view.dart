@@ -7,7 +7,7 @@ import '../../../routes/app_pages.dart';
 import '../../navbar/cubit/bottom_nav_cubit.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../models/user_model.dart';
-import 'change_password.dart';
+import 'change_password_view.dart';
 import 'edit_profile_view.dart';
 
 class ProfileView extends StatelessWidget {

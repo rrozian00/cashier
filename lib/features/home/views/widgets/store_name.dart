@@ -53,7 +53,16 @@ class StoreName extends StatelessWidget {
                 );
               }
               if (state is HomeError) {
-                return Text("state error ${state.message}");
+                if (state.message == 'null') {
+                  return Text(
+                    "Silahkan Buat Toko pertama Anda.",
+                    style: TextStyle(color: Colors.red),
+                  );
+                }
+                return Text(
+                  state.message,
+                  style: TextStyle(color: Colors.red),
+                );
               }
               return Text("-Toko tidak ditemukan-");
             },
