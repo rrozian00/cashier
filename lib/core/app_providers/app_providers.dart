@@ -1,3 +1,5 @@
+import 'package:cashier/features/printer/bloc/printer_bloc.dart';
+import 'package:cashier/features/product/blocs/cubit/category_cubit.dart';
 import 'package:cashier/features/setting/cubit/version_cubit.dart';
 import 'package:cashier/features/user/blocs/edit_user/edit_user_bloc.dart';
 
@@ -16,7 +18,7 @@ import '../../features/expense/bloc/expense_bloc.dart';
 import '../../features/home/bloc/home_bloc.dart';
 import '../../features/order/history_order/bloc/history_order_bloc.dart';
 import '../../features/order/order/bloc/order_bloc.dart';
-import '../../features/product/bloc/product_bloc.dart';
+import '../../features/product/blocs/product_bloc/product_bloc.dart';
 import '../../features/user/blocs/auth/auth_bloc.dart';
 import '../../features/user/blocs/employee/bloc/employee_bloc.dart';
 import '../../features/user/blocs/register/register_bloc.dart';
@@ -39,4 +41,6 @@ final List<BlocProvider> appProviders = [
   BlocProvider<StoreBloc>(create: (context) => StoreBloc()),
   BlocProvider<LoginCubit>(create: (context) => LoginCubit()),
   BlocProvider<EditUserBloc>(create: (context) => EditUserBloc()),
+  BlocProvider<CategoryCubit>(create: (context) => CategoryCubit()),
+  BlocProvider<PrinterBloc>(create: (context) => PrinterBloc()),
 ];

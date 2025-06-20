@@ -1,16 +1,12 @@
-import 'package:cashier/features/setting/cubit/version_cubit.dart';
-
-import '../../../routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-import '../../printer/controllers/printer_controller.dart';
-
+import '../../../routes/app_pages.dart';
 import '../../home/views/home_view.dart';
 import '../../order/order/views/order_view.dart';
 import '../../printer/views/printer_view.dart';
+import '../../setting/cubit/version_cubit.dart';
 import '../../setting/views/settings_view.dart';
 import '../../user/blocs/auth/auth_bloc.dart';
 import '../../user/views/profile_view.dart';
@@ -21,7 +17,6 @@ class BottomView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(PrinterController(), permanent: true); //TODO:printer
     context.read<VersionCubit>().showVersion();
 
     return BlocConsumer<AuthBloc, AuthState>(

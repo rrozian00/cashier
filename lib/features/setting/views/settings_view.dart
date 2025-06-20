@@ -1,3 +1,4 @@
+import 'package:cashier/features/printer/views/printer_view.dart';
 import 'package:cashier/features/setting/cubit/version_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +9,7 @@ import '../../../core/app_theme/theme_cubit/theme_cubit.dart';
 import '../../../routes/app_pages.dart';
 import '../../order/history_order/bloc/history_order_bloc.dart';
 import '../../order/history_order/views/history_order_view.dart';
-import '../../product/bloc/product_bloc.dart';
+import '../../product/blocs/product_bloc/product_bloc.dart';
 import '../../store/bloc/store_bloc.dart';
 import '../../user/blocs/employee/bloc/employee_bloc.dart';
 
@@ -75,7 +76,12 @@ class SettingsView extends StatelessWidget {
                   ),
                   _SettingListile(
                     onPress: () {
-                      Get.toNamed(Routes.printer);
+                      // Get.toNamed(Routes.printer);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PrinterView(),
+                          ));
                     },
                     title: "Printer",
                     icon: Icons.print,

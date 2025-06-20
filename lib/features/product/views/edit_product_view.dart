@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../core/utils/rupiah_converter.dart';
-import '../bloc/product_bloc.dart';
+import '../blocs/product_bloc/product_bloc.dart';
 import '../models/product_model.dart';
 
 class EditProductView extends StatefulWidget {

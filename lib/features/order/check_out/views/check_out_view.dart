@@ -9,7 +9,6 @@ import '../../reciept/show_receipt.dart';
 
 import '../../../../core/utils/rupiah_converter.dart';
 
-// TODO:belum dapat nama toko
 class CheckOutView extends StatelessWidget {
   const CheckOutView({
     super.key,

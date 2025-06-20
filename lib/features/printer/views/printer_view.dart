@@ -1,156 +1,120 @@
+import 'package:cashier/features/printer/bloc/printer_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../../../core/widgets/no_data.dart';
-import '../controllers/printer_controller.dart';
-
-class PrinterView extends GetView<PrinterController> {
+class PrinterView extends StatelessWidget {
   const PrinterView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    controller.isConnected.value;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Printer"),
-      ),
-      body: Obx(
-        () {
-          if (controller.isConnected.isTrue) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.print_rounded,
-                  color: Colors.green,
-                  size: 100,
-                ),
-                Center(
-                  child: Text(
-                    "Terhubung dengan ${controller.selectedPrinter.value?.name}",
-                    style: TextStyle(),
-                  ),
-                ),
-              ],
-            );
-          }
-
-          if (controller.devices.isEmpty) {
-            return Center(
-              child: noData(
-                  icon: Icons.print_disabled_rounded,
-                  title: "Tidak ada Printer",
-                  message: 'Tekan tombol "Cari Printer"'),
-            );
-          }
-
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 16),
-
-                // List Printer
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.67,
-                  width: double.infinity,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: controller.devices.length,
-                          itemBuilder: (context, index) {
-                            final printer = controller.devices[index];
-                            return Obx(() => Card(
-                                  elevation: 4,
-                                  color: controller.selectedPrinter.value ==
-                                          printer
-                                      ? Colors.greenAccent
-                                      : Colors.white,
-                                  child: ListTile(
-                                    title: Text(printer.name),
-                                    subtitle: Text(printer.macAdress),
-                                    onTap: () {
-                                      controller.selectedPrinter.value =
-                                          printer;
+    return BlocListener<PrinterBloc, PrinterState>(
+      listener: (context, state) {
+        if (state is PrinterFailed) {
+          Get.snackbar("Error", state.message);
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Printer"),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  context.read<PrinterBloc>().add(ScanPrinter());
+                },
+                icon: Icon(Icons.refresh))
+          ],
+        ),
+        body: SafeArea(
+          child: BlocBuilder<PrinterBloc, PrinterState>(
+            builder: (context, state) {
+              if (state is PrinterLoading) {
+                return Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
+              }
+              if (state is PrinterSuccess && state.isLoading == true) {
+                return Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
+              }
+              if (state is PrinterFailed) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(child: Text(state.message)),
+                    ElevatedButton(
+                        onPressed: () {
+                          context.read<PrinterBloc>().add(ScanPrinter());
+                        },
+                        child: Text("Scan Printer"))
+                  ],
+                );
+              }
+              if (state is PrinterSuccess) {
+                return Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: state.devices.length,
+                        itemBuilder: (context, index) {
+                          final data = state.devices[index];
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Card(
+                              color: data.macAdress == state.connectedDeviceId
+                                  ? Colors.green
+                                  : null,
+                              child: ListTile(
+                                trailing: Text(
+                                    state.connectedDeviceId == data.macAdress
+                                        ? "Connected"
+                                        : ""),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 15),
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        content: Text(
+                                            textAlign: TextAlign.center,
+                                            "Tekan 3 detik untuk sambungkan printer"),
+                                      );
                                     },
-                                  ),
-                                ));
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 30),
-                      Text('Silahkan pilih Printer, lalu "Hubungkan"'),
-                      SizedBox(height: 20),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 16),
-              ],
-            ),
-          );
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: // Tombol Scan
-          Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Obx(() => ElevatedButton(
-                // height: 50,
-                onPressed: controller.isScanning.value
-                    ? null
-                    : controller.scanDevices, // Disable saat scanning
-                child: controller.isScanning.value
-                    ? Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator.adaptive(
-                              strokeWidth: 2,
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          Text("Mencari..."),
-                        ],
-                      )
-                    : Text("Cari Printer"),
-              )),
-
-          // Tombol Connect & Disconnect
-          Obx(() => controller.isConnected.value
-              ? ElevatedButton(
-                  onPressed: controller.disconnectPrinter,
-                  // text: "Putuskan",
-                  child: Text("Putuskan"),
-                  // style: TextStyle(color: Colors.white),
-                )
-              : ElevatedButton(
-                  // height: 50,
-                  onPressed: controller.connectToPrinter,
-                  child: controller.isLoading.value
-                      ? Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator.adaptive(
-                                strokeWidth: 2,
+                                  );
+                                  // context.read<PrinterBloc>().add(
+                                  //     SelectPrinter(macAddress: data.macAdress));
+                                },
+                                onLongPress: () {
+                                  context.read<PrinterBloc>().add(
+                                      ConnectPrinter(
+                                          macAddress: data.macAdress));
+                                },
+                                title: Text(data.name),
+                                subtitle: Text(data.macAdress),
                               ),
                             ),
-                            SizedBox(width: 8),
-                            Text("Menghubungkan..."),
-                          ],
-                        )
-                      : Text("Hubungkan"),
-                )),
-        ],
+                          );
+                        },
+                      ),
+                    ),
+                    Text("Ditemukan ${state.devices.length} perangkat"),
+                  ],
+                );
+              }
+              return Column(
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        context.read<PrinterBloc>().add(ScanPrinter());
+                      },
+                      child: Text("Scan Printer"))
+                ],
+              );
+            },
+          ),
+        ),
       ),
     );
   }

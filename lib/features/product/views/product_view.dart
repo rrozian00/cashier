@@ -1,5 +1,7 @@
 import 'package:cashier/core/utils/rupiah_converter.dart';
+import 'package:cashier/features/product/blocs/cubit/category_cubit.dart';
 import 'package:cashier/features/product/models/product_model.dart';
+import 'package:cashier/features/product/views/detail_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -7,7 +9,7 @@ import 'package:get/get.dart';
 import '../../../core/widgets/my_alert_dialog.dart';
 import '../../../core/widgets/no_data.dart';
 import '../../../routes/app_pages.dart';
-import '../bloc/product_bloc.dart';
+import '../blocs/product_bloc/product_bloc.dart';
 import 'edit_product_view.dart';
 
 class ProductView extends StatelessWidget {
@@ -52,23 +54,50 @@ class ProductView extends StatelessWidget {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
-                      flex: 1,
-                      child: SizedBox(
-                        height: 20,
-                      )),
-                  Expanded(
-                    flex: 50,
-                    child: ListView.builder(
-                      itemCount: state.products.length,
-                      itemBuilder: (context, index) {
-                        final datas = state.products[index];
-                        return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0, vertical: 3),
-                            child: _buildListile(context, datas));
-                      },
-                    ),
+                  //TODO:tampilkan produk sesuai kategori
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //   children: [
+                  //     ElevatedButton(
+                  //         onPressed: () {
+                  //           context
+                  //               .read<CategoryCubit>()
+                  //               .selectCategory("Member");
+                  //         },
+                  //         child: Text("Member")),
+                  //     ElevatedButton(
+                  //         onPressed: () {
+                  //           context
+                  //               .read<CategoryCubit>()
+                  //               .selectCategory("Produk");
+                  //         },
+                  //         child: Text("Produk")),
+                  //   ],
+                  // ),
+                  // Expanded(
+                  //     flex: 1,
+                  //     child: SizedBox(
+                  //       height: 20,
+                  //     )),
+                  BlocBuilder<CategoryCubit, String>(
+                    builder: (context, category) {
+                      if (category == "Member") {
+                        return Center(child: Text("Oke"));
+                      }
+                      return Expanded(
+                        flex: 50,
+                        child: ListView.builder(
+                          itemCount: state.products.length,
+                          itemBuilder: (context, index) {
+                            final datas = state.products[index];
+                            return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 3),
+                                child: _buildListile(context, datas));
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ],
               );
@@ -96,15 +125,23 @@ Widget _buildListile(BuildContext context, ProductModel datas) {
       borderRadius: BorderRadius.circular(15),
     ),
     child: ListTile(
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailProduct(product: datas),
+          )),
       leading: CircleAvatar(
         backgroundColor: Theme.of(context).colorScheme.secondary,
         child: datas.image != null && datas.image!.isNotEmpty
             ? ClipOval(
-                child: Image.network(
-                    fit: BoxFit.cover,
-                    height: double.infinity,
-                    width: double.infinity,
-                    datas.image ?? ''),
+                child: Hero(
+                  tag: "product-${datas.id}",
+                  child: Image.network(
+                      fit: BoxFit.cover,
+                      height: double.infinity,
+                      width: double.infinity,
+                      datas.image ?? ''),
+                ),
               )
             : Image.asset(
                 'assets/icons/icon.png',

@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import '../../../../core/utils/get_store_id.dart';
+import 'package:cashier/features/store/repositories/store_repository.dart';
 import '../../../../core/utils/get_user_data.dart';
 import '../../order/models/cart_model.dart';
 import '../../order/models/order_model.dart';
@@ -13,6 +13,7 @@ part 'check_out_event.dart';
 part 'check_out_state.dart';
 
 class CheckOutBloc extends Bloc<CheckOutEvent, CheckOutState> {
+  final storeRepo = StoreRepository();
   final orderRepository = OrderRepository();
 
   CheckOutBloc() : super(CheckOutState.initial()) {
@@ -68,16 +69,19 @@ class CheckOutBloc extends Bloc<CheckOutEvent, CheckOutState> {
 
     try {
       final user = await getUserData();
-      final storeData = await getStoreData();
+
+      if (user == null) {
+        emit(state.copyWith(
+            isProcessing: false, errorMessage: "user belum ditemukan"));
+        return;
+      }
+
+      final storeData = await storeRepo.getActiveStore(user.id!);
+
       final storeId = storeData?.id;
       if (storeId == null) {
         emit(state.copyWith(
             isProcessing: false, errorMessage: "StoreId belum ditemukan"));
-        return;
-      }
-      if (user == null) {
-        emit(state.copyWith(
-            isProcessing: false, errorMessage: "user belum ditemukan"));
         return;
       }
       final createdAt = Timestamp.now();

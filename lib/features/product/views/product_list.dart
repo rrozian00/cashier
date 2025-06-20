@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../order/order/bloc/order_bloc.dart';
 
 import '../../../core/widgets/no_data.dart';
-import '../bloc/product_bloc.dart';
+import '../blocs/product_bloc/product_bloc.dart';
 import '../models/product_model.dart';
 
 class ProductList extends StatelessWidget {

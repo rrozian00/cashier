@@ -75,7 +75,9 @@ class ProductRepository {
     }
   }
 
-  Future<Either<Failure, List<ProductModel>>> getProducts() async {
+  Future<Either<Failure, List<ProductModel>>> getProducts(
+      // String category
+      ) async {
     try {
       final user = await getUserData();
       final userId = user?.id;
@@ -113,8 +115,10 @@ class ProductRepository {
         storeId = stores.first.id!;
       }
 
-      final snapshot =
-          await _firestore.collection('stores/$storeId/products').get();
+      final snapshot = await _firestore
+          .collection('stores/$storeId/products')
+          // .where("category", isEqualTo: category)
+          .get();
       final List<ProductModel> products =
           snapshot.docs.map((e) => ProductModel.fromMap(e.data())).toList();
       return Right(products);
@@ -377,4 +381,8 @@ class ProductRepository {
       return Left(Failure("Unexpected error: $e"));
     }
   }
+
+// Future<void> getProductByCategory(){
+
+// }
 }

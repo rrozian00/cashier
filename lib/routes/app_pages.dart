@@ -7,8 +7,6 @@ import '../features/order/history_order/views/history_order_view.dart';
 import '../features/order/input_manual/bindings/input_manual_binding.dart';
 import '../features/order/input_manual/views/input_manual_view.dart';
 import '../features/order/order/views/order_view.dart';
-import '../features/printer/bindings/printer_binding.dart';
-import '../features/printer/views/printer_view.dart';
 import '../features/product/views/add_product_view.dart';
 import '../features/product/views/product_list.dart';
 import '../features/product/views/product_view.dart';
@@ -72,11 +70,6 @@ class AppPages {
       name: _Paths.expense,
       page: () => const ExpenseView(),
       // binding: PengeluaranBinding(),
-    ),
-    GetPage(
-      name: _Paths.printer,
-      page: () => const PrinterView(),
-      binding: PrinterBinding(),
     ),
     GetPage(
       name: _Paths.inputManual,
