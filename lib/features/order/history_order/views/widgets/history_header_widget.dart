@@ -1,4 +1,4 @@
-import '../bloc/history_order_bloc.dart';
+import '../../bloc/history_order_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,7 +17,7 @@ class HistoryHeaderWidget extends StatelessWidget
           final DateTimeRange? picked = await showDateRangePicker(
             context: context,
             firstDate: DateTime(2000),
-            lastDate: DateTime(2101),
+            lastDate: DateTime.now(),
             initialDateRange:
                 (context.read<HistoryOrderBloc>().state as HistoryOrderLoaded)
                     .picked,

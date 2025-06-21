@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/widgets/my_text_field.dart';
@@ -33,7 +33,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthLoadingState) {
-          Get.back();
+          Navigator.pop(context);
         }
       },
       child: Padding(
@@ -90,7 +90,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                     // width: 150,
                     // text: "Batal",
                     onPressed: () async {
-                      Get.back();
+                      Navigator.pop(context);
                     },
                   ),
                   ElevatedButton(

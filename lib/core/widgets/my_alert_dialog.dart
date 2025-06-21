@@ -1,9 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
-class MyAlertDialog extends GetView {
+class MyAlertDialog extends StatelessWidget {
   const MyAlertDialog({
     super.key,
     this.onCancel,
@@ -65,7 +65,7 @@ class MyAlertDialog extends GetView {
                   child: Text(onConfirmText ?? "Simpan"),
                   onPressed: () {
                     onConfirm();
-                    Get.back();
+                    Navigator.pop(context);
                   },
                 ),
               ],
@@ -77,7 +77,7 @@ class MyAlertDialog extends GetView {
   }
 }
 
-class MySingleAlertDialog extends GetView {
+class MySingleAlertDialog extends StatelessWidget {
   final VoidCallback? onCancel;
   final String? onCancelText;
   final String contentText;

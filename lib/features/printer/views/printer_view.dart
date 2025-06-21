@@ -1,7 +1,7 @@
+import 'package:cashier/core/utils/my_snackbar.dart';
 import 'package:cashier/features/printer/bloc/printer_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 class PrinterView extends StatelessWidget {
   const PrinterView({super.key});
@@ -11,7 +11,7 @@ class PrinterView extends StatelessWidget {
     return BlocListener<PrinterBloc, PrinterState>(
       listener: (context, state) {
         if (state is PrinterFailed) {
-          Get.snackbar("Error", state.message);
+          showMysnackbar(context, "Error", state.message);
         }
       },
       child: Scaffold(
@@ -22,7 +22,12 @@ class PrinterView extends StatelessWidget {
                 onPressed: () {
                   context.read<PrinterBloc>().add(ScanPrinter());
                 },
-                icon: Icon(Icons.refresh))
+                icon: Icon(Icons.refresh)),
+            // ElevatedButton(
+            //     onPressed: () {
+            //       showMysnackbar(context, "Error", "test ini");
+            //     },
+            //     child: Text("test"))
           ],
         ),
         body: SafeArea(
@@ -39,17 +44,7 @@ class PrinterView extends StatelessWidget {
                 );
               }
               if (state is PrinterFailed) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(child: Text(state.message)),
-                    ElevatedButton(
-                        onPressed: () {
-                          context.read<PrinterBloc>().add(ScanPrinter());
-                        },
-                        child: Text("Scan Printer"))
-                  ],
-                );
+                return Center(child: Text(state.message));
               }
               if (state is PrinterSuccess) {
                 return Column(
@@ -66,10 +61,10 @@ class PrinterView extends StatelessWidget {
                                   ? Colors.green
                                   : null,
                               child: ListTile(
-                                trailing: Text(
+                                trailing:
                                     state.connectedDeviceId == data.macAdress
-                                        ? "Connected"
-                                        : ""),
+                                        ? Text("Tersambung")
+                                        : null,
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10, horizontal: 15),
                                 onTap: () {
@@ -79,12 +74,10 @@ class PrinterView extends StatelessWidget {
                                       return AlertDialog(
                                         content: Text(
                                             textAlign: TextAlign.center,
-                                            "Tekan 3 detik untuk sambungkan printer"),
+                                            "Tekan dan tahan 2 detik untuk sambungkan printer"),
                                       );
                                     },
                                   );
-                                  // context.read<PrinterBloc>().add(
-                                  //     SelectPrinter(macAddress: data.macAdress));
                                 },
                                 onLongPress: () {
                                   context.read<PrinterBloc>().add(
@@ -103,14 +96,12 @@ class PrinterView extends StatelessWidget {
                   ],
                 );
               }
-              return Column(
-                children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        context.read<PrinterBloc>().add(ScanPrinter());
-                      },
-                      child: Text("Scan Printer"))
-                ],
+              return Center(
+                child: ElevatedButton(
+                    onPressed: () {
+                      context.read<PrinterBloc>().add(ScanPrinter());
+                    },
+                    child: Text("Cari Printer")),
               );
             },
           ),

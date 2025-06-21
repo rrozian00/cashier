@@ -1,7 +1,8 @@
+import 'package:cashier/features/store/views/add_store_view.dart';
+
 import '../../../core/widgets/no_data.dart';
 import '../bloc/store_bloc.dart';
 import 'store_detail.dart';
-import '../../../routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,22 +45,22 @@ class StoreView extends StatelessWidget {
                         itemCount: state.stores.length,
                         itemBuilder: (context, index) {
                           final data = state.stores[index];
-                          final color = data.isActive == true
-                              ? Theme.of(context).colorScheme.surface
-                              : Theme.of(context).colorScheme.primary;
+                          // final color = data.isActive == true
+                          //     ? Theme.of(context).colorScheme.surface
+                          //     : Theme.of(context).colorScheme.primary;
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 3.0),
                             child: Card(
-                              color: data.isActive == true
-                                  ? Theme.of(context).colorScheme.onPrimary
-                                  : Theme.of(context).colorScheme.surface,
+                              // color: data.isActive == true
+                              //     ? Theme.of(context).colorScheme.onPrimary
+                              //     : Theme.of(context).colorScheme.surface,
                               child: ListTile(
                                 trailing: data.isActive == true
                                     ? Text(
                                         "Aktif",
-                                        style: TextStyle(color: color),
+                                        style: TextStyle(color: Colors.green),
                                       )
-                                    : OutlinedButton(
+                                    : TextButton(
                                         style: OutlinedButton.styleFrom(
                                             padding: EdgeInsets.all(0)),
                                         onPressed: () {
@@ -81,15 +82,21 @@ class StoreView extends StatelessWidget {
                                     )),
                                 leading: Image.asset(
                                   "assets/images/store.png",
-                                  color: color,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                  // color: color,
                                 ),
                                 title: Text(
                                   data.name ?? '',
-                                  style: TextStyle(color: color),
+                                  style: TextStyle(
+                                      // color: color
+                                      ),
                                 ),
                                 subtitle: Text(
                                   data.address ?? '',
-                                  style: TextStyle(color: color),
+                                  style: TextStyle(
+                                      // color: color
+                                      ),
                                 ),
                               ),
                             ),
@@ -111,7 +118,11 @@ class StoreView extends StatelessWidget {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: ElevatedButton(
-            onPressed: () => Navigator.pushNamed(context, Routes.addStore),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddStoreView(),
+                )),
             child: Text("Tambah Toko")),
       ),
     );

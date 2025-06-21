@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../bloc/history_order_bloc.dart';
-import '../widgets/history_content_widget.dart';
-import '../widgets/history_header_widget.dart';
+import 'widgets/history_content_widget.dart';
+import 'widgets/history_header_widget.dart';
 
 import '../../../../core/widgets/no_data.dart';
 import '../../order/models/order_model.dart';

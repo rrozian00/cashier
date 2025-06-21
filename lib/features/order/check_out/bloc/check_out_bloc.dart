@@ -76,33 +76,73 @@ class CheckOutBloc extends Bloc<CheckOutEvent, CheckOutState> {
         return;
       }
 
-      final storeData = await storeRepo.getActiveStore(user.id!);
+      if (user.role == 'owner') {
+        final storeData = await storeRepo.getActiveStore(user.id!);
 
-      final storeId = storeData?.id;
-      if (storeId == null) {
+        final storeId = storeData?.id;
+        if (storeId == null) {
+          emit(state.copyWith(
+              isProcessing: false, errorMessage: "StoreId belum ditemukan"));
+          return;
+        }
+        final createdAt = Timestamp.now();
+
+        final orderModel = OrderModel(
+          payment: state.paymentAmount.toString(),
+          products: event.cart,
+          refund: (state.paymentAmount - state.totalPrice).toString(),
+          total: state.totalPrice.toString(),
+          createdAt: createdAt,
+        );
+
+        // Simpan ke Firestore
+        await orderRepository.saveOrder(orderModel);
+
         emit(state.copyWith(
-            isProcessing: false, errorMessage: "StoreId belum ditemukan"));
-        return;
+          isProcessing: false,
+          store: storeData,
+          user: user,
+          processed: true,
+        ));
+      } else {
+        final result = await storeRepo.getStoreAsEmployee(user.id!);
+        if (result.isLeft()) {
+          emit(state.copyWith(
+            isProcessing: false,
+            errorMessage: "Gagal ambil store",
+          ));
+          return;
+        }
+        final storeData = result.getOrElse(
+          () => throw Exception("Tidak ada store"),
+        );
+
+        final storeId = storeData.id;
+        if (storeId == null) {
+          emit(state.copyWith(
+              isProcessing: false, errorMessage: "StoreId belum ditemukan"));
+          return;
+        }
+        final createdAt = Timestamp.now();
+
+        final orderModel = OrderModel(
+          payment: state.paymentAmount.toString(),
+          products: event.cart,
+          refund: (state.paymentAmount - state.totalPrice).toString(),
+          total: state.totalPrice.toString(),
+          createdAt: createdAt,
+        );
+
+        // Simpan ke Firestore
+        await orderRepository.saveOrder(orderModel);
+
+        emit(state.copyWith(
+          isProcessing: false,
+          store: storeData,
+          user: user,
+          processed: true,
+        ));
       }
-      final createdAt = Timestamp.now();
-
-      final orderModel = OrderModel(
-        payment: state.paymentAmount.toString(),
-        products: event.cart,
-        refund: (state.paymentAmount - state.totalPrice).toString(),
-        total: state.totalPrice.toString(),
-        createdAt: createdAt,
-      );
-
-      // Simpan ke Firestore
-      await orderRepository.saveOrder(orderModel);
-
-      emit(state.copyWith(
-        isProcessing: false,
-        store: storeData,
-        user: user,
-        processed: true,
-      ));
     } catch (e) {
       emit(state.copyWith(isProcessing: false, errorMessage: e.toString()));
     }

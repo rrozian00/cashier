@@ -1,9 +1,9 @@
+import 'package:cashier/core/utils/my_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/widgets/my_text_field.dart';
-import '../../../routes/app_pages.dart';
 import '../blocs/register/register_bloc.dart';
 import '../models/user_model.dart';
 import 'login_view.dart';
@@ -25,9 +25,12 @@ class RegisterView extends StatelessWidget {
     return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
         if (state is RegisterSuccessState) {
-          Navigator.pushReplacementNamed(context, Routes.login);
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Berhasil Registrasi, Silahkan Login !")));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginView(),
+              ));
+          showMysnackbar(context, "Berhasil Registrasi", "Silahkan Login !");
         }
       },
       child: Scaffold(

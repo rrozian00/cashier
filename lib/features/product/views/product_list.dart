@@ -1,6 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../order/order/bloc/order_bloc.dart';
@@ -114,8 +115,8 @@ class _ProductItem extends StatelessWidget {
                     opacity: 0.8,
                     child: Image.network(
                       product.image ?? '',
-                      width: Get.width / 5,
-                      height: Get.height / 8,
+                      width: MediaQuery.of(context).size.width / 5,
+                      height: MediaQuery.of(context).size.height / 8,
                       fit: BoxFit.cover,
                       errorBuilder: (_, __, ___) =>
                           const Icon(Icons.broken_image),

@@ -158,6 +158,7 @@ class ShowReceipt extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       printReceipt(
+                        context: context,
                         cart: orderBloc.cart,
                         state: state,
                         storeAddress: storeAddress,

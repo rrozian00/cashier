@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:cashier/core/utils/my_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 
 import '../../../core/utils/rupiah_converter.dart';
 import '../blocs/product_bloc/product_bloc.dart';
@@ -51,7 +51,7 @@ class _EditProductViewState extends State<EditProductView> {
           Navigator.pop(context);
         }
         if (state is PickImageError) {
-          Get.snackbar("Error", state.message);
+          showMysnackbar(context, "Error", state.message);
         }
       },
       child: Scaffold(

@@ -1,17 +1,21 @@
-import 'package:cashier/features/printer/views/printer_view.dart';
-import 'package:cashier/features/setting/cubit/version_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/app_theme/theme_cubit/theme_cubit.dart';
-import '../../../routes/app_pages.dart';
+import '../../expense/views/expense_view.dart';
 import '../../order/history_order/bloc/history_order_bloc.dart';
 import '../../order/history_order/views/history_order_view.dart';
+import '../../order/input_manual/views/input_manual_view.dart';
+import '../../printer/views/printer_view.dart';
 import '../../product/blocs/product_bloc/product_bloc.dart';
+import '../../product/views/product_view.dart';
 import '../../store/bloc/store_bloc.dart';
+import '../../store/views/store_view.dart';
 import '../../user/blocs/employee/bloc/employee_bloc.dart';
+import '../../user/blocs/employee/view/employee_list_view.dart';
+import '../../user/views/profile_view.dart';
+import '../cubit/version_cubit.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -31,14 +35,23 @@ class SettingsView extends StatelessWidget {
                 children: [
                   _SettingListile(
                     onPress: () {
-                      Get.toNamed(Routes.profile);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfileView(),
+                          ));
+                      // Get.toNamed(Routes.profile);
                     },
                     title: "Profil",
                     icon: Icons.person,
                   ),
                   _SettingListile(
                     onPress: () {
-                      Get.toNamed(Routes.store);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => StoreView(),
+                          ));
                       context.read<StoreBloc>().add(GetStoresList());
                     },
                     title: "Toko",
@@ -46,7 +59,12 @@ class SettingsView extends StatelessWidget {
                   ),
                   _SettingListile(
                     onPress: () {
-                      Get.toNamed(Routes.employee);
+                      // Get.toNamed(Routes.employee);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EmployeeListView(),
+                          ));
                       context.read<EmployeeBloc>().add(GetEmployeeRequested());
                     },
                     title: "Karyawan",
@@ -54,7 +72,12 @@ class SettingsView extends StatelessWidget {
                   ),
                   _SettingListile(
                     onPress: () {
-                      Get.toNamed(Routes.product);
+                      // Get.toNamed(Routes.product);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductView(),
+                          ));
                       context.read<ProductBloc>().add(ProductGetRequested());
                     },
                     title: "Produk",
@@ -88,14 +111,24 @@ class SettingsView extends StatelessWidget {
                   ),
                   _SettingListile(
                     onPress: () {
-                      Get.toNamed(Routes.inputManual);
+                      // Get.toNamed(Routes.inputManual);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => InputManualView(),
+                          ));
                     },
                     title: "Input Manual",
                     icon: Icons.checklist_rounded,
                   ),
                   _SettingListile(
                     onPress: () {
-                      Get.toNamed(Routes.expense);
+                      // Get.toNamed(Routes.expense);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ExpenseView(),
+                          ));
                     },
                     title: "Pengeluaran",
                     icon: Icons.shopping_cart,

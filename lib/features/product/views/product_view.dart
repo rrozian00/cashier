@@ -1,14 +1,13 @@
 import 'package:cashier/core/utils/rupiah_converter.dart';
 import 'package:cashier/features/product/blocs/cubit/category_cubit.dart';
 import 'package:cashier/features/product/models/product_model.dart';
+import 'package:cashier/features/product/views/add_product_view.dart';
 import 'package:cashier/features/product/views/detail_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 import '../../../core/widgets/my_alert_dialog.dart';
 import '../../../core/widgets/no_data.dart';
-import '../../../routes/app_pages.dart';
 import '../blocs/product_bloc/product_bloc.dart';
 import 'edit_product_view.dart';
 
@@ -109,7 +108,11 @@ class ProductView extends StatelessWidget {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: ElevatedButton(
           child: Text("Tambah"),
-          onPressed: () => Navigator.pushNamed(context, Routes.addMenus),
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddProductView(),
+              )),
         ),
       ),
     );
@@ -165,16 +168,20 @@ Widget _buildListile(BuildContext context, ProductModel datas) {
         children: [
           IconButton(
             onPressed: () {
-              Get.dialog(MyAlertDialog(
-                  onCancelColor: Colors.green,
-                  onConfirmColor: Colors.red,
-                  onConfirmText: "Hapus",
-                  contentText: "Apakah anda yakin akan menghapus produk ini ?",
-                  onConfirm: () {
-                    context
-                        .read<ProductBloc>()
-                        .add(ProductDeleteRequested(datas.id!));
-                  }));
+              showDialog(
+                context: context,
+                builder: (context) => MyAlertDialog(
+                    onCancelColor: Colors.green,
+                    onConfirmColor: Colors.red,
+                    onConfirmText: "Hapus",
+                    contentText:
+                        "Apakah anda yakin akan menghapus produk ini ?",
+                    onConfirm: () {
+                      context
+                          .read<ProductBloc>()
+                          .add(ProductDeleteRequested(datas.id!));
+                    }),
+              );
             },
             icon: Icon(
               Icons.delete,

@@ -8,7 +8,6 @@ import 'package:cashier/features/user/blocs/register/register_bloc.dart';
 import 'package:cashier/features/user/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EditProfileView extends StatefulWidget {
@@ -48,7 +47,8 @@ class _EditProfileViewState extends State<EditProfileView> {
       if (state is EditUserSuccess) {
         //  Navigator.popUntil(
         //         context, (route) => route.settings.name == Routes.profile)
-        Get.back();
+        Navigator.pop(context);
+
         context.read<AuthBloc>().add(AuthCheckStatusEvent());
       }
     }, builder: (context, state) {
@@ -85,27 +85,30 @@ class _EditProfileViewState extends State<EditProfileView> {
                 ElevatedButton(
                   // text: "Batal",
                   child: Text("Batal"),
-                  onPressed: () => Get.back(),
+                  onPressed: () => Navigator.pop(context),
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.tertiary),
-                  // text: "Simpan",
                   child: Text("simpan"),
                   onPressed: () {
-                    Get.dialog(MyAlertDialog(
-                      onConfirm: () {
-                        context.read<EditUserBloc>().add(
-                              EditRequestedEvent(
-                                id: widget.user.id!,
-                                name: nameC.text,
-                                address: addressC.text,
-                                phone: phoneNumberC.text,
-                              ),
-                            );
-                      },
-                      contentText: "Anda yakin akan menyimpan data?",
-                    ));
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return MyAlertDialog(
+                            onConfirm: () {
+                              context.read<EditUserBloc>().add(
+                                    EditRequestedEvent(
+                                      id: widget.user.id!,
+                                      name: nameC.text,
+                                      address: addressC.text,
+                                      phone: phoneNumberC.text,
+                                    ),
+                                  );
+                            },
+                            contentText: "Anda yakin akan menyimpan data?",
+                          );
+                        });
                   },
                 ),
               ],

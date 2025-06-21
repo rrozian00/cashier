@@ -24,6 +24,7 @@ class HistoryOrderBloc extends Bloc<HistoryOrderEvent, HistoryOrderState> {
   // Fungsi untuk load data default (1 minggu terakhir)
   Future<void> _onShowInitial(
       ShowInitial event, Emitter<HistoryOrderState> emit) async {
+    emit(HistoryOrderLoading());
     final end = DateTime.now();
     final start = end.subtract(const Duration(days: 7)); // 1 minggu terakhir
 

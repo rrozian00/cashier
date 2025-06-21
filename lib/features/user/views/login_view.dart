@@ -1,10 +1,9 @@
+import 'package:cashier/features/navbar/views/bottom_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/widgets/my_text_field.dart';
-import '../../../routes/app_pages.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/login/login_cubit.dart';
 import 'register_view.dart';
@@ -12,14 +11,14 @@ import 'register_view.dart';
 class LoginView extends StatelessWidget {
   LoginView({super.key});
 
-  // final TextEditingController emailC = TextEditingController();
-  // final TextEditingController passwordC = TextEditingController();
+  final TextEditingController emailC = TextEditingController();
+  final TextEditingController passwordC = TextEditingController();
   // final TextEditingController emailC =
   //     TextEditingController(text: "rrozian123@gmail.com");
   // final TextEditingController passwordC = TextEditingController(text: "123123");
-  final TextEditingController emailC =
-      TextEditingController(text: "rrozian00@gmail.com");
-  final TextEditingController passwordC = TextEditingController(text: "123123");
+  // final TextEditingController emailC =
+  //     TextEditingController(text: "rrozian00@gmail.com");
+  // final TextEditingController passwordC = TextEditingController(text: "123123");
 
   final _formKey = GlobalKey<FormState>();
 
@@ -28,11 +27,25 @@ class LoginView extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthLoggedState) {
-          Navigator.pushReplacementNamed(context, Routes.bottom);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BottomView(),
+              ));
         } else if (state is AuthFailedState) {
-          Navigator.pushReplacementNamed(context, Routes.login);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginView(),
+              ));
+
           debugPrint(state.message.toString());
-          Get.snackbar("Error", state.message);
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: Text(state.message),
+            ),
+          );
         }
       },
       child: Scaffold(

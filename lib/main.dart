@@ -1,17 +1,15 @@
-import 'package:cashier/core/supabase/supabase_init.dart';
-
-import 'core/app_observer/app_observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+import 'core/app_observer/app_observer.dart';
 import 'core/app_providers/app_providers.dart';
-import 'core/app_theme/theme_cubit/theme_cubit.dart';
 import 'core/app_theme/my_theme.dart';
+import 'core/app_theme/theme_cubit/theme_cubit.dart';
 import 'core/firebase/firebase_options.dart';
-import 'routes/app_pages.dart';
+import 'core/supabase/supabase_init.dart';
+import 'features/splash/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,11 +31,10 @@ class MyApp extends StatelessWidget {
       providers: appProviders,
       child: BlocBuilder<ThemeCubit, bool>(
         builder: (context, isDarkMode) {
-          return GetMaterialApp(
+          return MaterialApp(
             theme: isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme,
             title: "Cashier",
-            initialRoute: AppPages.initial,
-            getPages: AppPages.routes,
+            home: SplashScreen(),
           );
         },
       ),

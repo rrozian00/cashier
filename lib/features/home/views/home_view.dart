@@ -1,8 +1,7 @@
+import 'package:cashier/features/user/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
-import '../../../routes/app_pages.dart';
 import '../../user/blocs/auth/auth_bloc.dart';
 import '../bloc/home_bloc.dart';
 import 'widgets/date.dart';
@@ -20,7 +19,11 @@ class HomeView extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is UnauthenticatedState) {
-          Get.offAllNamed(Routes.login);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginView(),
+              ));
         }
       },
       child: Scaffold(

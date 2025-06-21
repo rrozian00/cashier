@@ -1,15 +1,15 @@
-import '../check_out/bloc/check_out_bloc.dart';
-import '../order/models/cart_model.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
-import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 
 import '../../../core/utils/rupiah_converter.dart';
 import '../../product/models/product_model.dart';
+import '../check_out/bloc/check_out_bloc.dart';
+import '../order/models/cart_model.dart';
 
 Future<void> printReceipt({
+  required BuildContext context,
   required String storeName,
   required String storeAddress,
   required String userName,
@@ -19,7 +19,14 @@ Future<void> printReceipt({
   bool isConnected = await PrintBluetoothThermal.connectionStatus;
   if (!isConnected) {
     debugPrint("Printer belum terhubung!");
-    Get.snackbar("Error", "Belum ada printer yang Terhubung!");
+    if (context.mounted) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: Text("Belum ada printer yang Terhubung!"),
+        ),
+      );
+    }
     return;
   }
 
@@ -63,7 +70,14 @@ Future<void> printReceipt({
 
   if (cart.isEmpty) {
     debugPrint("Tidak ada item dalam keranjang!");
-    Get.snackbar("Error", "Keranjang masih kosong!");
+    if (context.mounted) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: Text("Keranjang masih kosong!"),
+        ),
+      );
+    }
     return;
   }
 

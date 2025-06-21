@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
+
 import '../models/expense_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 
 class ExpenseRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -28,6 +29,7 @@ class ExpenseRepository {
   }
 
   Future<void> insertExpense({
+    required BuildContext context,
     required String date,
     required String pay,
   }) async {
@@ -37,7 +39,14 @@ class ExpenseRepository {
     final storeId = doc.data()?['storeId'];
 
     if (storeId == null) {
-      Get.snackbar("Gagal", "Tidak ada toko");
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: Text("Tidak ada toko"),
+          ),
+        );
+      }
       return;
     }
 

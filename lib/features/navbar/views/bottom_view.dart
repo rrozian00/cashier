@@ -1,8 +1,8 @@
+import 'package:cashier/features/user/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-import '../../../routes/app_pages.dart';
 import '../../home/views/home_view.dart';
 import '../../order/order/views/order_view.dart';
 import '../../printer/views/printer_view.dart';
@@ -22,7 +22,11 @@ class BottomView extends StatelessWidget {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is UnauthenticatedState) {
-          Navigator.pushReplacementNamed(context, Routes.login);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginView(),
+              ));
         }
         if (state is ChangePassSuccess) {
           if (context.mounted) {

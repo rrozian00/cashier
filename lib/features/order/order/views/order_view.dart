@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/utils/rupiah_converter.dart';
-import '../../../../core/utils/scanner_page.dart';
+import '../../../scanner/views/scanner_view.dart';
 import '../../../product/blocs/product_bloc/product_bloc.dart';
 import '../../../product/models/product_model.dart';
 import '../../../product/views/product_list.dart';

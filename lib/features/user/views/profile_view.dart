@@ -1,9 +1,9 @@
+import 'package:cashier/features/user/views/login_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/widgets/my_alert_dialog.dart';
-import '../../../routes/app_pages.dart';
 import '../../navbar/cubit/bottom_nav_cubit.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../models/user_model.dart';
@@ -19,7 +19,11 @@ class ProfileView extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is UnauthenticatedState) {
-          Navigator.pushReplacementNamed(context, Routes.login);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginView(),
+              ));
         }
         if (state is ChangePassSuccess) {
           if (context.mounted) {

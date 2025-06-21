@@ -1,13 +1,12 @@
+import 'package:cashier/features/user/blocs/employee/view/add_employee_view.dart';
 import 'package:cashier/features/user/models/user_model.dart';
 
 import '../../../../../core/widgets/no_data.dart';
 import '../bloc/employee_bloc.dart';
 import 'detail_emlpoyee.dart';
 import 'edit_employee.dart';
-import '../../../../../routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EmployeeListView extends StatelessWidget {
@@ -48,7 +47,11 @@ class EmployeeListView extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ElevatedButton(
-        onPressed: () => Get.toNamed(Routes.addEmployee),
+        onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddEmployeeView(),
+            )),
         child: Text("Tambah Karyawan"),
       ),
     );
@@ -79,12 +82,13 @@ Widget _buildListView(EmployeeGetSuccess state) {
               ),
             ),
             onTap: () {
-              Get.bottomSheet(
-                  backgroundColor: Colors.white,
-                  isScrollControlled: true,
-                  DetailEmlpoyee(
-                    data: data,
-                  ));
+              //TODO
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => DetailEmlpoyee(
+                  data: data,
+                ),
+              );
             },
             trailing: Wrap(
               children: [
@@ -161,7 +165,9 @@ _showDeleteDialog(BuildContext context, UserModel data) {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ElevatedButton(child: Text("Batal"), onPressed: () => Get.back()),
+              ElevatedButton(
+                  child: Text("Batal"),
+                  onPressed: () => Navigator.pop(context)),
               ElevatedButton(
                   child: Text("Hapus"),
                   onPressed: () {

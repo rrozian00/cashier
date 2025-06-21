@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 import '../models/expense_model.dart';
 import '../repositories/expense_repository.dart';
@@ -20,7 +21,8 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
     //ADD
     on<ExpenseAddRequested>((event, emit) async {
       emit(ExpenseLoading());
-      await repo.insertExpense(date: event.date, pay: event.pay);
+      await repo.insertExpense(
+          context: event.context, date: event.date, pay: event.pay);
       emit(ExpenseAddSucces());
     });
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 import '../../../../core/widgets/my_alert_dialog.dart';
 import '../bloc/check_out_bloc.dart';
@@ -18,7 +17,6 @@ class CheckOutView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<CheckOutBloc>().add(ClearReceipt());
     return BlocListener<CheckOutBloc, CheckOutState>(
       listener: (context, state) {
         if (state.processed == true) {
@@ -41,7 +39,12 @@ class CheckOutView extends StatelessWidget {
             );
           }
         } else if (state.isProcessing == false && state.errorMessage != null) {
-          Get.snackbar("Error", "${state.errorMessage}");
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: Text(state.errorMessage ?? ''),
+            ),
+          );
         }
       },
       child: Scaffold(

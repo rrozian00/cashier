@@ -44,7 +44,6 @@ dependencies:
   flutter_image_compress: ^2.4.0
   flutter_launcher_icons: ^0.14.3
   flutter_localization: ^0.3.1
-  get: ^4.6.6
   get_it: ^8.0.3
   google_fonts: ^6.2.1
   google_nav_bar: ^5.0.7

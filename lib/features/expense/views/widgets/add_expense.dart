@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/utils/rupiah_converter.dart';
-import '../../../core/widgets/my_date_picker.dart';
+import '../../../../core/utils/rupiah_converter.dart';
+import '../../../../core/widgets/my_date_picker.dart';
 
-import '../bloc/expense_bloc.dart';
+import '../../bloc/expense_bloc.dart';
 
 class AddExpense extends StatelessWidget {
   AddExpense({super.key});
@@ -94,7 +94,9 @@ class AddExpense extends StatelessWidget {
                             if (_formKey.currentState!.validate()) {
                               context.read<ExpenseBloc>().add(
                                   ExpenseAddRequested(
-                                      date: dateC.text, pay: payC.text));
+                                      context: context,
+                                      date: dateC.text,
+                                      pay: payC.text));
                             }
                           }),
                     ],

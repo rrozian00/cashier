@@ -1,3 +1,4 @@
+import 'package:cashier/features/order/input_manual/bloc/input_manual_bloc.dart';
 import 'package:cashier/features/printer/bloc/printer_bloc.dart';
 import 'package:cashier/features/product/blocs/cubit/category_cubit.dart';
 import 'package:cashier/features/setting/cubit/version_cubit.dart';
@@ -43,4 +44,5 @@ final List<BlocProvider> appProviders = [
   BlocProvider<EditUserBloc>(create: (context) => EditUserBloc()),
   BlocProvider<CategoryCubit>(create: (context) => CategoryCubit()),
   BlocProvider<PrinterBloc>(create: (context) => PrinterBloc()),
+  BlocProvider<InputManualBloc>(create: (context) => InputManualBloc()),
 ];
