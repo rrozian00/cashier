@@ -1,14 +1,15 @@
+import 'package:cashier/features/user/profile/bloc/profile_bloc.dart';
 import 'package:cashier/features/user/views/login_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/widgets/my_alert_dialog.dart';
-import '../../navbar/cubit/bottom_nav_cubit.dart';
-import '../blocs/auth/auth_bloc.dart';
-import '../models/user_model.dart';
-import 'change_password_view.dart';
-import 'edit_profile_view.dart';
+import '../../../../core/widgets/my_alert_dialog.dart';
+import '../../../navbar/cubit/bottom_nav_cubit.dart';
+import '../../blocs/auth/auth_bloc.dart';
+import '../../models/user_model.dart';
+import '../../views/change_password_view.dart';
+import '../../views/edit_profile_view.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -59,16 +60,16 @@ class ProfileView extends StatelessWidget {
             ),
           ],
         ),
-        body: BlocBuilder<AuthBloc, AuthState>(
+        body: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
-            if (state is AuthLoadingState) {
+            if (state is ProfileInitial) {
               return Center(child: CircularProgressIndicator.adaptive());
             }
 
-            if (state is AuthLoggedState) {
+            if (state is ProfileLoaded) {
               final user = state.user;
               return _buildProfileBody(
-                  context, user, state.verification, state.user.email ?? '');
+                  context, user, true, state.user.email ?? '');
             }
 
             return Center(child: Text("Gagal memuat state"));

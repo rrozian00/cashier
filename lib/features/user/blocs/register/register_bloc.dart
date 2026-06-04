@@ -21,7 +21,13 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     Emitter<RegisterState> emit,
   ) async {
     emit(RegisterLoadingState());
-    await userRepository.createUser(event.user, event.password);
-    emit(RegisterSuccessState(user: event.user));
+    final result =
+        await userRepository.createUserToSupabase(event.user, event.password);
+    if (result.isRight()) {
+      emit(RegisterSuccessState(user: event.user));
+    } else {
+      emit(RegisterFailedState(
+          message: result.fold((l) => l.message, (r) => "Unknown error")));
+    }
   }
 }

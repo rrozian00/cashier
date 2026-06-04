@@ -80,7 +80,7 @@ class EmployeeRepo {
         salary: salary,
         role: "employee",
         phoneNumber: phone,
-        createdAt: Timestamp.now(),
+        createdAt: DateTime.now(),
       );
 
       await _firestore.collection("users").doc(newUserId).set(employee.toMap());

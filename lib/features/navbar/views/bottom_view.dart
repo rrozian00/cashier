@@ -9,7 +9,7 @@ import '../../printer/views/printer_view.dart';
 import '../../setting/cubit/version_cubit.dart';
 import '../../setting/views/settings_view.dart';
 import '../../user/blocs/auth/auth_bloc.dart';
-import '../../user/views/profile_view.dart';
+import '../../user/profile/views/profile_view.dart';
 import '../cubit/bottom_nav_cubit.dart';
 
 class BottomView extends StatelessWidget {

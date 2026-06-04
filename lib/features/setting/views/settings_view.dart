@@ -14,7 +14,7 @@ import '../../store/bloc/store_bloc.dart';
 import '../../store/views/store_view.dart';
 import '../../user/blocs/employee/bloc/employee_bloc.dart';
 import '../../user/blocs/employee/view/employee_list_view.dart';
-import '../../user/views/profile_view.dart';
+import '../../user/profile/views/profile_view.dart';
 import '../cubit/version_cubit.dart';
 
 class SettingsView extends StatelessWidget {

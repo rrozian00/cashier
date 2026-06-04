@@ -15,7 +15,7 @@ if (flutterPropertiesFile.exists()) {
 
 android {
     namespace = "com.natureship.cashier"
-    compileSdk = 35 
+    compileSdk = 36
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -28,7 +28,7 @@ android {
 
     defaultConfig {
         applicationId = "com.natureship.cashier"
-        minSdk = 23 
+        minSdkVersion = flutter.minSdkVersion 
         targetSdk = 34 
         versionCode = flutterProperties.getProperty("flutter.versionCode").toInteger()
         versionName = flutterProperties.getProperty("flutter.versionName")
@@ -68,7 +68,7 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.0"
+    // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.0"
     implementation platform('com.google.firebase:firebase-bom:32.2.0')
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-firestore'

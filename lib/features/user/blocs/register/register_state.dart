@@ -20,4 +20,11 @@ final class RegisterSuccessState extends RegisterState {
   List<Object?> get props => [user];
 }
 
-final class RegisterFailedState extends RegisterState {}
+final class RegisterFailedState extends RegisterState {
+  final String message;
+
+  const RegisterFailedState({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}

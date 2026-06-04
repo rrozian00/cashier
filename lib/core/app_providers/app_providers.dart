@@ -3,6 +3,8 @@ import 'package:cashier/features/printer/bloc/printer_bloc.dart';
 import 'package:cashier/features/product/blocs/cubit/category_cubit.dart';
 import 'package:cashier/features/setting/cubit/version_cubit.dart';
 import 'package:cashier/features/user/blocs/edit_user/edit_user_bloc.dart';
+import 'package:cashier/features/user/profile/bloc/profile_bloc.dart';
+import 'package:cashier/features/user/repositories/user_repository.dart';
 
 import '../../features/store/bloc/store_bloc.dart';
 import '../../features/user/blocs/login/login_cubit.dart';
@@ -28,6 +30,7 @@ var myi = GetIt.instance;
 final List<BlocProvider> appProviders = [
   BlocProvider<BottomNavCubit>(create: (context) => BottomNavCubit()),
   BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
+  BlocProvider<ProfileBloc>(create: (context) => ProfileBloc(UserRepository())),
   BlocProvider<RegisterBloc>(create: (context) => RegisterBloc()),
   BlocProvider<EmployeeBloc>(create: (context) => EmployeeBloc()),
   BlocProvider<ExpenseBloc>(create: (context) => ExpenseBloc()),

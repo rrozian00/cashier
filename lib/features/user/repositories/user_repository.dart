@@ -25,10 +25,8 @@ class UserRepository {
     return Left(Failure("Unexpected error"));
   }
 
-  Future<void> createUser(UserModel user, String password) async {
-    // final userCredential = await _auth.createUserWithEmailAndPassword(
-    //     email: user.email!, password: password);
-
+  Future<Either<Failure, void>> createUserToSupabase(
+      UserModel user, String password) async {
     try {
       //Supabase
       final res = await _supabase.client.auth.signUp(
@@ -49,14 +47,16 @@ class UserRepository {
             photo: user.photo,
             createdAt: user.createdAt);
 
-        await _firestore.collection("users").doc(data.id).set(data.toMap());
-        print("Register berhasil, ${res.user!.email}");
+        await _supabase.client.from('users').insert(data.toMap());
+
+        return Right(null);
       } else if (res.session == null) {
-        print("Perlu verifikasi email");
+        return Left(Failure("Failed to create user: No session returned"));
       }
     } catch (e) {
-      print(e);
+      return Left(Failure("Failed to create user: ${e.toString()}"));
     }
+    return Left(Failure("Failed to create user"));
   }
 
   Future<void> editUser({
@@ -95,6 +95,22 @@ class UserRepository {
       return Left(Failure("User with ID $id not found"));
     } catch (e) {
       return Left(Failure("Unexpected error ${e.toString()}"));
+    }
+  }
+
+  Future<Either<Failure, UserModel>> getUserDataFromSupabase() async {
+    final Supabase supabase = Supabase.instance;
+    final id = supabase.client.auth.currentUser?.id;
+    if (id == null) {
+      return Left(Failure("User not authenticated"));
+    }
+
+    try {
+      final user =
+          await supabase.client.from('users').select().eq('id', id).single();
+      return Right(UserModel.fromMap(user));
+    } catch (e) {
+      return Left(Failure('Failed to fetch user data'));
     }
   }
 }

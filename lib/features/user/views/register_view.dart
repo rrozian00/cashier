@@ -31,6 +31,9 @@ class RegisterView extends StatelessWidget {
                 builder: (context) => LoginView(),
               ));
           showMysnackbar(context, "Berhasil Registrasi", "Silahkan Login !");
+        } else if (state is RegisterFailedState) {
+          showMysnackbar(context, "Gagal Registrasi", state.message);
+          print(state.message);
         }
       },
       child: Scaffold(
@@ -141,7 +144,7 @@ class RegisterView extends StatelessWidget {
                               address: addressC.text,
                               role: "owner",
                               phoneNumber: phoneNumberC.text,
-                              createdAt: Timestamp.now(),
+                              createdAt: DateTime.now(),
                             ),
                             password: passwordC.text));
                       }

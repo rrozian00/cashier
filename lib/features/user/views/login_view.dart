@@ -11,14 +11,14 @@ import 'register_view.dart';
 class LoginView extends StatelessWidget {
   LoginView({super.key});
 
-  final TextEditingController emailC = TextEditingController();
-  final TextEditingController passwordC = TextEditingController();
+  // final TextEditingController emailC = TextEditingController();
+  // final TextEditingController passwordC = TextEditingController();
   // final TextEditingController emailC =
   //     TextEditingController(text: "rrozian123@gmail.com");
   // final TextEditingController passwordC = TextEditingController(text: "123123");
-  // final TextEditingController emailC =
-  //     TextEditingController(text: "rrozian00@gmail.com");
-  // final TextEditingController passwordC = TextEditingController(text: "123123");
+  final TextEditingController emailC =
+      TextEditingController(text: "rrozian00@gmail.com");
+  final TextEditingController passwordC = TextEditingController(text: "123123");
 
   final _formKey = GlobalKey<FormState>();
 

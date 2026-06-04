@@ -44,9 +44,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoadingState());
     // await authRepository.sendVerification();
     final verif = await authRepository.checkVerification();
-    final user = await getUserData();
-    if (user != null) {
-      emit(AuthLoggedState(user, verif));
+    // final user = await getUserData();
+    final user = await userRepository.getUserDataFromSupabase();
+    if (user.isRight()) {
+      emit(AuthLoggedState(
+          user.getOrElse(() => throw Exception("null")), verif));
+    } else {
+      emit(UnauthenticatedState());
     }
   }
 
@@ -69,7 +73,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return;
     }
 
-    final userEither = await userRepository.getUser(user.id);
+    final userEither = await userRepository.getUserDataFromSupabase();
     final userDoc = userEither.getOrElse(() => throw Exception("null"));
     final verif = user.emailConfirmedAt != null;
     emit(AuthLoggedState(userDoc, verif));

@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class UserModel {
   final String? id;
   final String? storeId;
@@ -10,7 +8,7 @@ class UserModel {
   final String? role;
   final String? phoneNumber;
   final String? photo;
-  final Timestamp? createdAt;
+  final DateTime? createdAt;
 
   const UserModel({
     this.id,
@@ -26,7 +24,6 @@ class UserModel {
   });
 
   UserModel copyWith({
-    String? id,
     String? storeId,
     String? email,
     String? name,
@@ -35,10 +32,9 @@ class UserModel {
     String? role,
     String? phoneNumber,
     String? photo,
-    Timestamp? createdAt,
+    DateTime? createdAt,
   }) {
     return UserModel(
-      id: id ?? this.id,
       storeId: storeId ?? this.storeId,
       email: email ?? this.email,
       name: name ?? this.name,
@@ -54,32 +50,32 @@ class UserModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'storeId': storeId,
+      'store_id': storeId,
       'email': email,
       'name': name,
       'address': address,
       'salary': salary,
       'role': role,
-      'phoneNumber': phoneNumber,
-      'photo': photo,
-      'createdAt': createdAt,
+      'phone_number': phoneNumber,
+      'photo_url': photo,
+      'created_at': createdAt?.toIso8601String(),
     };
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       id: map['id'] != null ? map['id'] as String : null,
-      storeId: map['storeId'] != null ? map['storeId'] as String : null,
+      storeId: map['store_id'] != null ? map['store_id'] as String : null,
       email: map['email'] != null ? map['email'] as String : null,
       name: map['name'] != null ? map['name'] as String : null,
       address: map['address'] != null ? map['address'] as String : null,
       salary: map['salary'] != null ? map['salary'] as String : null,
       role: map['role'] != null ? map['role'] as String : null,
       phoneNumber:
-          map['phoneNumber'] != null ? map['phoneNumber'] as String : null,
-      photo: map['photo'] != null ? map['photo'] as String : null,
+          map['phone_number'] != null ? map['phone_number'] as String : null,
+      photo: map['photo_url'] != null ? map['photo_url'] as String : null,
       createdAt:
-          map['createdAt'] != null ? map['createdAt'] as Timestamp : null,
+          map['created_at'] != null ? DateTime.parse(map['created_at']) : null,
     );
   }
 }
