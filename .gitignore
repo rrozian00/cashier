@@ -33,3 +33,6 @@ Desktop.ini
 # Xcode related
 *.xcworkspace/
 *.xcuserdata/
+
+android/.kotlin/errors/
+*.log

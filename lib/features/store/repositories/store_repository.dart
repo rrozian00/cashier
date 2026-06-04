@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../core/app_errors/failure.dart';
-import '../../../core/utils/get_user_data.dart';
 import '../models/store_model.dart';
 
 class StoreRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<Either<Failure, List<StoreModel>>> getStoreAsOwner(
       String ownerId) async {
@@ -70,64 +71,66 @@ class StoreRepository {
     }
   }
 
-  Future<void> addStore({
+  Future<Either<Failure, StoreModel>> addStore({
     required String name,
     required String address,
     required String phone,
     required String logoUrl,
   }) async {
     try {
-      // final uid = _auth.currentUser?.uid;
-      final user = await getUserData();
-      if (user == null) return;
+      final user = _auth.currentUser;
+      if (user != null) {
+        final docRef = _firestore.collection("stores").doc();
 
-      final docRef = _firestore.collection("stores").doc();
+        final store = StoreModel(
+          isActive: false,
+          id: docRef.id,
+          ownerId: user.uid,
+          name: name,
+          address: address,
+          phone: phone,
+          logoUrl: logoUrl,
+          createdAt: Timestamp.now(),
+        );
 
-      final store = StoreModel(
-        isActive: false,
-        id: docRef.id,
-        ownerId: user.id,
-        name: name,
-        address: address,
-        phone: phone,
-        logoUrl: logoUrl,
-        createdAt: Timestamp.now(),
-      );
-
-      await docRef.set(store.toMap());
+        await docRef.set(store.toMap());
+        return Right(store);
+      }
+      return Left(Failure("Error: User not found"));
     } catch (e) {
-      throw Exception("Error: $e");
+      return Left(Failure("Error: ${e.toString()}"));
     }
   }
 
   Future<void> activatedStore(String id) async {
     try {
-      final user = await getUserData();
-      if (user == null) return;
-      final stores = await _firestore
-          .collection("stores")
-          .where("ownerId", isEqualTo: user.id)
-          .where("id", isNotEqualTo: id)
-          .get()
-          .then(
-            (value) => value.docs
-                .map(
-                  (e) => StoreModel.fromMap(e.data()),
-                )
-                .toList(),
-          );
-
-      for (var store in stores) {
-        final ids = store.id;
-        await _firestore
+      final user = _auth.currentUser;
+      if (user != null) {
+        final stores = await _firestore
             .collection("stores")
-            .doc(ids)
-            .update({"isActive": false});
-      }
+            .where("ownerId", isEqualTo: user.uid)
+            .where("id", isNotEqualTo: id)
+            .get()
+            .then(
+              (value) => value.docs
+                  .map(
+                    (e) => StoreModel.fromMap(e.data()),
+                  )
+                  .toList(),
+            );
 
-      await _firestore.collection("stores").doc(id).update({
-        "isActive": true,
-      });
+        for (var store in stores) {
+          final ids = store.id;
+          await _firestore
+              .collection("stores")
+              .doc(ids)
+              .update({"isActive": false});
+        }
+
+        await _firestore.collection("stores").doc(id).update({
+          "isActive": true,
+        });
+      }
     } on FirebaseException catch (e) {
       throw Exception("Error: ${e.toString()}");
     }

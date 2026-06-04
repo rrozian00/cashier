@@ -1,188 +1,125 @@
 import 'dart:io';
 
-import 'package:cashier/core/utils/my_snackbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
-import '../../../core/utils/rupiah_converter.dart';
-import '../blocs/product_bloc/product_bloc.dart';
-import '../models/product_model.dart';
+import '../controllers/edit_product_controller.dart';
 
-class EditProductView extends StatefulWidget {
-  final ProductModel productData; // Receive data as parameter
-
-  const EditProductView({super.key, required this.productData});
-
-  @override
-  State<EditProductView> createState() => _EditProductViewState();
-}
-
-class _EditProductViewState extends State<EditProductView> {
-  late final TextEditingController productCode;
-  late final TextEditingController nameC;
-  late final TextEditingController priceC;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Initialize controllers with product data
-    productCode = TextEditingController(text: widget.productData.barcode ?? '');
-    nameC = TextEditingController(text: widget.productData.name ?? '');
-    priceC = TextEditingController(
-        text:
-            rupiahConverter(int.tryParse(widget.productData.price ?? '') ?? 0));
-  }
-
-  @override
-  void dispose() {
-    productCode.dispose();
-    nameC.dispose();
-    priceC.dispose();
-    super.dispose();
-  }
+class EditProductView extends GetView<EditProductController> {
+  const EditProductView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ProductBloc, ProductState>(
-      listener: (context, state) {
-        if (state is ProductEditSuccess) {
-          context.read<ProductBloc>().add(ProductGetRequested());
-          Navigator.pop(context);
-        }
-        if (state is PickImageError) {
-          showMysnackbar(context, "Error", state.message);
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Edit Produk"),
-        ),
-        body: BlocBuilder<ProductBloc, ProductState>(
-          builder: (context, state) {
-            if (state is ProductEditLoading) {
-              return Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            }
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () => context
-                          .read<ProductBloc>()
-                          .add(ProductPickImageReq()),
-                      child: Stack(
-                        children: [
-                          Container(
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.grey.withAlpha(100),
-                            ),
-                            child: ClipOval(
-                                child: BlocBuilder<ProductBloc, ProductState>(
-                              builder: (context, state) {
-                                if (state is PickImageSuccess) {
-                                  if (state.pickedImage.isNotEmpty) {
-                                    return Image.file(
-                                        fit: BoxFit.cover,
-                                        File(state.pickedImage));
-                                  }
-                                }
-                                if (state is PickImageError) {
-                                  return Center(
-                                    child: Text("Error"),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Edit Produk"),
+      ),
+      body: Obx(
+        () {
+          if (controller.isLoading.value) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return Padding(
+            padding: const EdgeInsets.all(12),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: controller.pickImage,
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 90,
+                          width: 90,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey.withAlpha(100),
+                          ),
+                          child: ClipOval(
+                            child: Obx(
+                              () {
+                                if (controller.isPickImageLoading.value) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
                                   );
                                 }
-                                if (state is ProductPickLoading) {
-                                  return Center(
-                                      child:
-                                          CircularProgressIndicator.adaptive());
+
+                                if (controller.selectedImage.value != null) {
+                                  return Image.file(
+                                    controller.selectedImage.value!,
+                                    fit: BoxFit.cover,
+                                  );
                                 }
+
                                 return Image.network(
+                                  controller.product.image ?? "",
                                   fit: BoxFit.cover,
-                                  widget.productData.image!,
                                 );
                               },
-                            )),
+                            ),
                           ),
-                          Positioned(
-                              right: 6,
-                              bottom: 6,
-                              child: Icon(
-                                Icons.add_a_photo,
-                                size: 25,
-                              ))
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    TextField(
-                      readOnly: true,
-                      keyboardType: TextInputType.number,
-                      controller: productCode,
-                      textInputAction: TextInputAction.next,
-                      textCapitalization: TextCapitalization.characters,
-                      decoration: InputDecoration(
-                        labelText: "Kode Produk",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
                         ),
+                        const Positioned(
+                          right: 5,
+                          bottom: 5,
+                          child: Icon(
+                            Icons.add_a_photo,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    readOnly: true,
+                    controller: controller.productCodeC,
+                    decoration: InputDecoration(
+                      labelText: "Kode Produk",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: nameC,
-                      textInputAction: TextInputAction.next,
-                      textCapitalization: TextCapitalization.characters,
-                      decoration: InputDecoration(
-                        labelText: "Nama",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15)),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: controller.nameC,
+                    decoration: InputDecoration(
+                      labelText: "Nama Produk",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: priceC,
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) {
-                        String rawValue =
-                            value.replaceAll(RegExp(r'[^\d]'), '');
-                        int parsedValue = int.tryParse(rawValue) ?? 0;
-                        priceC.value = TextEditingValue(
-                          text: rupiahConverter(parsedValue),
-                          selection: TextSelection.collapsed(
-                              offset: rupiahConverter(parsedValue).length),
-                        );
-                      },
-                      decoration: InputDecoration(
-                        labelText: "Harga",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15)),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: controller.priceC,
+                    keyboardType: TextInputType.number,
+                    onChanged: controller.formatPrice,
+                    decoration: InputDecoration(
+                      labelText: "Harga",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
                       ),
                     ),
-                    const SizedBox(height: 25),
-                    ElevatedButton(
-                      child: Text("Simpan"),
-                      onPressed: () {
-                        context.read<ProductBloc>().add(ProductEditRequested(
-                              id: widget.productData.id!,
-                              newName: nameC.text,
-                              newPrice: priceC.text,
-                              publicId: widget.productData.publicId ?? "",
-                            ));
-                      },
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: controller.saveProduct,
+                      child: const Text(
+                        "SIMPAN",
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

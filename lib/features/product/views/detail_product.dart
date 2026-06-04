@@ -1,5 +1,5 @@
-import 'package:cashier/core/utils/rupiah_converter.dart';
-import 'package:cashier/features/product/models/product_model.dart';
+import '../../../core/utils/rupiah_converter.dart';
+import '../models/product_model.dart';
 import 'package:flutter/material.dart';
 
 class DetailProduct extends StatelessWidget {

@@ -1,21 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
 
+import '../../user/models/user_model.dart';
+import '../../user/repositories/user_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/app_errors/failure.dart';
-import '../../../core/utils/get_user_data.dart';
 import '../../store/models/store_model.dart';
 import '../../store/repositories/store_repository.dart';
 import '../models/product_model.dart';
 
 class ProductRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final _supabaseAuth = Supabase.instance.client.auth;
+  final _auth = FirebaseAuth.instance;
 
   Future<Map<String, dynamic>> _uploadImageToCloudinary(File imageFile) async {
     try {
@@ -76,20 +77,15 @@ class ProductRepository {
   }
 
   Future<Either<Failure, List<ProductModel>>> getProducts(
-      // String category
-      ) async {
+    UserModel user,
+  ) async {
     try {
-      final user = await getUserData();
-      final userId = user?.id;
-      if (userId == null) {
-        return Left(Failure("User tidak terautentikasi."));
-      }
       final String storeId;
 
-      if (user?.role == 'owner') {
+      if (user.role == 'owner') {
         final stores = await _firestore
             .collection('stores')
-            .where("ownerId", isEqualTo: userId)
+            .where("ownerId", isEqualTo: user.id)
             .where("isActive", isEqualTo: true)
             .get()
             .then(
@@ -129,7 +125,8 @@ class ProductRepository {
 
   //add product
   Future<Either<Failure, ProductModel>> addProduct({
-    required String name,
+    required UserModel user,
+    required String productName,
     required String category,
     required DateTime registeredDate,
     required DateTime expiredDate,
@@ -139,14 +136,9 @@ class ProductRepository {
   }) async {
     Map<String, dynamic>? result;
     try {
-      final userId = _supabaseAuth.currentUser?.id;
-      if (userId == null) {
-        return Left(Failure("User tidak terautentikasi."));
-      }
-
       final stores = await _firestore
           .collection('stores')
-          .where("ownerId", isEqualTo: userId)
+          .where("ownerId", isEqualTo: user.id)
           .where("isActive", isEqualTo: true)
           .get()
           .then(
@@ -187,7 +179,7 @@ class ProductRepository {
         category: category,
         registerDate: registerTimestatmp,
         expiredDate: expiredTimestatmp,
-        name: name,
+        name: productName,
         price: price.replaceAll(RegExp(r'[^\d]'), ''),
         image: result['secure_url'],
         publicId: result['public_id'],
@@ -203,15 +195,10 @@ class ProductRepository {
   }
 
   //hapus
-  Future<void> deleteProduct(String id) async {
-    final userId = _supabaseAuth.currentUser?.id;
-    if (userId == null) {
-      throw Exception("User tidak terautentikasi.");
-    }
-
+  Future<void> deleteProduct(UserModel user, String id) async {
     final stores = await _firestore
         .collection('stores')
-        .where("ownerId", isEqualTo: userId)
+        .where("ownerId", isEqualTo: user.id)
         .where("isActive", isEqualTo: true)
         .get()
         .then(
@@ -243,6 +230,7 @@ class ProductRepository {
   }
 
   Future<void> editProduct({
+    required UserModel user,
     required String id,
     required String newName,
     required String newPrice,
@@ -252,11 +240,8 @@ class ProductRepository {
     try {
       Map<String, dynamic>? result;
       final repo = StoreRepository();
-      final userId = _supabaseAuth.currentUser?.id;
-      if (userId == null) {
-        return;
-      }
-      final store = await repo.getActiveStore(userId);
+
+      final store = await repo.getActiveStore(user.id ?? '');
       if (store == null) {
         throw Exception("Store ID tidak ditemukan!");
       }
@@ -295,18 +280,9 @@ class ProductRepository {
     }
   }
 
-  Stream<Either<Failure, List<ProductModel>>> watchProducts() async* {
+  Stream<Either<Failure, List<ProductModel>>> watchProducts(
+      UserModel user) async* {
     try {
-      final user = await getUserData();
-      if (user == null) {
-        yield Left(Failure("User Not found"));
-        return;
-      }
-
-      if (user.id == null) {
-        yield Left(Failure("Store not found for current user"));
-        return;
-      }
       yield* _firestore
           .collection('stores/${user.storeId}/products')
           .snapshots()
@@ -327,20 +303,14 @@ class ProductRepository {
 
   //get product
   Future<Either<Failure, ProductModel>> getProductByBarcode(
-      String barcode) async {
+      UserModel user, String barcode) async {
     try {
-      final user = await getUserData();
-      final userId = user?.id;
-      if (userId == null) {
-        return Left(Failure("User tidak terautentikasi."));
-      }
-
       final String storeId;
 
-      if (user?.role == 'owner') {
+      if (user.role == 'owner') {
         final stores = await _firestore
             .collection('stores')
-            .where("ownerId", isEqualTo: userId)
+            .where("ownerId", isEqualTo: user.id)
             .where("isActive", isEqualTo: true)
             .get()
             .then(

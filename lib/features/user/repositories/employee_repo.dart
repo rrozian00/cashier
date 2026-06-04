@@ -1,185 +1,184 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:supabase_flutter/supabase_flutter.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:dartz/dartz.dart';
+// import 'package:flutter/material.dart';
+// import 'package:http/http.dart' as http;
 
-import '../../../core/app_errors/failure.dart';
-import '../../store/models/store_model.dart';
-import '../../store/repositories/store_repository.dart';
-import '../models/user_model.dart';
-import 'user_repository.dart';
 
-class EmployeeRepo {
-  final UserRepository _userRepo = UserRepository();
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final SupabaseClient _supabase = Supabase.instance.client;
+// import '../../../core/app_errors/failure.dart';
+// import '../../store/models/store_model.dart';
+// import '../../store/repositories/store_repository.dart';
+// import '../models/user_model.dart';
+// import 'user_repository.dart';
 
-  Future<void> createEmployee({
-    required String name,
-    required String email,
-    required String password,
-    required String address,
-    required String phone,
-    required String salary,
-  }) async {
-    try {
-      // 0. Simpan session owner sebelum signUp
-      final ownerSession = _supabase.auth.currentSession;
-      final ownerUser = _supabase.auth.currentUser;
-      if (ownerUser == null) throw Exception("Owner tidak terautentikasi.");
+// class EmployeeRepo {
+//   final UserRepository _userRepo = UserRepository();
+//   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-      // 1. Sign up employee (akan mengubah currentUser ke karyawan)
-      final res = await _supabase.auth.signUp(
-        email: email,
-        password: password,
-      );
 
-      final newUser = res.user;
-      if (newUser == null) {
-        throw Exception("Gagal membuat user baru.");
-      }
+//   Future<void> createEmployee({
+//     required String name,
+//     required String email,
+//     required String password,
+//     required String address,
+//     required String phone,
+//     required String salary,
+//   }) async {
+//     try {
+//       // 0. Simpan session owner sebelum signUp
+     
+//       if (ownerUser == null) throw Exception("Owner tidak terautentikasi.");
 
-      final newUserId = newUser.id;
+//       // 1. Sign up employee (akan mengubah currentUser ke karyawan)
+//       final res = await _supabase.auth.signUp(
+//         email: email,
+//         password: password,
+//       );
 
-      // 2. Login ulang sebagai owner agar tidak kehilangan sesi
-      if (ownerSession != null) {
-        await _supabase.auth.setSession(
-          ownerSession.refreshToken!,
-        );
-      }
+//       final newUser = res.user;
+//       if (newUser == null) {
+//         throw Exception("Gagal membuat user baru.");
+//       }
 
-      // 3. Ambil data store owner dari Firestore
-      final stores = await _firestore
-          .collection("stores")
-          .where("ownerId", isEqualTo: ownerUser.id)
-          .where("isActive", isEqualTo: true)
-          .get()
-          .then((snap) =>
-              snap.docs.map((e) => StoreModel.fromMap(e.data())).toList());
+//       final newUserId = newUser.id;
 
-      if (stores.isEmpty) throw Exception("Store tidak ditemukan.");
-      final store = stores.first;
+//       // 2. Login ulang sebagai owner agar tidak kehilangan sesi
+//       if (ownerSession != null) {
+//         await _supabase.auth.setSession(
+//           ownerSession.refreshToken!,
+//         );
+//       }
 
-      // 4. Pastikan tidak duplikat di Firestore
-      final userQuery = await _firestore
-          .collection('users')
-          .where('email', isEqualTo: email)
-          .get();
-      if (userQuery.docs.isNotEmpty) {
-        throw Exception("Email sudah digunakan di Firestore.");
-      }
+//       // 3. Ambil data store owner dari Firestore
+//       final stores = await _firestore
+//           .collection("stores")
+//           .where("ownerId", isEqualTo: ownerUser.id)
+//           .where("isActive", isEqualTo: true)
+//           .get()
+//           .then((snap) =>
+//               snap.docs.map((e) => StoreModel.fromMap(e.data())).toList());
 
-      // 5. Simpan data employee di Firestore
-      final employee = UserModel(
-        id: newUserId,
-        storeId: store.id,
-        email: email,
-        name: name,
-        address: address,
-        salary: salary,
-        role: "employee",
-        phoneNumber: phone,
-        createdAt: Timestamp.now(),
-      );
+//       if (stores.isEmpty) throw Exception("Store tidak ditemukan.");
+//       final store = stores.first;
 
-      await _firestore.collection("users").doc(newUserId).set(employee.toMap());
+//       // 4. Pastikan tidak duplikat di Firestore
+//       final userQuery = await _firestore
+//           .collection('users')
+//           .where('email', isEqualTo: email)
+//           .get();
+//       if (userQuery.docs.isNotEmpty) {
+//         throw Exception("Email sudah digunakan di Firestore.");
+//       }
 
-      // 6. Tambahkan ke array "employees" di dokumen store
-      await _firestore.collection("stores").doc(store.id).update({
-        "employees": FieldValue.arrayUnion([newUserId]),
-      });
-    } catch (e, st) {
-      debugPrint("❌ Error saat createEmployee: $e");
-      debugPrintStack(stackTrace: st);
-      throw Exception("Gagal membuat karyawan: ${e.toString()}");
-    }
-  }
+//       // 5. Simpan data employee di Firestore
+//       final employee = UserModel(
+//         id: newUserId,
+//         storeId: store.id,
+//         email: email,
+//         name: name,
+//         address: address,
+//         salary: salary,
+//         role: "employee",
+//         phoneNumber: phone,
+//         createdAt: Timestamp.now(),
+//       );
 
-  Future<Either<Failure, List<UserModel>>> getEmployees() async {
-    try {
-      final userId = _supabase.auth.currentUser?.id;
-      if (userId == null) {
-        return Left(Failure("User tidak ditemukan"));
-      }
+//       await _firestore.collection("users").doc(newUserId).set(employee.toMap());
 
-      final userEither = await _userRepo.getUser(userId);
-      final user = userEither.getOrElse(
-        () => throw Exception("Unexpected null user"),
-      );
+//       // 6. Tambahkan ke array "employees" di dokumen store
+//       await _firestore.collection("stores").doc(store.id).update({
+//         "employees": FieldValue.arrayUnion([newUserId]),
+//       });
+//     } catch (e, st) {
+//       debugPrint("❌ Error saat createEmployee: $e");
+//       debugPrintStack(stackTrace: st);
+//       throw Exception("Gagal membuat karyawan: ${e.toString()}");
+//     }
+//   }
 
-      if (user.role == 'owner') {
-        final stores = await _firestore
-            .collection('stores')
-            .where("ownerId", isEqualTo: user.id)
-            .where("isActive", isEqualTo: true)
-            .get()
-            .then((value) =>
-                value.docs.map((e) => StoreModel.fromMap(e.data())).toList());
+//   Future<Either<Failure, List<UserModel>>> getEmployees() async {
+//     try {
+//       final userId = _supabase.auth.currentUser?.id;
+//       if (userId == null) {
+//         return Left(Failure("User tidak ditemukan"));
+//       }
 
-        final employeeIds = stores.first.employees;
+//       final userEither = await _userRepo.getUser(userId);
+//       final user = userEither.getOrElse(
+//         () => throw Exception("Unexpected null user"),
+//       );
 
-        if (employeeIds == null || employeeIds.isEmpty) {
-          return Left(Failure("null"));
-        }
+//       if (user.role == 'owner') {
+//         final stores = await _firestore
+//             .collection('stores')
+//             .where("ownerId", isEqualTo: user.id)
+//             .where("isActive", isEqualTo: true)
+//             .get()
+//             .then((value) =>
+//                 value.docs.map((e) => StoreModel.fromMap(e.data())).toList());
 
-        List<UserModel> employeeDatas = [];
+//         final employeeIds = stores.first.employees;
 
-        for (var employeeId in employeeIds) {
-          final snapshot = await _firestore
-              .collection("users")
-              .where("id", isEqualTo: employeeId)
-              .get();
-          final users =
-              snapshot.docs.map((e) => UserModel.fromMap(e.data())).toList();
-          employeeDatas.addAll(users);
-        }
+//         if (employeeIds == null || employeeIds.isEmpty) {
+//           return Left(Failure("null"));
+//         }
 
-        return Right(employeeDatas);
-      }
-    } catch (e) {
-      print(e);
-    }
+//         List<UserModel> employeeDatas = [];
 
-    return Left(Failure("Terjadi kesalahan saat mengambil data karyawan"));
-  }
+//         for (var employeeId in employeeIds) {
+//           final snapshot = await _firestore
+//               .collection("users")
+//               .where("id", isEqualTo: employeeId)
+//               .get();
+//           final users =
+//               snapshot.docs.map((e) => UserModel.fromMap(e.data())).toList();
+//           employeeDatas.addAll(users);
+//         }
 
-  Future<void> deleteEmployee(String id) async {
-    try {
-      const serviceRoleKey =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJycWp2bWZtY2h5ZWxleGlpbnZ3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTg2NDEzOSwiZXhwIjoyMDY1NDQwMTM5fQ.y_WTSYoqllkNtQOWgt1J7LujHkEGHxb3G_-DwcpzsqI";
-      const projectUrl = "https://brqjvmfmchyelexiinvw.supabase.co";
-      final storeRepository = StoreRepository();
+//         return Right(employeeDatas);
+//       }
+//     } catch (e) {
+//       print(e);
+//     }
 
-      final res = await http
-          .delete(Uri.parse("$projectUrl/auth/v1/admin/users/$id"), headers: {
-        'apikey': serviceRoleKey,
-        'Authorization': 'Bearer $serviceRoleKey',
-      });
-      print(res.statusCode);
-      if (res.statusCode == 200) {
-        // Hapus user dari Firestore
-        await _firestore.collection('users').doc(id).delete();
+//     return Left(Failure("Terjadi kesalahan saat mengambil data karyawan"));
+//   }
 
-        // Ambil ownerId
-        final ownerId = _supabase.auth.currentUser?.id;
-        if (ownerId == null) return;
+//   Future<void> deleteEmployee(String id) async {
+//     try {
+//       const serviceRoleKey =
+//           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJycWp2bWZtY2h5ZWxleGlpbnZ3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTg2NDEzOSwiZXhwIjoyMDY1NDQwMTM5fQ.y_WTSYoqllkNtQOWgt1J7LujHkEGHxb3G_-DwcpzsqI";
+//       const projectUrl = "https://brqjvmfmchyelexiinvw.supabase.co";
+//       final storeRepository = StoreRepository();
 
-        // Ambil store aktif
-        final store = await storeRepository.getActiveStore(ownerId);
-        if (store != null) {
-          await _firestore.collection("stores").doc(store.id).update({
-            "employees": FieldValue.arrayRemove([id]),
-          });
-        }
-        print('✅ User berhasil dihapus dari Supabase Auth.');
-      } else {
-        print('❌ Gagal menghapus user: ${res.body}');
-        throw Exception('Gagal menghapus user: ${res.body}');
-      }
-    } catch (e) {
-      print("Gagal menghapus karyawan: $e");
-      rethrow;
-    }
-  }
-}
+//       final res = await http
+//           .delete(Uri.parse("$projectUrl/auth/v1/admin/users/$id"), headers: {
+//         'apikey': serviceRoleKey,
+//         'Authorization': 'Bearer $serviceRoleKey',
+//       });
+//       print(res.statusCode);
+//       if (res.statusCode == 200) {
+//         // Hapus user dari Firestore
+//         await _firestore.collection('users').doc(id).delete();
+
+//         // Ambil ownerId
+//         final ownerId = _supabase.auth.currentUser?.id;
+//         if (ownerId == null) return;
+
+//         // Ambil store aktif
+//         final store = await storeRepository.getActiveStore(ownerId);
+//         if (store != null) {
+//           await _firestore.collection("stores").doc(store.id).update({
+//             "employees": FieldValue.arrayRemove([id]),
+//           });
+//         }
+//         print('✅ User berhasil dihapus dari Supabase Auth.');
+//       } else {
+//         print('❌ Gagal menghapus user: ${res.body}');
+//         throw Exception('Gagal menghapus user: ${res.body}');
+//       }
+//     } catch (e) {
+//       print("Gagal menghapus karyawan: $e");
+//       rethrow;
+//     }
+//   }
+// }

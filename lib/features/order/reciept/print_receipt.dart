@@ -1,12 +1,13 @@
+import '../controllers/order_controler.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 
 import '../../../core/utils/rupiah_converter.dart';
 import '../../product/models/product_model.dart';
-import '../check_out/bloc/check_out_bloc.dart';
-import '../order/models/cart_model.dart';
+import '../models/cart_model.dart';
 
 Future<void> printReceipt({
   required BuildContext context,
@@ -14,7 +15,7 @@ Future<void> printReceipt({
   required String storeAddress,
   required String userName,
   required List<CartModel> cart,
-  required CheckOutState state,
+  required OrderController controller,
 }) async {
   bool isConnected = await PrintBluetoothThermal.connectionStatus;
   if (!isConnected) {
@@ -125,7 +126,7 @@ Future<void> printReceipt({
         width: 8,
         styles: PosStyles(align: PosAlign.right, bold: true)),
     PosColumn(
-        text: rupiahConverter(state.totalPrice),
+        text: rupiahConverter(controller.totalPrice.value),
         width: 4,
         styles: PosStyles(align: PosAlign.right, bold: true)),
   ]);
@@ -133,7 +134,7 @@ Future<void> printReceipt({
     PosColumn(
         text: "Bayar :", width: 8, styles: PosStyles(align: PosAlign.right)),
     PosColumn(
-        text: rupiahConverter(state.paymentAmount),
+        text: rupiahConverter(controller.paymentAmount.value),
         width: 4,
         styles: PosStyles(align: PosAlign.right)),
   ]);
@@ -143,7 +144,8 @@ Future<void> printReceipt({
         width: 8,
         styles: PosStyles(align: PosAlign.right, bold: true)),
     PosColumn(
-        text: rupiahConverter(state.totalPrice - state.paymentAmount),
+        text: rupiahConverter(
+            controller.totalPrice.value - controller.paymentAmount.value),
         width: 4,
         styles: PosStyles(align: PosAlign.right, bold: true)),
   ]);

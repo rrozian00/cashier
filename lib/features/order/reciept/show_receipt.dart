@@ -1,14 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cashier/features/order/order/bloc/order_bloc.dart';
-import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
 
+import 'package:cashier/features/order/controllers/order_controler.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/utils/rupiah_converter.dart';
-import '../../product/models/product_model.dart';
-import 'print_receipt.dart';
 
 class ShowReceipt extends StatelessWidget {
   const ShowReceipt({
@@ -16,176 +12,175 @@ class ShowReceipt extends StatelessWidget {
     required this.storeName,
     required this.storeAddress,
     required this.userName,
-    required this.state,
-    required this.orderBloc,
+    required this.controller,
   });
 
   final String storeName;
   final String storeAddress;
   final String userName;
 
-  final CheckOutState state;
-  final OrderBloc orderBloc;
+  final OrderController controller;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header Invoice
-            Center(
-              child: Column(
-                children: [
-                  Text(
-                    "STRUK PEMBAYARAN",
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    "$storeName - $storeAddress",
-                    style:
-                        GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
-                  ),
-                  Text(
-                    "Kasir: $userName",
-                    style:
-                        GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
-                  ),
-                ],
-              ),
-            ),
-            const Divider(thickness: 1.5),
+    return Scaffold();
 
-            // Daftar Produk
-            Expanded(
-              child: ListView(
-                children: [
-                  ...orderBloc.cart.map((item) {
-                    final produk = item.product as ProductModel?;
-                    if (produk == null) {
-                      debugPrint("Produk null di item: $item");
-                      return const SizedBox();
-                    }
+    //   body: Padding(
+    //     padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+    //     child: Column(
+    //       mainAxisSize: MainAxisSize.min,
+    //       crossAxisAlignment: CrossAxisAlignment.start,
+    //       children: [
+    //         // Header Invoice
+    //         Center(
+    //           child: Column(
+    //             children: [
+    //               Text(
+    //                 "STRUK PEMBAYARAN",
+    //                 style: GoogleFonts.poppins(
+    //                   fontSize: 18,
+    //                   fontWeight: FontWeight.bold,
+    //                 ),
+    //               ),
+    //               const SizedBox(height: 5),
+    //               Text(
+    //                 "$storeName - $storeAddress",
+    //                 style:
+    //                     GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
+    //               ),
+    //               Text(
+    //                 "Kasir: $userName",
+    //                 style:
+    //                     GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //         const Divider(thickness: 1.5),
 
-                    int hargaSatuan = int.tryParse(produk.price ?? '0') ?? 0;
-                    int jumlah = item.product.quantity ?? 0;
-                    int subTotal = jumlah * hargaSatuan;
+    //         // Daftar Produk
+    //         Expanded(
+    //           child: ListView(
+    //             children: [
+    //               ...orderBloc.cart.map((item) {
+    //                 final produk = item.product as ProductModel?;
+    //                 if (produk == null) {
+    //                   debugPrint("Produk null di item: $item");
+    //                   return const SizedBox();
+    //                 }
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                produk.name ?? 'Nama Tidak Ada',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                "$jumlah x ${rupiahConverter(hargaSatuan)}",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 10,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            rupiahConverter(subTotal),
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-                ],
-              ),
-            ),
+    //                 int hargaSatuan = int.tryParse(produk.price ?? '0') ?? 0;
+    //                 int jumlah = item.product.quantity ?? 0;
+    //                 int subTotal = jumlah * hargaSatuan;
 
-            const Divider(thickness: 1.5),
+    //                 return Padding(
+    //                   padding: const EdgeInsets.symmetric(vertical: 6.0),
+    //                   child: Row(
+    //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                     children: [
+    //                       Column(
+    //                         crossAxisAlignment: CrossAxisAlignment.start,
+    //                         children: [
+    //                           Text(
+    //                             produk.name ?? 'Nama Tidak Ada',
+    //                             style: GoogleFonts.poppins(
+    //                               fontSize: 12,
+    //                               fontWeight: FontWeight.w500,
+    //                             ),
+    //                           ),
+    //                           Text(
+    //                             "$jumlah x ${rupiahConverter(hargaSatuan)}",
+    //                             style: GoogleFonts.poppins(
+    //                               fontSize: 10,
+    //                               color: Colors.grey,
+    //                             ),
+    //                           ),
+    //                         ],
+    //                       ),
+    //                       Text(
+    //                         rupiahConverter(subTotal),
+    //                         style: GoogleFonts.poppins(
+    //                           fontSize: 12,
+    //                           fontWeight: FontWeight.bold,
+    //                         ),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 );
+    //               }),
+    //             ],
+    //           ),
+    //         ),
 
-            // Total Harga
-            Column(
-              children: [
-                _buildRow("Total Harga", state.totalPrice, bold: true),
-                _buildRow("Bayar", state.paymentAmount),
-                _buildRow("Kembalian", (state.paymentAmount - state.totalPrice),
-                    bold: true),
-              ],
-            ),
+    //         const Divider(thickness: 1.5),
 
-            const SizedBox(height: 20),
+    //         // Total Harga
+    //         Column(
+    //           children: [
+    //             _buildRow("Total Harga", state.totalPrice, bold: true),
+    //             _buildRow("Bayar", state.paymentAmount),
+    //             _buildRow("Kembalian", (state.paymentAmount - state.totalPrice),
+    //                 bold: true),
+    //           ],
+    //         ),
 
-            // Tombol Tutup
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  OutlinedButton(
-                    onPressed: () {
-                      context.read<CheckOutBloc>().add(ClearReceipt());
-                      context.read<OrderBloc>().add(ClearCart());
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      // backgroundColor: Colors.blueAccent,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Text(
-                      "Tutup",
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      printReceipt(
-                        context: context,
-                        cart: orderBloc.cart,
-                        state: state,
-                        storeAddress: storeAddress,
-                        storeName: storeName,
-                        userName: userName,
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      // backgroundColor: Colors.blueAccent,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Text(
-                      "Print Struk",
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 40)
-          ],
-        ),
-      ),
-    );
+    //         const SizedBox(height: 20),
+
+    //         // Tombol Tutup
+    //         Center(
+    //           child: Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //             children: [
+    //               OutlinedButton(
+    //                 onPressed: () {
+    //                   context.read<CheckOutBloc>().add(ClearReceipt());
+    //                   context.read<OrderBloc>().add(ClearCart());
+    //                   Navigator.pop(context);
+    //                   Navigator.pop(context);
+    //                 },
+    //                 style: ElevatedButton.styleFrom(
+    //                   // backgroundColor: Colors.blueAccent,
+    //                   padding: const EdgeInsets.symmetric(
+    //                       horizontal: 32, vertical: 12),
+    //                   shape: RoundedRectangleBorder(
+    //                     borderRadius: BorderRadius.circular(10),
+    //                   ),
+    //                 ),
+    //                 child: Text(
+    //                   "Tutup",
+    //                 ),
+    //               ),
+    //               ElevatedButton(
+    //                 onPressed: () {
+    //                   printReceipt(
+    //                     context: context,
+    //                     cart: orderBloc.cart,
+    //                     state: state,
+    //                     storeAddress: storeAddress,
+    //                     storeName: storeName,
+    //                     userName: userName,
+    //                   );
+    //                 },
+    //                 style: ElevatedButton.styleFrom(
+    //                   // backgroundColor: Colors.blueAccent,
+    //                   padding: const EdgeInsets.symmetric(
+    //                       horizontal: 32, vertical: 12),
+    //                   shape: RoundedRectangleBorder(
+    //                     borderRadius: BorderRadius.circular(10),
+    //                   ),
+    //                 ),
+    //                 child: Text(
+    //                   "Print Struk",
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //         SizedBox(height: 40)
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
 
