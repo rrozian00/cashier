@@ -1,3 +1,6 @@
+import 'package:cashier/core/app_errors/failure.dart';
+import 'package:cashier/features/user/models/user_model.dart';
+import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRepository {
@@ -11,9 +14,24 @@ class AuthRepository {
     return false;
   }
 
+  Future<Either<Failure, User>> login(String email, String password) async {
+    try {
+      final res = await Supabase.instance.client.auth
+          .signInWithPassword(email: email, password: password);
+
+      if (res.user != null) {
+        return Right(res.user!);
+      }
+    } on AuthApiException catch (e) {
+      // debugPrint("Error login: ${e.code}");
+      return Left(Failure(e.code!));
+    }
+    return Left(Failure("Unexpected error"));
+  }
+
   Future<void> logout() async {
     // await _auth.signOut();
-    await Supabase.instance.client.auth.signOut();
+    await _supabaseAuth.signOut();
   }
 
   Future<void> changePassword({
@@ -29,11 +47,14 @@ class AuthRepository {
     }
   }
 
-  Future<void> sendVerification() async {
-    // final user = _supabaseAuth.currentUser;
-    // if (user != null) {
-    //   user.c;
-    // }
-    //TODO:send email verif
+  Future<Either<Failure, void>> sendVerification() async {
+    final user = _supabaseAuth.currentUser;
+    if (user != null && user.email != null) {
+      await _supabaseAuth.resend(
+        type: OtpType.email,
+        email: user.email,
+      );
+    }
+    return Left(Failure("User not found"));
   }
 }

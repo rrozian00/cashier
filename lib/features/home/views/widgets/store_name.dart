@@ -9,8 +9,6 @@ class StoreName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<HomeBloc>().add(HomeGetStoreReq());
-
     final colorThis = Theme.of(context).colorScheme.secondary;
 
     return SingleChildScrollView(

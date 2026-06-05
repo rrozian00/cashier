@@ -13,10 +13,8 @@ part 'history_order_state.dart';
 
 class HistoryOrderBloc extends Bloc<HistoryOrderEvent, HistoryOrderState> {
   final orderRepo = OrderRepository();
-  final BuildContext
-      context; // Tambahkan context jika diperlukan untuk date picker
 
-  HistoryOrderBloc({required this.context}) : super(HistoryOrderLoading()) {
+  HistoryOrderBloc() : super(HistoryOrderLoading()) {
     on<ShowMyDateRange>(_onShowMydateRange);
     on<ShowInitial>(_onShowInitial); // Panggil fungsi inisialisasi
   }

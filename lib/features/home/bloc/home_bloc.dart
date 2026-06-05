@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:cashier/features/user/repositories/user_repository.dart';
 import '../../../core/utils/get_user_data.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,13 +12,21 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final authRepository = AuthRepository();
-  final storeRepository = StoreRepository();
+  final AuthRepository authRepository;
+  final StoreRepository storeRepository;
+  final UserRepository userRepository;
 
-  HomeBloc() : super(HomeInitial()) {
+  HomeBloc(
+    this.authRepository,
+    this.storeRepository,
+    this.userRepository,
+  ) : super(HomeInitial()) {
     on<HomeGetStoreReq>((event, emit) async {
       emit(HomeLoading());
-      final user = await getUserData();
+      final user = await userRepository
+          .getUserDataFromSupabase()
+          .then((r) => r.fold((l) => null, (r) => r));
+
       if (user == null) return;
       if (user.role == "owner") {
         final storeDoc = await storeRepository.getStoreAsOwner(user.id!);

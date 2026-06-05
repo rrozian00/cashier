@@ -9,7 +9,7 @@ import 'core/app_theme/my_theme.dart';
 import 'core/app_theme/theme_cubit/theme_cubit.dart';
 import 'core/firebase/firebase_options.dart';
 import 'core/supabase/supabase_init.dart';
-import 'features/splash/splash_screen.dart';
+import 'features/splash_screen/views/splash_screen_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             theme: isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme,
             title: "Cashier",
-            home: SplashScreen(),
+            home: SplashScreenView(),
           );
         },
       ),

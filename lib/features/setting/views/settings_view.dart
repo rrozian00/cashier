@@ -12,8 +12,8 @@ import '../../product/blocs/product_bloc/product_bloc.dart';
 import '../../product/views/product_view.dart';
 import '../../store/bloc/store_bloc.dart';
 import '../../store/views/store_view.dart';
-import '../../user/blocs/employee/bloc/employee_bloc.dart';
-import '../../user/blocs/employee/view/employee_list_view.dart';
+import '../../user/employee/bloc/employee_bloc.dart';
+import '../../user/employee/view/all_employee_view.dart';
 import '../../user/profile/views/profile_view.dart';
 import '../cubit/version_cubit.dart';
 
@@ -40,7 +40,6 @@ class SettingsView extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => ProfileView(),
                           ));
-                      // Get.toNamed(Routes.profile);
                     },
                     title: "Profil",
                     icon: Icons.person,
@@ -63,7 +62,7 @@ class SettingsView extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => EmployeeListView(),
+                            builder: (context) => AllEmployeeView(),
                           ));
                       context.read<EmployeeBloc>().add(GetEmployeeRequested());
                     },

@@ -1,72 +1,59 @@
-import 'package:cashier/features/user/profile/bloc/profile_bloc.dart';
-import 'package:cashier/features/user/views/login_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/widgets/my_alert_dialog.dart';
-import '../../../navbar/cubit/bottom_nav_cubit.dart';
-import '../../blocs/auth/auth_bloc.dart';
+import '../../login/views/login_view.dart';
 import '../../models/user_model.dart';
-import '../../views/change_password_view.dart';
-import '../../views/edit_profile_view.dart';
+import 'change_password_view.dart';
+import '../blocs/profile_bloc/profile_bloc.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    context.read<AuthBloc>().add(AuthCheckStatusEvent());
-    return BlocListener<AuthBloc, AuthState>(
+    return BlocListener<ProfileBloc, ProfileState>(
       listener: (context, state) {
-        if (state is UnauthenticatedState) {
+        if (state is ProfileLoading) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) =>
+                Center(child: CircularProgressIndicator.adaptive()),
+          );
+        } else {
+          Navigator.pop(context);
+        }
+        if (state is ProfileInitial) {
+          Future.delayed(Duration(seconds: 1));
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => LoginView(),
               ));
         }
-        if (state is ChangePassSuccess) {
+        if (state is ProfileSuccess) {
           if (context.mounted) {
-            context.read<AuthBloc>().add(AuthLogoutEvent());
+            context.read<ProfileBloc>().add(LogoutSubmitted());
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text("Berhasil ubah password")));
           }
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("Profil"),
-          actions: [
-            BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, state) {
-                if (state is AuthLoggedState) {
-                  return IconButton(
-                    icon: Icon(CupertinoIcons.pencil_ellipsis_rectangle),
-                    onPressed: () => showModalBottomSheet(
-                      showDragHandle: true,
-                      clipBehavior: Clip.hardEdge,
-                      scrollControlDisabledMaxHeightRatio: 0.9,
-                      context: context,
-                      builder: (context) => EditProfileView(user: state.user),
-                    ),
-                  );
-                } else if (state is AuthLoggedState &&
-                    state.verification == false) {
-                  return Icon(Icons.edit);
-                }
-                return SizedBox.shrink();
-              },
-            ),
-          ],
-        ),
         body: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
             if (state is ProfileInitial) {
+              context.read<ProfileBloc>().add(ProfileFetched());
+            }
+            if (state is ProfileLoading) {
               return Center(child: CircularProgressIndicator.adaptive());
             }
+            if (state is ProfileError) {
+              return Center(child: Text(state.message));
+            }
 
-            if (state is ProfileLoaded) {
+            if (state is ProfileSuccess) {
               final user = state.user;
               return _buildProfileBody(
                   context, user, true, state.user.email ?? '');
@@ -91,7 +78,7 @@ class ProfileView extends StatelessWidget {
               visible: !verification,
               child: ElevatedButton(
                 onPressed: () {
-                  context.read<AuthBloc>().add(AuthSendVerification());
+                  context.read<ProfileBloc>().add(VerificationSent());
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -143,7 +130,6 @@ class ProfileView extends StatelessWidget {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  // width: MediaQuery.of(context).size.width / 2.5,
                   onPressed: () {
                     showDialog(
                       context: context,
@@ -153,8 +139,7 @@ class ProfileView extends StatelessWidget {
                           onCancelColor: Colors.green,
                           onConfirmColor: Colors.red,
                           onConfirm: () {
-                            context.read<AuthBloc>().add(AuthLogoutEvent());
-                            context.read<BottomNavCubit>().updateIndex(0);
+                            context.read<ProfileBloc>().add(LogoutSubmitted());
                           },
                           contentText: "Anda yakin akan keluar?",
                         );

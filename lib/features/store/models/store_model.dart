@@ -1,3 +1,4 @@
+import 'package:cashier/features/user/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StoreModel {
@@ -9,7 +10,7 @@ class StoreModel {
   String? logoUrl;
   String? category;
   bool? isActive;
-  List<dynamic>? employees;
+  List<UserModel>? employees;
   Timestamp? createdAt;
 
   StoreModel({
@@ -26,7 +27,6 @@ class StoreModel {
   });
 
   StoreModel copyWith({
-    String? id,
     String? name,
     String? ownerId,
     String? address,
@@ -34,11 +34,10 @@ class StoreModel {
     String? logoUrl,
     String? category,
     bool? isActive,
-    List<dynamic>? employees,
+    List<UserModel>? employees,
     Timestamp? createdAt,
   }) {
     return StoreModel(
-      id: id ?? this.id,
       name: name ?? this.name,
       ownerId: ownerId ?? this.ownerId,
       address: address ?? this.address,
@@ -55,14 +54,14 @@ class StoreModel {
     return <String, dynamic>{
       'id': id,
       'name': name,
-      'ownerId': ownerId,
+      'owner_id': ownerId,
       'address': address,
       'phone': phone,
-      'logoUrl': logoUrl,
+      'logo_url': logoUrl,
       'category': category,
-      'isActive': isActive,
+      'is_active': isActive,
       'employees': employees,
-      'createdAt': createdAt,
+      'created_at': createdAt,
     };
   }
 
@@ -70,16 +69,17 @@ class StoreModel {
     return StoreModel(
       id: map['id'] != null ? map['id'] as String : null,
       name: map['name'] != null ? map['name'] as String : null,
-      ownerId: map['ownerId'] != null ? map['ownerId'] as String : null,
+      ownerId: map['owner_id'] != null ? map['owner_id'] as String : null,
       address: map['address'] != null ? map['address'] as String : null,
       phone: map['phone'] != null ? map['phone'] as String : null,
-      logoUrl: map['logoUrl'] != null ? map['logoUrl'] as String : null,
+      logoUrl: map['logo_url'] != null ? map['logo_url'] as String : null,
       category: map['category'] != null ? map['category'] as String : null,
-      isActive: map['isActive'] != null ? map['isActive'] as bool : null,
-      employees:
-          map['employees'] != null ? (map['employees'] as List<dynamic>) : null,
+      isActive: map['is_active'] != null ? map['is_active'] as bool : null,
+      employees: map['employees'] != null
+          ? (map['employees'] as List<UserModel>)
+          : null,
       createdAt:
-          map['createdAt'] != null ? map['createdAt'] as Timestamp : null,
+          map['created_at'] != null ? map['created_at'] as Timestamp : null,
     );
   }
 }

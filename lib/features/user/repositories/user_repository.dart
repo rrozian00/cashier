@@ -10,21 +10,6 @@ class UserRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final Supabase _supabase = Supabase.instance;
 
-  Future<Either<Failure, User?>> login(String email, String password) async {
-    try {
-      final res = await Supabase.instance.client.auth
-          .signInWithPassword(email: email, password: password);
-
-      if (res.user != null) {
-        return Right(res.user);
-      }
-    } on AuthApiException catch (e) {
-      // debugPrint("Error login: ${e.code}");
-      return Left(Failure(e.code!));
-    }
-    return Left(Failure("Unexpected error"));
-  }
-
   Future<Either<Failure, void>> createUserToSupabase(
       UserModel user, String password) async {
     try {
@@ -59,30 +44,24 @@ class UserRepository {
     return Left(Failure("Failed to create user"));
   }
 
-  Future<void> editUser({
-    required String id,
+  Future<Either<Failure, void>> editUser({
+    required UserModel user,
     required String newName,
     required String newAddress,
     required String newPhone,
   }) async {
-    final docRef = _firestore
-        .collection('users')
-        .doc(id)
-        .withConverter<UserModel>(
-          fromFirestore: (snapshot, _) => UserModel.fromMap(snapshot.data()!),
-          toFirestore: (model, _) => model.toMap(),
-        );
-    final docSnap = await docRef.get();
-    final user = docSnap.data();
-    if (user == null) throw Exception("User tidak ditemukan di Firestore");
-
-    final updateUser = user.copyWith(
-      name: newName,
-      address: newAddress,
-      phoneNumber: newPhone,
-    );
-
-    await docRef.update(updateUser.toMap());
+    try {
+      final newData = user.copyWith(
+        name: newName,
+        address: newAddress,
+        phoneNumber: newPhone,
+      );
+      // await _firestore.collection("users").doc(user.id).update(newData.toMap());
+      await _supabase.client.from('users').update(newData.toMap());
+      return Right(null);
+    } catch (e) {
+      return Left(Failure("Error: ${e.toString()}"));
+    }
   }
 
   Future<Either<Failure, UserModel>> getUser(String id) async {
