@@ -1,4 +1,4 @@
-import 'package:cashier/core/app_errors/failure.dart';
+import '../../../core/app_errors/failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';

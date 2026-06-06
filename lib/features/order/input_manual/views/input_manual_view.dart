@@ -1,4 +1,4 @@
-import 'package:cashier/features/order/input_manual/bloc/input_manual_bloc.dart';
+import '../bloc/input_manual_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -136,7 +136,8 @@ class InputManualView extends StatelessWidget {
 
                                 context.read<InputManualBloc>().add(
                                     AddInputManual(
-                                        total: totalC.text, date: date));
+                                        total: int.parse(totalC.text),
+                                        date: date));
                               }
                             },
                             child: Text("Simpan"),

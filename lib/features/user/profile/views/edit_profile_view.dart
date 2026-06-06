@@ -1,13 +1,12 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
-import 'package:cashier/core/widgets/my_alert_dialog.dart';
-import 'package:cashier/core/widgets/my_text_field.dart';
-import 'package:cashier/features/user/models/user_model.dart';
-import 'package:cashier/features/user/profile/blocs/edit_profile_bloc/edit_profile_bloc.dart';
-import 'package:cashier/features/user/register/bloc/register_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../../../core/widgets/my_alert_dialog.dart';
+import '../../../../core/widgets/my_text_field.dart';
+import '../../models/user_model.dart';
+import '../blocs/edit_profile_bloc/edit_profile_bloc.dart';
+import '../blocs/profile_bloc/profile_bloc.dart';
 
 class EditProfileView extends StatefulWidget {
   final UserModel user;
@@ -45,15 +44,22 @@ class _EditProfileViewState extends State<EditProfileView> {
         listener: (context, state) {
       if (state is EditProfileSuccess) {
         Navigator.pop(context);
-
-        context.read<EditProfileBloc>().add(EditProfileSubmitted(
-            name: nameC.text,
-            address: addressC.text,
-            phone: phoneC.text,
-            user: widget.user));
+        context.read<ProfileBloc>().add(ProfileFetched());
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Profil berhasil diubah!"),
+        ));
+      } else if (state is EditProfileError) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Error"),
+                content: Text(state.message),
+              );
+            });
       }
     }, builder: (context, state) {
-      if (state is RegisterLoadingState) {
+      if (state is EditProfileLoading) {
         return Center(child: CircularProgressIndicator());
       }
       return Padding(

@@ -1,27 +1,29 @@
+import '../models/store_model.dart';
+
 import '../../../core/widgets/my_text_field.dart';
 import '../bloc/store_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class EditStore extends StatefulWidget {
-  const EditStore(
+class EditStoreView extends StatefulWidget {
+  const EditStoreView(
       {super.key,
-      required this.id,
+      required this.store,
       required this.name,
       required this.address,
       required this.phone});
 
-  final String id;
+  final StoreModel store;
   final String name;
   final String address;
   final String phone;
 
   @override
-  State<EditStore> createState() => _EditStoreState();
+  State<EditStoreView> createState() => _EditStoreState();
 }
 
-class _EditStoreState extends State<EditStore> {
+class _EditStoreState extends State<EditStoreView> {
   late TextEditingController nameC;
   late TextEditingController addressC;
   late TextEditingController phoneC;
@@ -75,7 +77,7 @@ class _EditStoreState extends State<EditStore> {
                   child: Text("Simpan"),
                   onPressed: () {
                     context.read<StoreBloc>().add(UpdateStore(
-                          id: widget.id,
+                          store: widget.store,
                           name: nameC.text,
                           address: addressC.text,
                           phone: phoneC.text,

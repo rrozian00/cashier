@@ -1,6 +1,7 @@
-import 'package:cashier/core/utils/rupiah_converter.dart';
-import 'package:cashier/features/product/models/product_model.dart';
 import 'package:flutter/material.dart';
+
+import '../../../core/utils/rupiah_converter.dart';
+import '../models/product_model.dart';
 
 class DetailProduct extends StatelessWidget {
   const DetailProduct({
@@ -31,7 +32,7 @@ class DetailProduct extends StatelessWidget {
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
             Text(
-              rupiahConverter(int.tryParse(product.price ?? '') ?? 0),
+              rupiahConverter(product.price ?? 0),
               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 45),
             ),
           ],

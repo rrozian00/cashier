@@ -1,5 +1,5 @@
-import 'package:cashier/core/utils/my_snackbar.dart';
-import 'package:cashier/features/printer/bloc/printer_bloc.dart';
+import '../../../core/utils/my_snackbar.dart';
+import '../bloc/printer_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,13 +1,13 @@
 import 'package:bloc/bloc.dart';
-import 'package:cashier/features/store/repositories/store_repository.dart';
+import 'package:equatable/equatable.dart';
+
 import '../../../../core/utils/get_user_data.dart';
+import '../../../store/models/store_model.dart';
+import '../../../store/repositories/store_repository.dart';
+import '../../../user/models/user_model.dart';
 import '../../order/models/cart_model.dart';
 import '../../order/models/order_model.dart';
 import '../../order/repositories/order_repository.dart';
-import '../../../store/models/store_model.dart';
-import '../../../user/models/user_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:equatable/equatable.dart';
 
 part 'check_out_event.dart';
 part 'check_out_state.dart';
@@ -85,14 +85,13 @@ class CheckOutBloc extends Bloc<CheckOutEvent, CheckOutState> {
               isProcessing: false, errorMessage: "StoreId belum ditemukan"));
           return;
         }
-        final createdAt = Timestamp.now();
 
         final orderModel = OrderModel(
-          payment: state.paymentAmount.toString(),
+          payment: state.paymentAmount,
           products: event.cart,
-          refund: (state.paymentAmount - state.totalPrice).toString(),
-          total: state.totalPrice.toString(),
-          createdAt: createdAt,
+          change: state.paymentAmount - state.totalPrice,
+          total: state.totalPrice,
+          createdAt: DateTime.now(),
         );
 
         // Simpan ke Firestore
@@ -123,14 +122,13 @@ class CheckOutBloc extends Bloc<CheckOutEvent, CheckOutState> {
               isProcessing: false, errorMessage: "StoreId belum ditemukan"));
           return;
         }
-        final createdAt = Timestamp.now();
 
         final orderModel = OrderModel(
-          payment: state.paymentAmount.toString(),
+          payment: state.paymentAmount,
           products: event.cart,
-          refund: (state.paymentAmount - state.totalPrice).toString(),
-          total: state.totalPrice.toString(),
-          createdAt: createdAt,
+          change: (state.paymentAmount - state.totalPrice),
+          total: state.totalPrice,
+          createdAt: DateTime.now(),
         );
 
         // Simpan ke Firestore

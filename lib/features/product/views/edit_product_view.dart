@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:cashier/core/utils/my_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/utils/my_snackbar.dart';
 import '../../../core/utils/rupiah_converter.dart';
-import '../blocs/product_bloc/product_bloc.dart';
+import '../blocs/product_bloc.dart';
 import '../models/product_model.dart';
 
 class EditProductView extends StatefulWidget {
@@ -27,11 +27,10 @@ class _EditProductViewState extends State<EditProductView> {
     super.initState();
 
     // Initialize controllers with product data
-    productCode = TextEditingController(text: widget.productData.barcode ?? '');
+    productCode = TextEditingController(text: widget.productData.id ?? '');
     nameC = TextEditingController(text: widget.productData.name ?? '');
     priceC = TextEditingController(
-        text:
-            rupiahConverter(int.tryParse(widget.productData.price ?? '') ?? 0));
+        text: rupiahConverter(widget.productData.price ?? 0));
   }
 
   @override
@@ -172,7 +171,7 @@ class _EditProductViewState extends State<EditProductView> {
                         context.read<ProductBloc>().add(ProductEditRequested(
                               id: widget.productData.id!,
                               newName: nameC.text,
-                              newPrice: priceC.text,
+                              newPrice: int.tryParse(priceC.text) ?? 0,
                               publicId: widget.productData.publicId ?? "",
                             ));
                       },

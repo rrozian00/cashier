@@ -1,85 +1,30 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crypto/crypto.dart';
 import 'package:dartz/dartz.dart';
-import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/app_errors/failure.dart';
 import '../../../core/utils/get_user_data.dart';
 import '../../store/models/store_model.dart';
 import '../../store/repositories/store_repository.dart';
+import '../../user/repositories/user_repository.dart';
 import '../models/product_model.dart';
+import 'cloudinary.dart';
 
 class ProductRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final _supabaseAuth = Supabase.instance.client.auth;
-
-  Future<Map<String, dynamic>> _uploadImageToCloudinary(File imageFile) async {
-    try {
-      final bytes = await imageFile.readAsBytes();
-
-      final uri =
-          Uri.parse('https://api.cloudinary.com/v1_1/dvc6x08kw/image/upload');
-
-      final request = http.MultipartRequest('POST', uri)
-        ..fields['upload_preset'] = 'cashier'
-        ..files.add(http.MultipartFile.fromBytes('file', bytes,
-            filename: 'product.jpg'));
-
-      final response = await request.send();
-      final resBody = await response.stream.bytesToString();
-
-      if (response.statusCode != 200 && response.statusCode != 201) {
-        throw Exception("Gagal upload ke Cloudinary: $resBody");
-      }
-
-      final data = jsonDecode(resBody);
-      return {
-        'secure_url': data['secure_url'],
-        'public_id': data['public_id'],
-      };
-    } catch (e) {
-      throw Exception("Upload error: ${e.toString()}");
-    }
-  }
-
-  Future<void> _deleteImageFromCloudinary(String publicId) async {
-    final cloudName = 'dvc6x08kw';
-    final apiKey = '941964148458378';
-    final apiSecret = '78S7XNfKQwXh_fbSXylOS8h9BUE';
-
-    final timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-
-    // Buat signature
-    final signatureRaw = 'public_id=$publicId&timestamp=$timestamp$apiSecret';
-    final signature = sha1.convert(utf8.encode(signatureRaw)).toString();
-
-    final uri =
-        Uri.parse('https://api.cloudinary.com/v1_1/$cloudName/image/destroy');
-
-    final response = await http.post(
-      uri,
-      body: {
-        'public_id': publicId,
-        'api_key': apiKey,
-        'timestamp': timestamp.toString(),
-        'signature': signature,
-      },
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception("Gagal hapus gambar: ${response.body}");
-    }
-  }
+  final _supabase = Supabase.instance.client;
+  final userRepo = UserRepository();
 
   Future<Either<Failure, List<ProductModel>>> getProducts(
       // String category
       ) async {
     try {
-      final user = await getUserData();
+      final user = await userRepo
+          .getUserDataFromSupabase()
+          .then((e) => e.fold((l) => null, (r) => r));
       final userId = user?.id;
       if (userId == null) {
         return Left(Failure("User tidak terautentikasi."));
@@ -87,40 +32,57 @@ class ProductRepository {
       final String storeId;
 
       if (user?.role == 'owner') {
-        final stores = await _firestore
-            .collection('stores')
-            .where("ownerId", isEqualTo: userId)
-            .where("isActive", isEqualTo: true)
-            .get()
-            .then(
-              (value) => value.docs
-                  .map(
-                    (e) => StoreModel.fromMap(e.data()),
-                  )
-                  .toList(),
-            );
-        storeId = stores.first.id!;
+        // final stores = await _firestore
+        //     .collection('stores')
+        //     .where("ownerId", isEqualTo: userId)
+        //     .where("isActive", isEqualTo: true)
+        //     .get()
+        //     .then(
+        //       (value) => value.docs
+        //           .map(
+        //             (e) => StoreModel.fromMap(e.data()),
+        //           )
+        //           .toList(),
+        //     );
+        final stores = await _supabase
+            .from('stores')
+            .select()
+            .eq('owner_id', userId)
+            .single()
+            .then((value) => StoreModel.fromMap(value));
+        storeId = stores.id!;
       } else {
-        final stores = await _firestore
-            .collection('stores')
-            .where("employees", arrayContains: user?.id)
-            .get()
-            .then(
-              (value) => value.docs
-                  .map(
-                    (e) => StoreModel.fromMap(e.data()),
-                  )
-                  .toList(),
-            );
-        storeId = stores.first.id!;
+        // final stores = await _firestore
+        //     .collection('stores')
+        //     .where("employees", arrayContains: user?.id)
+        //     .get()
+        //     .then(
+        //       (value) => value.docs
+        //           .map(
+        //             (e) => StoreModel.fromMap(e.data()),
+        //           )
+        //           .toList(),
+        //     );
+        final stores = await _supabase
+            .from('stores')
+            .select()
+            .eq('employees', userId)
+            .single()
+            .then((value) => StoreModel.fromMap(value));
+        storeId = stores.id!;
       }
 
-      final snapshot = await _firestore
-          .collection('stores/$storeId/products')
-          // .where("category", isEqualTo: category)
-          .get();
-      final List<ProductModel> products =
-          snapshot.docs.map((e) => ProductModel.fromMap(e.data())).toList();
+      // final snapshot = await _firestore
+      //     .collection('stores/$storeId/products')
+      //     // .where("category", isEqualTo: category)
+      //     .get();
+
+      final List<ProductModel> products = await _supabase
+          .from('products')
+          .select()
+          .eq('store_id', storeId)
+          .then((value) => value.map((e) => ProductModel.fromMap(e)).toList());
+
       return Right(products);
     } catch (e) {
       return Left(Failure("Unexpected error $e"));
@@ -134,7 +96,7 @@ class ProductRepository {
     required DateTime registeredDate,
     required DateTime expiredDate,
     required String productCode,
-    required String price,
+    required int price,
     required File? imageFile,
   }) async {
     Map<String, dynamic>? result;
@@ -144,57 +106,65 @@ class ProductRepository {
         return Left(Failure("User tidak terautentikasi."));
       }
 
-      final stores = await _firestore
-          .collection('stores')
-          .where("ownerId", isEqualTo: userId)
-          .where("isActive", isEqualTo: true)
-          .get()
-          .then(
-            (value) => value.docs
-                .map(
-                  (e) => StoreModel.fromMap(e.data()),
-                )
-                .toList(),
-          );
-      final storeId = stores.first.id;
+      // final stores = await _firestore
+      //     .collection('stores')
+      //     .where("ownerId", isEqualTo: userId)
+      //     .where("isActive", isEqualTo: true)
+      //     .get()
+      //     .then(
+      //       (value) => value.docs
+      //           .map(
+      //             (e) => StoreModel.fromMap(e.data()),
+      //           )
+      //           .toList(),
+      //     );
+      // final storeId = stores.first.id;
+      final stores =
+          await _supabase.from('stores').select().eq('owner_id', userId);
+      final storeId = stores.first['id'];
 
       if (storeId == null) {
         return Left(Failure("Store ID tidak ditemukan."));
       }
 
       if (imageFile != null) {
-        result = await _uploadImageToCloudinary(imageFile);
+        result = await Cloudinary.uploadImageToCloudinary(imageFile);
       } else {
         result = {};
       }
-      final isExist = await _firestore
-          .collection('stores/$storeId/products')
-          .where("barcode", isEqualTo: productCode)
-          .get();
+      // final isExist = await _firestore
+      //     .collection('stores/$storeId/products')
+      //     .where("barcode", isEqualTo: productCode)
+      //     .get();
 
-      if (isExist.docs.isNotEmpty) {
+      final isExist = await _supabase
+          .from('products')
+          .select()
+          .eq('id', productCode)
+          .eq('store_id', storeId)
+          .then((e) => e.map((e) => ProductModel.fromMap(e)).toList());
+
+      if (isExist.isNotEmpty) {
         return Left(Failure("Produk sudah ada"));
       }
 
-      final docRef = _firestore.collection('stores/$storeId/products').doc();
+      // final docRef = _firestore.collection('stores/$storeId/products').doc();
 
-      final createdAt = Timestamp.now();
-      final registerTimestatmp = Timestamp.fromDate(registeredDate);
-      final expiredTimestatmp = Timestamp.fromDate(expiredDate);
       final data = ProductModel(
-        id: docRef.id,
-        barcode: productCode,
+        id: productCode,
+        storeId: storeId,
         category: category,
-        registerDate: registerTimestatmp,
-        expiredDate: expiredTimestatmp,
+        registeredDate: registeredDate,
+        expiredDate: expiredDate,
         name: name,
-        price: price.replaceAll(RegExp(r'[^\d]'), ''),
+        price: price,
         image: result['secure_url'],
         publicId: result['public_id'],
-        createdAt: createdAt,
+        createdAt: DateTime.now(),
       );
 
-      await docRef.set(data.toMap());
+      // await docRef.set(data.toMap());
+      await _supabase.from('products').insert(data.toMap());
 
       return Right(data);
     } catch (e) {
@@ -209,43 +179,54 @@ class ProductRepository {
       throw Exception("User tidak terautentikasi.");
     }
 
-    final stores = await _firestore
-        .collection('stores')
-        .where("ownerId", isEqualTo: userId)
-        .where("isActive", isEqualTo: true)
-        .get()
-        .then(
-          (value) => value.docs
-              .map(
-                (e) => StoreModel.fromMap(e.data()),
-              )
-              .toList(),
-        );
-    final storeId = stores.first.id;
+    // final stores = await _firestore
+    //     .collection('stores')
+    //     .where("ownerId", isEqualTo: userId)
+    //     .where("isActive", isEqualTo: true)
+    //     .get()
+    //     .then(
+    //       (value) => value.docs
+    //           .map(
+    //             (e) => StoreModel.fromMap(e.data()),
+    //           )
+    //           .toList(),
+    //     );
+
+    final stores = await _supabase
+        .from('stores')
+        .select()
+        .eq('owner_id', userId)
+        .single()
+        .then((e) => StoreModel.fromMap(e));
+    final storeId = stores.id;
 
     if (storeId == null) {
       throw Exception("User Store id tidak ditemukan.");
     }
 
-    final doc =
-        await _firestore.collection('stores/$storeId/products').doc(id).get();
-    if (!doc.exists) {
+    // final doc =
+    //     await _firestore.collection('stores/$storeId/products').doc(id).get();
+    final product =
+        await _supabase.from('products').select().eq('id', id).single();
+    if (product.isEmpty) {
       throw Exception("Produk tidak ditemukan.");
     }
 
-    final data = ProductModel.fromMap(doc.data()!);
+    final data = ProductModel.fromMap(product);
 
     if (data.publicId != null && data.publicId!.isNotEmpty) {
-      await _deleteImageFromCloudinary(data.publicId!);
+      await Cloudinary.deleteImageFromCloudinary(data.publicId!);
     }
 
-    await _firestore.collection('stores/$storeId/products').doc(id).delete();
+    // await _firestore.collection('stores/$storeId/products').doc(id).delete();
+    await _supabase.from('products').delete().eq('id', id);
   }
 
   Future<void> editProduct({
+    //TODO:eidt product
     required String id,
     required String newName,
-    required String newPrice,
+    required int newPrice,
     File? newImage,
     String? oldPublicId,
   }) async {
@@ -271,16 +252,16 @@ class ProductRepository {
 
       if (newImage != null) {
         if (oldPublicId != null && oldPublicId != "") {
-          await _deleteImageFromCloudinary(oldPublicId);
+          await Cloudinary.deleteImageFromCloudinary(oldPublicId);
         }
-        result = await _uploadImageToCloudinary(newImage);
+        result = await Cloudinary.uploadImageToCloudinary(newImage);
       }
       final oldData = ProductModel.fromMap(docSnapshot.data()!);
 
       // 🔹 Gunakan copyWith untuk update hanya field yang diubah
       final updatedData = oldData.copyWith(
         name: newName,
-        price: newPrice.replaceAll(RegExp(r'[^\d]'), ''),
+        price: newPrice,
         image: result?['secure_url'],
         publicId: result?['public_id'],
       );
@@ -329,53 +310,74 @@ class ProductRepository {
   Future<Either<Failure, ProductModel>> getProductByBarcode(
       String barcode) async {
     try {
-      final user = await getUserData();
-      final userId = user?.id;
-      if (userId == null) {
+      final String storeId;
+      final String userId;
+
+      final user = await userRepo
+          .getUserDataFromSupabase()
+          .then((e) => e.fold((l) => null, (r) => r));
+      if (user == null) {
         return Left(Failure("User tidak terautentikasi."));
       }
+      userId = user.id!;
 
-      final String storeId;
+      if (user.role == 'owner') {
+        // final stores = await _firestore
+        //     .collection('stores')
+        //     .where("ownerId", isEqualTo: userId)
+        //     .where("isActive", isEqualTo: true)
+        //     .get()
+        //     .then(
+        //       (value) => value.docs
+        //           .map(
+        //             (e) => StoreModel.fromMap(e.data()),
+        //           )
+        //           .toList(),
+        //     );
+        final stores = await _supabase
+            .from('stores')
+            .select()
+            .eq('owner_id', userId)
+            .single()
+            .then((value) => StoreModel.fromMap(value));
 
-      if (user?.role == 'owner') {
-        final stores = await _firestore
-            .collection('stores')
-            .where("ownerId", isEqualTo: userId)
-            .where("isActive", isEqualTo: true)
-            .get()
-            .then(
-              (value) => value.docs
-                  .map(
-                    (e) => StoreModel.fromMap(e.data()),
-                  )
-                  .toList(),
-            );
-        storeId = stores.first.id!;
+        storeId = stores.id!;
       } else {
-        final stores = await _firestore
-            .collection('stores')
-            .where("employees", arrayContains: user?.id)
-            .get()
-            .then(
-              (value) => value.docs
-                  .map(
-                    (e) => StoreModel.fromMap(e.data()),
-                  )
-                  .toList(),
-            );
-        storeId = stores.first.id!;
+        // final stores = await _firestore
+        //     .collection('stores')
+        //     .where("employees", arrayContains: user?.id)
+        //     .get()
+        //     .then(
+        //       (value) => value.docs
+        //           .map(
+        //             (e) => StoreModel.fromMap(e.data()),
+        //           )
+        //           .toList(),
+        //     );
+        final stores = await _supabase
+            .from('stores')
+            .select()
+            .eq('employees', userId)
+            .single()
+            .then((value) => StoreModel.fromMap(value));
+        storeId = stores.id!;
       }
-      final snapshot = await _firestore
-          .collection('stores/$storeId/products')
-          .where('barcode', isEqualTo: barcode)
-          .limit(1)
-          .get();
-
-      if (snapshot.docs.isEmpty) {
+      // final snapshot = await _firestore
+      //     .collection('stores/$storeId/products')
+      //     .where('barcode', isEqualTo: barcode)
+      //     .limit(1)
+      //     .get();
+      final data = await _supabase
+          .from('products')
+          .select()
+          .eq('store_id', storeId)
+          .eq('id', barcode)
+          .single();
+      if (data.isEmpty) {
         return Left(Failure("Produk dengan barcode tersebut tidak ditemukan."));
       }
 
-      final product = ProductModel.fromMap(snapshot.docs.first.data());
+      final product = ProductModel.fromMap(data);
       return Right(product);
     } catch (e) {
       return Left(Failure("Unexpected error: $e"));

@@ -1,5 +1,5 @@
-import 'package:cashier/features/order/order/models/cart_model.dart';
-import 'package:cashier/features/product/models/product_model.dart';
+import '../../order/models/cart_model.dart';
+import '../../../product/models/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../../core/utils/get_user_data.dart';
@@ -11,7 +11,7 @@ class InputManualRepository {
   final storeRepo = StoreRepository();
 
   Future<void> inputManual(
-    String total,
+    int total,
     DateTime date,
   ) async {
     try {
@@ -25,7 +25,6 @@ class InputManualRepository {
             .doc(storeActive.id)
             .collection('orders')
             .doc();
-        final createdAt = Timestamp.fromDate(date);
 
         final product = CartModel(
             product: ProductModel(name: "Input Manual", price: total));
@@ -35,7 +34,7 @@ class InputManualRepository {
           id: docRef.id,
           total: total,
           products: [product],
-          createdAt: createdAt,
+          createdAt: DateTime.now(),
         );
         docRef.set(data.toMap());
       }

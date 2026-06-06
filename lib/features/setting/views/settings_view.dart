@@ -1,3 +1,4 @@
+import '../../user/profile/blocs/profile_bloc/profile_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +9,7 @@ import '../../order/history_order/bloc/history_order_bloc.dart';
 import '../../order/history_order/views/history_order_view.dart';
 import '../../order/input_manual/views/input_manual_view.dart';
 import '../../printer/views/printer_view.dart';
-import '../../product/blocs/product_bloc/product_bloc.dart';
+import '../../product/blocs/product_bloc.dart';
 import '../../product/views/product_view.dart';
 import '../../store/bloc/store_bloc.dart';
 import '../../store/views/store_view.dart';
@@ -40,6 +41,7 @@ class SettingsView extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => ProfileView(),
                           ));
+                      context.read<ProfileBloc>().add(ProfileFetched());
                     },
                     title: "Profil",
                     icon: Icons.person,
@@ -51,7 +53,7 @@ class SettingsView extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => StoreView(),
                           ));
-                      context.read<StoreBloc>().add(GetStoresList());
+                      context.read<StoreBloc>().add(StoreFetched());
                     },
                     title: "Toko",
                     icon: Icons.store,

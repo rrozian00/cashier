@@ -7,7 +7,7 @@ sealed class StoreEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class GetStoresList extends StoreEvent {}
+final class StoreFetched extends StoreEvent {}
 
 final class MakeStoreActive extends StoreEvent {
   final String id;
@@ -18,20 +18,20 @@ final class MakeStoreActive extends StoreEvent {
 }
 
 final class UpdateStore extends StoreEvent {
-  final String id;
+  final StoreModel store;
   final String name;
   final String address;
   final String phone;
 
   const UpdateStore({
-    required this.id,
+    required this.store,
     required this.name,
     required this.address,
     required this.phone,
   });
 
   @override
-  List<Object> get props => [id, name, address, phone];
+  List<Object> get props => [store, name, address, phone];
 }
 
 final class AddStore extends StoreEvent {

@@ -1,20 +1,19 @@
 import 'cart_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OrderModel {
   String? id;
   String? name;
   List<CartModel>? products;
-  String? total;
-  String? refund;
-  String? payment;
-  Timestamp? createdAt;
+  int? total;
+  int? change;
+  int? payment;
+  DateTime? createdAt;
   OrderModel({
     this.id,
     this.name,
     this.products,
     this.total,
-    this.refund,
+    this.change,
     this.payment,
     this.createdAt,
   });
@@ -23,17 +22,17 @@ class OrderModel {
     String? id,
     String? name,
     List<CartModel>? products,
-    String? total,
-    String? refund,
-    String? payment,
-    Timestamp? createdAt,
+    int? total,
+    int? change,
+    int? payment,
+    DateTime? createdAt,
   }) {
     return OrderModel(
       id: id ?? this.id,
       name: name ?? this.name,
       products: products ?? this.products,
       total: total ?? this.total,
-      refund: refund ?? this.refund,
+      change: change ?? this.change,
       payment: payment ?? this.payment,
       createdAt: createdAt ?? this.createdAt,
     );
@@ -45,28 +44,26 @@ class OrderModel {
       'name': name,
       'products': products?.map((x) => x.toMap()).toList(),
       'total': total,
-      'refund': refund,
+      'change': change,
       'payment': payment,
-      'createdAt': createdAt,
+      'created_at': createdAt,
     };
   }
 
   factory OrderModel.fromMap(Map<String, dynamic> map) {
     return OrderModel(
-      id: map['id'] != null ? map['id'] as String : null,
-      name: map['name'] != null ? map['name'] as String : null,
-      products: map['products'] != null
-          ? List<CartModel>.from(
-              (map['products'] as List).map<CartModel?>(
-                (x) => CartModel.fromMap(x as Map<String, dynamic>),
-              ),
-            )
-          : null,
-      total: map['total'] != null ? map['total'] as String : null,
-      refund: map['refund'] != null ? map['refund'] as String : null,
-      payment: map['payment'] != null ? map['payment'] as String : null,
-      createdAt:
-          map['createdAt'] != null ? map['createdAt'] as Timestamp : null,
-    );
+        id: map['id'] != null ? map['id'] as String : null,
+        name: map['name'] != null ? map['name'] as String : null,
+        products: map['products'] != null
+            ? List<CartModel>.from(
+                (map['products'] as List).map<CartModel?>(
+                  (x) => CartModel.fromMap(x as Map<String, dynamic>),
+                ),
+              )
+            : null,
+        total: map['total'] != null ? map['total'] as int : null,
+        change: map['change'] != null ? map['change'] as int : null,
+        payment: map['payment'] != null ? map['payment'] as int : null,
+        createdAt: DateTime.tryParse(map['created_at']));
   }
 }

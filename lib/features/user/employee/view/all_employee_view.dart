@@ -1,5 +1,5 @@
-import 'package:cashier/features/user/employee/view/add_employee_view.dart';
-import 'package:cashier/features/user/models/user_model.dart';
+import 'add_employee_view.dart';
+import '../../models/user_model.dart';
 
 import '../../../../core/widgets/no_data.dart';
 import '../bloc/employee_bloc.dart';

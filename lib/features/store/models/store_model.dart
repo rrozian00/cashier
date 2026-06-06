@@ -1,5 +1,4 @@
-import 'package:cashier/features/user/models/user_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../user/models/user_model.dart';
 
 class StoreModel {
   String? id;
@@ -11,7 +10,7 @@ class StoreModel {
   String? category;
   bool? isActive;
   List<UserModel>? employees;
-  Timestamp? createdAt;
+  DateTime? createdAt;
 
   StoreModel({
     this.id,
@@ -27,6 +26,7 @@ class StoreModel {
   });
 
   StoreModel copyWith({
+    String? id,
     String? name,
     String? ownerId,
     String? address,
@@ -35,9 +35,10 @@ class StoreModel {
     String? category,
     bool? isActive,
     List<UserModel>? employees,
-    Timestamp? createdAt,
+    DateTime? createdAt,
   }) {
     return StoreModel(
+      id: id ?? this.id,
       name: name ?? this.name,
       ownerId: ownerId ?? this.ownerId,
       address: address ?? this.address,
@@ -52,7 +53,6 @@ class StoreModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
       'name': name,
       'owner_id': ownerId,
       'address': address,
@@ -61,7 +61,7 @@ class StoreModel {
       'category': category,
       'is_active': isActive,
       'employees': employees,
-      'created_at': createdAt,
+      'created_at': createdAt?.toIso8601String(),
     };
   }
 
@@ -78,8 +78,7 @@ class StoreModel {
       employees: map['employees'] != null
           ? (map['employees'] as List<UserModel>)
           : null,
-      createdAt:
-          map['created_at'] != null ? map['created_at'] as Timestamp : null,
+      createdAt: DateTime.tryParse(map['created_at']) as DateTime,
     );
   }
 }

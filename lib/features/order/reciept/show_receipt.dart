@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cashier/features/order/order/bloc/order_bloc.dart';
 import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
-
+import 'package:cashier/features/order/order/bloc/order_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -74,7 +73,7 @@ class ShowReceipt extends StatelessWidget {
                       return const SizedBox();
                     }
 
-                    int hargaSatuan = int.tryParse(produk.price ?? '0') ?? 0;
+                    int hargaSatuan = produk.price ?? 0;
                     int jumlah = item.product.quantity ?? 0;
                     int subTotal = jumlah * hargaSatuan;
 

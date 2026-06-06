@@ -1,4 +1,4 @@
-import 'package:cashier/core/utils/my_snackbar.dart';
+import '../../../../core/utils/my_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

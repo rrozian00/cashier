@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/widgets/no_data.dart';
+import '../../order/models/order_model.dart';
 import '../bloc/history_order_bloc.dart';
 import 'widgets/history_content_widget.dart';
 import 'widgets/history_header_widget.dart';
-
-import '../../../../core/widgets/no_data.dart';
-import '../../order/models/order_model.dart';
 
 class HistoryOrderView extends StatelessWidget {
   const HistoryOrderView({super.key});
@@ -38,7 +37,7 @@ class HistoryOrderView extends StatelessWidget {
                 (OrderModel transaksi) {
                   // Mengelompokkan berdasarkan tanggal (tanpa jam-menit)
                   return DateFormat('dd-MM-yyyy HH:mm:ss')
-                      .format(transaksi.createdAt!.toDate());
+                      .format(transaksi.createdAt ?? DateTime.now());
                 },
               );
               return HistoryContentWidget(

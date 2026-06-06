@@ -21,7 +21,7 @@ final class ProductAddRequested extends ProductEvent {
   final String productCode;
   final DateTime registeredDate;
   final DateTime expiredDate;
-  final String price;
+  final int price;
   // final File image;
 
   const ProductAddRequested({
@@ -50,7 +50,7 @@ final class ProductPickImageReq extends ProductEvent {}
 final class ProductEditRequested extends ProductEvent {
   final String id;
   final String newName;
-  final String newPrice;
+  final int newPrice;
   final String publicId;
   // final File newImage;
 

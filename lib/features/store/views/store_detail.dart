@@ -1,8 +1,8 @@
+import 'edit_store_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/store_bloc.dart';
-import 'edit_store.dart';
 
 class StoreDetail extends StatelessWidget {
   const StoreDetail({
@@ -77,8 +77,8 @@ class StoreDetail extends StatelessWidget {
                               clipBehavior: Clip.hardEdge,
                               isScrollControlled: true,
                               context: context,
-                              builder: (context) => EditStore(
-                                  id: data.id!,
+                              builder: (context) => EditStoreView(
+                                  store: data,
                                   name: data.name ?? '',
                                   address: data.address ?? '',
                                   phone: data.phone ?? ''),

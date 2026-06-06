@@ -8,7 +8,7 @@ sealed class InputManualEvent extends Equatable {
 }
 
 final class AddInputManual extends InputManualEvent {
-  final String total;
+  final int total;
   final DateTime date;
 
   const AddInputManual({required this.total, required this.date});

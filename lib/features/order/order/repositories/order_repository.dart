@@ -1,5 +1,5 @@
-import 'package:cashier/core/utils/get_user_data.dart';
-import 'package:cashier/features/store/repositories/store_repository.dart';
+import '../../../../core/utils/get_user_data.dart';
+import '../../../store/repositories/store_repository.dart';
 
 import '../../../../core/app_errors/failure.dart';
 

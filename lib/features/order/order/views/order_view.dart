@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/utils/rupiah_converter.dart';
 import '../../../scanner/views/scanner_view.dart';
-import '../../../product/blocs/product_bloc/product_bloc.dart';
+import '../../../product/blocs/product_bloc.dart';
 import '../../../product/models/product_model.dart';
 import '../../../product/views/product_list.dart';
 import '../../check_out/bloc/check_out_bloc.dart';
@@ -176,7 +176,7 @@ class OrderView extends StatelessWidget {
                       ),
                     ),
                     subtitle: Text(
-                      rupiahConverter(int.tryParse(product.price ?? '') ?? 0),
+                      rupiahConverter(product.price ?? 0),
                     ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,

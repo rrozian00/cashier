@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:cashier/features/user/models/user_model.dart';
+import '../../../models/user_model.dart';
 import '../../../repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,13 +11,16 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
   EditProfileBloc() : super(EditProfileInitial()) {
     on<EditProfileSubmitted>((event, emit) async {
       emit(EditProfileLoading());
-      await _userRepository.editUser(
+      final result = await _userRepository.editUser(
         user: event.user,
         newName: event.name,
         newAddress: event.address,
         newPhone: event.phone,
       );
-      emit(EditProfileSuccess());
+      result.fold(
+        (l) => emit(EditProfileError(message: l.toString())),
+        (r) => emit(EditProfileSuccess()),
+      );
     });
   }
 }

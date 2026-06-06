@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:cashier/features/user/models/user_model.dart';
-import 'package:cashier/features/user/repositories/auth_repository.dart';
-import 'package:cashier/features/user/repositories/user_repository.dart';
+import '../../../models/user_model.dart';
+import '../../../repositories/auth_repository.dart';
+import '../../../repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 
 part 'profile_event.dart';
@@ -36,6 +36,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Emitter<ProfileState> emit,
   ) async {
     await authRepository.logout();
-    emit(ProfileInitial());
+    emit(ProfileLogout());
   }
 }

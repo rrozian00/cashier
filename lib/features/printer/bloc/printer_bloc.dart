@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:cashier/features/printer/repositories/printer_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
+
+import '../repositories/printer_repository.dart';
 
 part 'printer_event.dart';
 part 'printer_state.dart';

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/rupiah_converter.dart';
 import '../../../../core/widgets/my_alert_dialog.dart';
-import '../bloc/check_out_bloc.dart';
 import '../../order/bloc/order_bloc.dart';
 import '../../reciept/show_receipt.dart';
-
-import '../../../../core/utils/rupiah_converter.dart';
+import '../bloc/check_out_bloc.dart';
 
 class CheckOutView extends StatelessWidget {
   const CheckOutView({

@@ -43,8 +43,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   List<CartModel> get cart => _cart;
 
   int get totalPrice => _cart.fold(0, (sum, item) {
-        final price = int.tryParse(item.product.price ?? '0') ?? 0;
-        return sum + (price * item.product.quantity!);
+        final price = item.product.price ?? 0;
+        return sum + (price * (item.product.quantity ?? 0));
       });
 
   void _emitCart(Emitter<OrderState> emit) {

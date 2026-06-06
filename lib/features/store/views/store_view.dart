@@ -1,4 +1,4 @@
-import 'package:cashier/features/store/views/add_store_view.dart';
+import 'add_store_view.dart';
 
 import '../../../core/widgets/no_data.dart';
 import '../bloc/store_bloc.dart';
@@ -14,7 +14,7 @@ class StoreView extends StatelessWidget {
     return BlocListener<StoreBloc, StoreState>(
       listener: (context, state) {
         if (state is UpdateStoreSuccess) {
-          context.read<StoreBloc>().add(GetStoresList());
+          context.read<StoreBloc>().add(StoreFetched());
         }
       },
       child: Scaffold(

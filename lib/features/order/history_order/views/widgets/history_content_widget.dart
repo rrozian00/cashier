@@ -27,8 +27,7 @@ class HistoryContentWidget extends StatelessWidget {
 
                 final totalBayar = transaksiGroup.fold<int>(
                   0,
-                  (sum, transaksi) =>
-                      sum + int.tryParse(transaksi.total ?? '0')!,
+                  (sum, transaksi) => sum + (transaksi.total ?? 0),
                 );
 
                 return Card(
@@ -55,8 +54,7 @@ class HistoryContentWidget extends StatelessWidget {
                         ...transaksiGroup.map((transaksi) {
                           final productWidgets =
                               transaksi.products?.map((product) {
-                            final int price =
-                                int.tryParse(product.product.price ?? '0') ?? 0;
+                            final int price = product.product.price ?? 0;
                             final int qty = product.product.quantity ?? 0;
                             final int subtotal = price * qty;
 
@@ -128,18 +126,12 @@ class HistoryContentWidget extends StatelessWidget {
                                 ),
                                 Text(
                                   rupiahConverter(
-                                    int.tryParse(
-                                          transaksiGroup.first.payment ?? '0',
-                                        ) ??
-                                        0,
+                                    transaksiGroup.first.payment ?? 0,
                                   ),
                                 ),
                                 Text(
                                   rupiahConverter(
-                                    int.tryParse(
-                                          transaksiGroup.first.refund ?? '0',
-                                        ) ??
-                                        0,
+                                    transaksiGroup.first.change ?? 0,
                                   ),
                                 ),
                               ],

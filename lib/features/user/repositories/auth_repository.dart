@@ -1,5 +1,5 @@
-import 'package:cashier/core/app_errors/failure.dart';
-import 'package:cashier/features/user/models/user_model.dart';
+import '../../../core/app_errors/failure.dart';
+import '../models/user_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

@@ -24,6 +24,7 @@ class UserModel {
   });
 
   UserModel copyWith({
+    String? id,
     String? storeId,
     String? email,
     String? name,
@@ -35,6 +36,7 @@ class UserModel {
     DateTime? createdAt,
   }) {
     return UserModel(
+      id: id ?? this.id,
       storeId: storeId ?? this.storeId,
       email: email ?? this.email,
       name: name ?? this.name,

@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:cashier/features/order/input_manual/repositories/input_manual_repository.dart';
+import '../repositories/input_manual_repository.dart';
 import 'package:equatable/equatable.dart';
 
 part 'input_manual_event.dart';

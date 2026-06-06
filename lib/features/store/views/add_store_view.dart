@@ -20,7 +20,7 @@ class AddStoreView extends StatelessWidget {
       listener: (context, state) {
         if (state is AddStoreSuccess) {
           Navigator.pop(context);
-          context.read<StoreBloc>().add(GetStoresList());
+          context.read<StoreBloc>().add(StoreFetched());
         }
       },
       child: Scaffold(

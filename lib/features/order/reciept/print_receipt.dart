@@ -85,7 +85,7 @@ Future<void> printReceipt({
     final produk = item.product as ProductModel?;
     if (produk == null) continue;
 
-    int hargaSatuan = int.tryParse(produk.price ?? '0') ?? 0;
+    int hargaSatuan = produk.price ?? 0;
     int jumlah = item.product.quantity ?? 0;
     int subTotal = jumlah * hargaSatuan;
 

@@ -1,14 +1,14 @@
-import 'package:cashier/core/utils/rupiah_converter.dart';
-import 'package:cashier/features/product/blocs/cubit/category_cubit.dart';
-import 'package:cashier/features/product/models/product_model.dart';
-import 'package:cashier/features/product/views/add_product_view.dart';
-import 'package:cashier/features/product/views/detail_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/utils/rupiah_converter.dart';
 import '../../../core/widgets/my_alert_dialog.dart';
 import '../../../core/widgets/no_data.dart';
-import '../blocs/product_bloc/product_bloc.dart';
+import '../blocs/cubit/category_cubit.dart';
+import '../blocs/product_bloc.dart';
+import '../models/product_model.dart';
+import 'add_product_view.dart';
+import 'detail_product.dart';
 import 'edit_product_view.dart';
 
 class ProductView extends StatelessWidget {
@@ -158,9 +158,7 @@ Widget _buildListile(BuildContext context, ProductModel datas) {
         ),
       ),
       subtitle: Text(
-        rupiahConverter(
-          int.tryParse(datas.price ?? "") ?? 0,
-        ),
+        rupiahConverter(datas.price ?? 0),
         // datas.image ?? '',
         style: TextStyle(),
       ),

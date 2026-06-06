@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:cashier/core/utils/my_snackbar.dart';
+import '../../../core/utils/my_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 
 import '../../../core/utils/rupiah_converter.dart';
 import '../../scanner/views/scanner_view.dart';
-import '../blocs/product_bloc/product_bloc.dart';
+import '../blocs/product_bloc.dart';
 
 class AddProductView extends StatelessWidget {
   AddProductView({super.key});
@@ -176,7 +176,8 @@ class AddProductView extends StatelessWidget {
 
   Widget _buildCategoryDropdown(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: categoryController.text.isEmpty ? null : categoryController.text,
+      initialValue:
+          categoryController.text.isEmpty ? null : categoryController.text,
       onChanged: (value) {
         categoryController.text = value ?? '';
         context
@@ -328,15 +329,13 @@ class AddProductView extends StatelessWidget {
         onPressed: () {
           if (_formKey.currentState!.validate()) {
             context.read<ProductBloc>().add(ProductAddRequested(
-                  registeredDate: registerDateTime,
-                  expiredDate: expiredDateTime,
-                  category: categoryController.text,
-                  name: nameController.text,
-                  productCode: productCodeController.text,
-                  price: priceController.text
-                      .replaceAll('.', '')
-                      .replaceAll('Rp ', ''),
-                ));
+                registeredDate: registerDateTime,
+                expiredDate: expiredDateTime,
+                category: categoryController.text,
+                name: nameController.text,
+                productCode: productCodeController.text,
+                price: int.parse(
+                    priceController.text.replaceAll(RegExp(r'[^\d]'), ''))));
           }
         },
         child: const Text("SIMPAN", style: TextStyle(fontSize: 16)),

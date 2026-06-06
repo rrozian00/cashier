@@ -56,8 +56,10 @@ class UserRepository {
         address: newAddress,
         phoneNumber: newPhone,
       );
-      // await _firestore.collection("users").doc(user.id).update(newData.toMap());
-      await _supabase.client.from('users').update(newData.toMap());
+      await _supabase.client
+          .from('users')
+          .update(newData.toMap())
+          .eq("id", user.id!);
       return Right(null);
     } catch (e) {
       return Left(Failure("Error: ${e.toString()}"));

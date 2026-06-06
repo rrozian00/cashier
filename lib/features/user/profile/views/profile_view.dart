@@ -4,8 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/widgets/my_alert_dialog.dart';
 import '../../login/views/login_view.dart';
 import '../../models/user_model.dart';
-import 'change_password_view.dart';
 import '../blocs/profile_bloc/profile_bloc.dart';
+import 'change_password_view.dart';
+import 'edit_profile_view.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -14,38 +15,23 @@ class ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(
       listener: (context, state) {
-        if (state is ProfileLoading) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) =>
-                Center(child: CircularProgressIndicator.adaptive()),
-          );
-        } else {
-          Navigator.pop(context);
-        }
-        if (state is ProfileInitial) {
-          Future.delayed(Duration(seconds: 1));
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoginView(),
-              ));
-        }
-        if (state is ProfileSuccess) {
+        if (state is ProfileLogout) {
           if (context.mounted) {
-            context.read<ProfileBloc>().add(LogoutSubmitted());
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Berhasil ubah password")));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginView(),
+                ));
           }
         }
       },
       child: Scaffold(
+        appBar: AppBar(title: Text("Profil"), actions: [
+            
+          ]
+        ),
         body: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
-            if (state is ProfileInitial) {
-              context.read<ProfileBloc>().add(ProfileFetched());
-            }
             if (state is ProfileLoading) {
               return Center(child: CircularProgressIndicator.adaptive());
             }
@@ -110,55 +96,70 @@ class ProfileView extends StatelessWidget {
                 value: user.phoneNumber ?? "-"),
             Divider(),
             SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  // width: MediaQuery.of(context).size.width / 2.5,
-                  onPressed: () {
-                    showModalBottomSheet(
-                      showDragHandle: true,
-                      clipBehavior: Clip.hardEdge,
-                      scrollControlDisabledMaxHeightRatio: 0.9,
-                      context: context,
-                      builder: (_) => ChangePasswordView(
-                        email: email,
-                      ),
-                    );
-                  },
-                  child: Text("Ubah Password"),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return MyAlertDialog(
-                          onConfirmText: "Keluar",
-                          onCancelColor: Colors.green,
-                          onConfirmColor: Colors.red,
-                          onConfirm: () {
-                            context.read<ProfileBloc>().add(LogoutSubmitted());
-                          },
-                          contentText: "Anda yakin akan keluar?",
+            Center(
+              child: Column(
+                spacing: 10,
+                children: [
+                  ElevatedButton(
+                    // width: MediaQuery.of(context).size.width / 2.5,
+                    onPressed: () {
+                      showModalBottomSheet(
+                        showDragHandle: true,
+                        clipBehavior: Clip.hardEdge,
+                        scrollControlDisabledMaxHeightRatio: 0.9,
+                        context: context,
+                        builder: (_) => ChangePasswordView(
+                          email: email,
+                        ),
+                      );
+                    },
+                    child: Text("Ubah Password"),
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          showDragHandle: true,
+                          clipBehavior: Clip.hardEdge,
+                          scrollControlDisabledMaxHeightRatio: 0.9,
+                          context: context,
+                          builder: (_) => EditProfileView(user: user),
                         );
                       },
-                    );
-                  },
-                  child: Text("Keluar"),
-                ),
-              ],
+                      child: Text("Edit Profil")),
+                  ElevatedButton(
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return MyAlertDialog(
+                            onConfirmText: "Keluar",
+                            onCancelColor: Colors.green,
+                            onConfirmColor: Colors.red,
+                            onConfirm: () {
+                              context
+                                  .read<ProfileBloc>()
+                                  .add(LogoutSubmitted());
+                            },
+                            contentText: "Anda yakin akan keluar?",
+                          );
+                        },
+                      );
+                    },
+                    child: Text("Keluar"),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
     );
   }
-
-  /// Widget untuk Item Profil
 }
 
+/// Widget untuk Item Profil
 class _BuildProfileItem extends StatelessWidget {
   const _BuildProfileItem({
     required this.icon,

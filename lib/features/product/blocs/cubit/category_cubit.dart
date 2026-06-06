@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:cashier/features/product/repositories/product_repository.dart';
+import '../../repositories/product_repository.dart';
 
 class CategoryCubit extends Cubit<String> {
   final repo = ProductRepository();
