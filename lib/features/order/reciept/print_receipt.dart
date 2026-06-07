@@ -16,6 +16,7 @@ Future<void> printReceipt({
   required List<CartModel> cart,
   required CheckOutState state,
 }) async {
+  state as CheckOutInitial;
   bool isConnected = await PrintBluetoothThermal.connectionStatus;
   if (!isConnected) {
     debugPrint("Printer belum terhubung!");

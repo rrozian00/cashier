@@ -37,10 +37,10 @@ class AddProductView extends StatelessWidget {
           if (state is ProductAddSuccess) {
             Navigator.pop(context);
             context.read<ProductBloc>().add(ProductGetRequested());
-            showMysnackbar(context, "Sukses", "Produk berhasil ditambahkan");
+            showMysnackbar(context, "Produk berhasil ditambahkan");
           }
           if (state is PickImageError) {
-            showMysnackbar(context, "Error", state.message);
+            showMysnackbar(context, state.message, isError: true);
           }
         },
         builder: (context, state) {
@@ -162,9 +162,9 @@ class AddProductView extends StatelessWidget {
                   final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ScannerPage(),
+                        builder: (context) => ScannerView(),
                       ));
-                  if (result != null) productCodeController.text = result;
+                  if (result != null) productCodeController.text = result.first;
                 },
               ),
             ),

@@ -11,7 +11,7 @@ class PrinterView extends StatelessWidget {
     return BlocListener<PrinterBloc, PrinterState>(
       listener: (context, state) {
         if (state is PrinterFailed) {
-          showMysnackbar(context, "Error", state.message);
+          showMysnackbar(context, state.message, isError: true);
         }
       },
       child: Scaffold(

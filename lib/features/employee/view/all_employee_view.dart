@@ -1,7 +1,7 @@
 import 'add_employee_view.dart';
-import '../../models/user_model.dart';
+import '../../user/models/user_model.dart';
 
-import '../../../../core/widgets/no_data.dart';
+import '../../../core/widgets/no_data.dart';
 import '../bloc/employee_bloc.dart';
 import 'detail_emlpoyee_view.dart';
 import 'edit_employee_view.dart';
@@ -26,16 +26,16 @@ class AllEmployeeView extends StatelessWidget {
                 child: CircularProgressIndicator.adaptive(),
               );
             }
-            if (state is EmployeeFailed && state.message == "null") {
+            if (state is EmployeeError && state.message == "null") {
               return noData(
                   title: "Tidak ada karyawan ditemukan",
                   message: "Silahkan tambah karyawan.");
             }
-            if (state is EmployeeFailed) {
+            if (state is EmployeeError) {
               return noData(
                   icon: Icons.error, title: "Error", message: state.message);
             }
-            if (state is EmployeeGetSuccess) {
+            if (state is EmployeeSuccess) {
               final employees = state.employees;
               if (employees.isNotEmpty) {
                 return _buildListView(state);
@@ -58,7 +58,7 @@ class AllEmployeeView extends StatelessWidget {
   }
 }
 
-Widget _buildListView(EmployeeGetSuccess state) {
+Widget _buildListView(EmployeeSuccess state) {
   return ListView.builder(
     itemCount: state.employees.length,
     itemBuilder: (context, index) {
@@ -172,10 +172,7 @@ _showDeleteDialog(BuildContext context, UserModel data) {
                   child: Text("Hapus"),
                   onPressed: () {
                     Navigator.pop(context);
-                    context
-                        .read<EmployeeBloc>()
-                        .add(DeleteEmployeeRequested(data.id!));
-                    context.read<EmployeeBloc>().add(GetEmployeeRequested());
+                    context.read<EmployeeBloc>().add(EmployeeDeleted(data.id!));
                   }),
             ],
           )

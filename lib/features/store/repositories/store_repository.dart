@@ -43,21 +43,28 @@ class StoreRepository {
     }
   }
 
-  Future<StoreModel?> getActiveStore(String ownerId) async {
+  Future<Either<Failure, StoreModel>> getActiveStore(String ownerId) async {
     try {
-      final store = await _firestore
-          .collection("stores")
-          .where("ownerId", isEqualTo: ownerId)
-          .where("isActive", isEqualTo: true)
-          .get()
-          .then((value) => value.docs
-              .map(
-                (e) => StoreModel.fromMap(e.data()),
-              )
-              .first);
-      return store;
+      // final store = await _firestore
+      //     .collection("stores")
+      //     .where("ownerId", isEqualTo: ownerId)
+      //     .where("isActive", isEqualTo: true)
+      //     .get()
+      //     .then((value) => value.docs
+      //         .map(
+      //           (e) => StoreModel.fromMap(e.data()),
+      //         )
+      //         .first);
+      final user = await _supabase
+          .from('stores')
+          .select()
+          .eq('owner_id', ownerId)
+          .single()
+          .then((e) => StoreModel.fromMap(e));
+
+      return Right(user);
     } catch (e) {
-      throw Exception("Error: ${e.toString()}");
+      return Left(Failure("Error : ${e.toString()}"));
     }
   }
 

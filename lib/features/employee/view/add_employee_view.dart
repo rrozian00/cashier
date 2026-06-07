@@ -1,7 +1,8 @@
+import 'package:cashier/core/utils/my_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/widgets/my_text_field.dart';
+import '../../../core/widgets/my_text_field.dart';
 import '../bloc/employee_bloc.dart';
 
 class AddEmployeeView extends StatelessWidget {
@@ -19,17 +20,14 @@ class AddEmployeeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<EmployeeBloc, EmployeeState>(
       listener: (context, state) {
-        if (state is EmployeeAddSuccess) {
-          // Navigator.pushReplacementNamed(context, Routes.login);
+        if (state is EmployeeSuccess) {
           Navigator.pop(context);
-          context.read<EmployeeBloc>().add(GetEmployeeRequested());
-        } else if (state is EmployeeFailed) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              content: Text(state.message),
-            ),
-          );
+          showMysnackbar(context, "Berhasil tambah karyawan.");
+        }
+        if (state is EmployeeError) {
+          Navigator.pop(context);
+
+          showMysnackbar(context, "Gagal", isError: true);
         }
       },
       child: Scaffold(
@@ -89,29 +87,24 @@ class AddEmployeeView extends StatelessWidget {
                   SizedBox(height: 20),
                   BlocBuilder<EmployeeBloc, EmployeeState>(
                     builder: (context, state) {
-                      if (state is EmployeeInitial) {
-                        return ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                context
-                                    .read<EmployeeBloc>()
-                                    .add(AddEmployeePressed(
-                                      name: nameC.text,
-                                      email: emailC.text,
-                                      phone: phoneC.text,
-                                      address: addressC.text,
-                                      salary: salaryC.text,
-                                      password: passwordC.text,
-                                    ));
-                              }
-                            },
-                            child: state is EmployeeLoading
-                                ? CircularProgressIndicator.adaptive()
-                                : Text(
-                                    "Simpan",
+                      return ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              context.read<EmployeeBloc>().add(EmployeeAdded(
+                                    name: nameC.text,
+                                    email: emailC.text,
+                                    phone: phoneC.text,
+                                    address: addressC.text,
+                                    salary: salaryC.text,
+                                    password: passwordC.text,
                                   ));
-                      }
-                      return CircularProgressIndicator.adaptive();
+                            }
+                          },
+                          child: state is EmployeeLoading
+                              ? CircularProgressIndicator.adaptive()
+                              : Text(
+                                  "Simpan",
+                                ));
                     },
                   )
                 ],

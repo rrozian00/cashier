@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
 import 'package:cashier/features/order/order/bloc/order_bloc.dart';
+import 'package:cashier/features/order/order/models/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,15 +17,15 @@ class ShowReceipt extends StatelessWidget {
     required this.storeAddress,
     required this.userName,
     required this.state,
-    required this.orderBloc,
+    required this.carts,
   });
 
   final String storeName;
   final String storeAddress;
   final String userName;
 
-  final CheckOutState state;
-  final OrderBloc orderBloc;
+  final CheckOutInitial state;
+  final List<CartModel> carts;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +67,7 @@ class ShowReceipt extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  ...orderBloc.cart.map((item) {
+                  ...carts.map((item) {
                     final produk = item.product as ProductModel?;
                     if (produk == null) {
                       debugPrint("Produk null di item: $item");
@@ -158,7 +159,7 @@ class ShowReceipt extends StatelessWidget {
                     onPressed: () {
                       printReceipt(
                         context: context,
-                        cart: orderBloc.cart,
+                        cart: carts,
                         state: state,
                         storeAddress: storeAddress,
                         storeName: storeName,

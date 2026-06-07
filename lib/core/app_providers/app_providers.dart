@@ -15,7 +15,7 @@ import '../../features/setting/cubit/version_cubit.dart';
 import '../../features/splash_screen/bloc/splash_screen_bloc.dart';
 import '../../features/store/bloc/store_bloc.dart';
 import '../../features/store/repositories/store_repository.dart';
-import '../../features/user/employee/bloc/employee_bloc.dart';
+import '../../features/employee/bloc/employee_bloc.dart';
 import '../../features/user/login/bloc/login_bloc.dart';
 import '../../features/user/profile/blocs/edit_profile_bloc/edit_profile_bloc.dart';
 import '../../features/user/profile/blocs/profile_bloc/profile_bloc.dart';
@@ -26,6 +26,8 @@ import '../app_theme/theme_cubit/theme_cubit.dart';
 import '../app_theme/theme_service.dart';
 
 var myi = GetIt.instance;
+//TODO: add my injection
+
 final List<BlocProvider> appProviders = [
   BlocProvider<SplashScreenBloc>(
       create: (context) => SplashScreenBloc()..add(AuthenticationChecked())),
@@ -39,7 +41,8 @@ final List<BlocProvider> appProviders = [
   BlocProvider<ExpenseBloc>(create: (context) => ExpenseBloc()),
   BlocProvider<HomeBloc>(
       create: (context) =>
-          HomeBloc(AuthRepository(), StoreRepository(), UserRepository())),
+          HomeBloc(AuthRepository(), StoreRepository(), UserRepository())
+            ..add(HomeGetStoreReq())),
   BlocProvider<ProductBloc>(create: (context) => ProductBloc()),
   BlocProvider<OrderBloc>(create: (context) => OrderBloc()),
   BlocProvider<HistoryOrderBloc>(create: (context) => HistoryOrderBloc()),

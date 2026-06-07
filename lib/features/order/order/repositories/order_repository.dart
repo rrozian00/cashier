@@ -1,86 +1,67 @@
-import '../../../../core/utils/get_user_data.dart';
-import '../../../store/repositories/store_repository.dart';
+import 'package:dartz/dartz.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/app_errors/failure.dart';
-
+import '../../../store/repositories/store_repository.dart';
+import '../../../user/repositories/user_repository.dart';
 import '../models/order_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartz/dartz.dart';
 
 class OrderRepository {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final _supabase = Supabase.instance.client;
   final storeRepo = StoreRepository();
+  final userRepo = UserRepository();
 
   Future<Either<Failure, List<OrderModel>>> getHistoryOrders(
-    Timestamp start,
-    Timestamp end,
+    DateTime start,
+    DateTime end,
   ) async {
     try {
-      final user = await getUserData();
+      final user = await userRepo
+          .getUserDataFromSupabase()
+          .then((e) => e.fold((l) => null, (r) => r));
       if (user == null) return Left(Failure("User tidak ditemukan"));
-      final store = await storeRepo.getActiveStore(user.id!);
+      final store = await storeRepo
+          .getActiveStore(user.id!)
+          .then((e) => e.fold((l) => null, (r) => r));
       if (store == null) return Left(Failure("Store tidak ditemukan"));
-      final result = await _firestore
-          .collection("stores")
-          .doc(store.id)
-          .collection("orders")
-          .where("createdAt", isGreaterThanOrEqualTo: start)
-          .where("createdAt", isLessThan: end)
-          .get();
-      final data = result.docs
-          .map(
-            (e) => OrderModel.fromMap(e.data()),
-          )
-          .toList();
+
+      final data = await _supabase
+          .from('orders')
+          .select()
+          .eq('store_id', store.id!)
+          .gte('created_at', start.toIso8601String())
+          .lte('created_at', end.toIso8601String())
+          .then((value) => value.map((e) => OrderModel.fromMap(e)).toList());
+
       return Right(data);
     } catch (e) {
       return Left(Failure(e.toString()));
     }
   }
 
-  Future<Either<Failure, void>> saveOrder(OrderModel orderModel) async {
+  Future<Either<Failure, void>> saveOrder(OrderModel order) async {
     try {
-      final user = await getUserData();
+      final user = await userRepo
+          .getUserDataFromSupabase()
+          .then((e) => e.fold((l) => null, (r) => r));
       if (user == null) {
         return Left(Failure("User tidak ditemukan"));
       }
-      if (user.role == 'owner') {
-        final storeData = await storeRepo.getActiveStore(user.id!);
 
-        if (storeData == null) {
-          return Left(Failure("Store Data tidak ditemukan"));
-        }
+      final storeData = await storeRepo
+          .getActiveStore(user.id!)
+          .then((e) => e.fold((l) => null, (r) => r));
 
-        final storeId = storeData.id;
-        final docRef = _firestore
-            .collection('stores')
-            .doc(storeId)
-            .collection('orders')
-            .doc();
-        final data = orderModel.copyWith(id: docRef.id);
-        await docRef.set(data.toMap());
-        return Right(null);
-      } else {
-        final storeResult = await storeRepo.getStoreAsEmployee(user.id!);
-        storeResult.fold(
-          (err) {
-            return Left(Failure(err.message));
-          },
-          (store) async {
-            final storeId = store.id;
-            final docRef = _firestore
-                .collection('stores')
-                .doc(storeId)
-                .collection('orders')
-                .doc();
-            final data = orderModel.copyWith(id: docRef.id);
-            await docRef.set(data.toMap());
-            return Right(null);
-          },
-        );
+      if (storeData == null) {
+        return Left(Failure("Store Data tidak ditemukan"));
       }
-      return Left(Failure("Unexpected error "));
+
+      await _supabase.from('orders').insert(order.toMap());
+      print("order saved");
+      return Right(null);
     } catch (e) {
+      print(e);
       return Left(Failure("error: $e"));
     }
   }

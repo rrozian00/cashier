@@ -7,7 +7,7 @@ sealed class EmployeeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class AddEmployeePressed extends EmployeeEvent {
+final class EmployeeAdded extends EmployeeEvent {
   final String name;
   final String email;
   final String password;
@@ -15,7 +15,7 @@ final class AddEmployeePressed extends EmployeeEvent {
   final String phone;
   final String salary;
 
-  const AddEmployeePressed({
+  const EmployeeAdded({
     required this.name,
     required this.email,
     required this.password,
@@ -35,14 +35,14 @@ final class AddEmployeePressed extends EmployeeEvent {
       ];
 }
 
-final class EditEmployeeSubmitted extends EmployeeEvent {
+final class EmployeeEdited extends EmployeeEvent {
   final UserModel user;
   final String name;
   final String address;
   final String phone;
   final String salary;
 
-  const EditEmployeeSubmitted(
+  const EmployeeEdited(
       {required this.user,
       required this.name,
       required this.address,
@@ -58,13 +58,13 @@ final class EditEmployeeSubmitted extends EmployeeEvent {
       ];
 }
 
-final class DeleteEmployeeRequested extends EmployeeEvent {
+final class EmployeeDeleted extends EmployeeEvent {
   final String id;
 
-  const DeleteEmployeeRequested(this.id);
+  const EmployeeDeleted(this.id);
 
   @override
   List<Object> get props => [id];
 }
 
-final class GetEmployeeRequested extends EmployeeEvent {}
+final class EmployeeFetched extends EmployeeEvent {}

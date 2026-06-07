@@ -20,30 +20,31 @@ class HomeView extends StatelessWidget {
           );
         }
         return Scaffold(
-          body: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    // Tanggal Sekarang
-                    const Date(),
+          body: RefreshIndicator(
+            onRefresh: () async =>
+                context.read<HomeBloc>().add(HomeGetStoreReq()),
+            child: SafeArea(
+              child: ListView(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Date(),
+                      TagLineWidget(),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Animasi Logo Toko
+                      const StoreName(),
 
-                    //Tag Line
-                    const TagLineWidget(),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Animasi Logo Toko
-                    const StoreName(),
-
-                    // Statistik Keuangan
-                    const StatisticList(),
-                  ],
-                )
-              ],
+                      // Statistik Keuangan
+                      const StatisticList(),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         );

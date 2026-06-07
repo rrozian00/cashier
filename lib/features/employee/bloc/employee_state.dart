@@ -4,31 +4,32 @@ sealed class EmployeeState extends Equatable {
   const EmployeeState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 final class EmployeeInitial extends EmployeeState {}
 
 final class EmployeeLoading extends EmployeeState {}
 
-//ADD
-final class EmployeeAddSuccess extends EmployeeState {
-  // final UserModel employee;
+// //ADD
+// final class EmployeeAddSuccess extends EmployeeState {
+//   final UserModel employee;
 
-  // const EmployeeAddSuccess({required this.employee});
+//   const EmployeeAddSuccess({required this.employee});
 
-  // @override
-  // List<Object> get props => [employee];
-}
+//   @override
+//   List<Object> get props => [employee];
+// }
 
 //GET
-final class EmployeeGetSuccess extends EmployeeState {
+final class EmployeeSuccess extends EmployeeState {
   final List<UserModel> employees;
+  final String? message;
 
-  const EmployeeGetSuccess({required this.employees});
+  const EmployeeSuccess({required this.employees, this.message});
 
   @override
-  List<Object> get props => [employees];
+  List<Object?> get props => [employees, message];
 }
 
 // // //DETAIL
@@ -42,10 +43,10 @@ final class EmployeeGetSuccess extends EmployeeState {
 // }
 
 //FAILED
-final class EmployeeFailed extends EmployeeState {
+final class EmployeeError extends EmployeeState {
   final String message;
 
-  const EmployeeFailed({required this.message});
+  const EmployeeError({required this.message});
 
   @override
   List<Object> get props => [message];

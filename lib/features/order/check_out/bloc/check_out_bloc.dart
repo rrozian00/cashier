@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/utils/get_user_data.dart';
 import '../../../store/models/store_model.dart';
 import '../../../store/repositories/store_repository.dart';
 import '../../../user/models/user_model.dart';
+import '../../../user/repositories/user_repository.dart';
 import '../../order/models/cart_model.dart';
 import '../../order/models/order_model.dart';
 import '../../order/repositories/order_repository.dart';
@@ -15,8 +15,9 @@ part 'check_out_state.dart';
 class CheckOutBloc extends Bloc<CheckOutEvent, CheckOutState> {
   final storeRepo = StoreRepository();
   final orderRepository = OrderRepository();
+  final userRepo = UserRepository();
 
-  CheckOutBloc() : super(CheckOutState.initial()) {
+  CheckOutBloc() : super(CheckOutLoading()) {
     on<InitCheckOut>(_onInit);
     on<NumberPressed>(_onNumberPressed);
     on<ClearPressed>(_onClearPressed);
@@ -25,15 +26,19 @@ class CheckOutBloc extends Bloc<CheckOutEvent, CheckOutState> {
   }
 
   void _onInit(InitCheckOut event, Emitter<CheckOutState> emit) {
-    emit(state.copyWith(
-      totalPrice: event.totalHarga,
-      paymentAmount: 0,
-      displayText: '',
-      canProcess: false,
-    ));
+    emit(CheckOutInitial(
+        cart: event.cart,
+        paymentAmount: 0,
+        totalPrice: event.totalHarga,
+        isProcessing: false,
+        processed: false,
+        displayText: '',
+        canProcess: false));
   }
 
   void _onNumberPressed(NumberPressed event, Emitter<CheckOutState> emit) {
+    final state = this.state as CheckOutInitial;
+
     String current = state.displayText;
 
     // Batasi maksimal 12 digit
@@ -52,6 +57,8 @@ class CheckOutBloc extends Bloc<CheckOutEvent, CheckOutState> {
   }
 
   void _onClearPressed(ClearPressed event, Emitter<CheckOutState> emit) {
+    final state = this.state as CheckOutInitial;
+
     emit(state.copyWith(
       paymentAmount: 0,
       displayText: '',
@@ -61,40 +68,46 @@ class CheckOutBloc extends Bloc<CheckOutEvent, CheckOutState> {
 
   void _onProcessPayment(
       ProcessPayment event, Emitter<CheckOutState> emit) async {
+    final state = this.state as CheckOutInitial;
+
     if (!state.canProcess) {
       emit(state.copyWith(errorMessage: "Pembayaran tidak memenuhi syarat"));
       return;
     }
+
     emit(state.copyWith(isProcessing: true, errorMessage: null));
 
     try {
-      final user = await getUserData();
+      final user = await userRepo
+          .getUserDataFromSupabase()
+          .then((e) => e.fold((l) => null, (r) => r));
 
       if (user == null) {
-        emit(state.copyWith(
-            isProcessing: false, errorMessage: "user belum ditemukan"));
+        emit(CheckOutError(errorMessage: "Gagal ambil user"));
         return;
       }
 
       if (user.role == 'owner') {
-        final storeData = await storeRepo.getActiveStore(user.id!);
+        final storeData = await storeRepo
+            .getActiveStore(user.id!)
+            .then((e) => e.fold((l) => null, (r) => r));
 
         final storeId = storeData?.id;
         if (storeId == null) {
-          emit(state.copyWith(
-              isProcessing: false, errorMessage: "StoreId belum ditemukan"));
+          emit(CheckOutError(errorMessage: "StoreId belum ditemukan"));
           return;
         }
 
         final orderModel = OrderModel(
+          name: "Order",
+          storeId: storeId,
           payment: state.paymentAmount,
           products: event.cart,
-          change: state.paymentAmount - state.totalPrice,
+          change: (state.paymentAmount - state.totalPrice),
           total: state.totalPrice,
           createdAt: DateTime.now(),
         );
 
-        // Simpan ke Firestore
         await orderRepository.saveOrder(orderModel);
 
         emit(state.copyWith(
@@ -131,9 +144,15 @@ class CheckOutBloc extends Bloc<CheckOutEvent, CheckOutState> {
           createdAt: DateTime.now(),
         );
 
-        // Simpan ke Firestore
-        await orderRepository.saveOrder(orderModel);
-
+        // Simpan ke DAtabase
+        final res = await orderRepository.saveOrder(orderModel);
+        res.fold(
+          (l) => emit(CheckOutError(errorMessage: l.message)),
+          (r) => emit(state.copyWith(
+            isProcessing: false,
+            errorMessage: null,
+          )),
+        );
         emit(state.copyWith(
           isProcessing: false,
           store: storeData,
@@ -148,6 +167,8 @@ class CheckOutBloc extends Bloc<CheckOutEvent, CheckOutState> {
 
   void _onClear(ClearReceipt event, Emitter<CheckOutState> emit) {
     // emit(state.copyWith(processed: false));
+    final state = this.state as CheckOutInitial;
+
     emit(state.copyWith(
       paymentAmount: 0,
       displayText: '',

@@ -1,8 +1,9 @@
-import 'cart_model.dart';
+import 'package:cashier/features/order/order/models/cart_model.dart';
 
 class OrderModel {
   String? id;
   String? name;
+  String? storeId;
   List<CartModel>? products;
   int? total;
   int? change;
@@ -11,6 +12,7 @@ class OrderModel {
   OrderModel({
     this.id,
     this.name,
+    this.storeId,
     this.products,
     this.total,
     this.change,
@@ -21,6 +23,7 @@ class OrderModel {
   OrderModel copyWith({
     String? id,
     String? name,
+    String? storeId,
     List<CartModel>? products,
     int? total,
     int? change,
@@ -30,6 +33,7 @@ class OrderModel {
     return OrderModel(
       id: id ?? this.id,
       name: name ?? this.name,
+      storeId: storeId ?? this.storeId,
       products: products ?? this.products,
       total: total ?? this.total,
       change: change ?? this.change,
@@ -42,11 +46,12 @@ class OrderModel {
     return <String, dynamic>{
       'id': id,
       'name': name,
+      'store_id': storeId,
       'products': products?.map((x) => x.toMap()).toList(),
       'total': total,
       'change': change,
       'payment': payment,
-      'created_at': createdAt,
+      'created_at': createdAt?.toIso8601String(),
     };
   }
 
@@ -54,10 +59,11 @@ class OrderModel {
     return OrderModel(
         id: map['id'] != null ? map['id'] as String : null,
         name: map['name'] != null ? map['name'] as String : null,
+        storeId: map['store_id'] != null ? map['store_id'] as String : null,
         products: map['products'] != null
             ? List<CartModel>.from(
-                (map['products'] as List).map<CartModel?>(
-                  (x) => CartModel.fromMap(x as Map<String, dynamic>),
+                (map['products'] as List).map(
+                  (e) => CartModel.fromMap(e),
                 ),
               )
             : null,

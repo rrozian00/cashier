@@ -1,7 +1,7 @@
-import '../../../core/app_errors/failure.dart';
-import '../models/user_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../../core/app_errors/failure.dart';
 
 class AuthRepository {
   final _supabaseAuth = Supabase.instance.client.auth;

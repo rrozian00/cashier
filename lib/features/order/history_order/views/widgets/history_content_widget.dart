@@ -54,13 +54,14 @@ class HistoryContentWidget extends StatelessWidget {
                         ...transaksiGroup.map((transaksi) {
                           final productWidgets =
                               transaksi.products?.map((product) {
-                            final int price = product.product.price ?? 0;
-                            final int qty = product.product.quantity ?? 0;
+                            //TODO:masih dummy
+                            final int price = 0; //dumy
+                            final int qty = 0; //dumy
                             final int subtotal = price * qty;
 
                             return ListTile(
                               contentPadding: EdgeInsets.zero,
-                              title: Text(product.product.name ?? '-'),
+                              title: Text('-'), //dumy
                               subtitle: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

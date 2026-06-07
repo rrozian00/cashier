@@ -28,23 +28,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       if (user == null) return;
       if (user.role == "owner") {
-        final storeDoc = await storeRepository.getStore(user.id!);
-        storeDoc.fold(
-          (failure) {
-            emit(HomeError(message: failure.message));
-          },
-          (stores) {
-            for (var storeResult in stores) {
-              if (stores.any((e) => e.isActive == false)) {
-                emit(HomeError(message: "Aktifkan Toko Anda terlebih dahulu."));
-              }
-              if (storeResult.isActive == true) {
-                emit(HomeSuccess(user: user, store: storeResult));
-                break;
-              }
-            }
-          },
-        );
+        final store = await storeRepository
+            .getActiveStore(user.id!)
+            .then((r) => r.fold((l) => null, (r) => r));
+        emit(HomeSuccess(user: user, store: store!));
+        // storeDoc.fold(
+        //   (failure) {
+        //     emit(HomeError(message: failure.message));
+        //   },
+        //   (stores) {
+        //     for (var storeResult in stores) {
+        //       if (stores.any((e) => e.isActive == false)) {
+        //         emit(HomeError(message: "Aktifkan Toko Anda terlebih dahulu."));
+        //       }
+        //       if (storeResult.isActive == true) {
+        //         emit(HomeSuccess(user: user, store: storeResult));
+        //         break;
+        //       }
+        //     }
+        //   },
+        // );
       } else {
         final storeDoc = await storeRepository.getStoreAsEmployee(user.id!);
         storeDoc.fold(

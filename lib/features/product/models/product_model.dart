@@ -63,7 +63,7 @@ class ProductModel {
       'public_id': publicId,
       'registered_date': registeredDate?.toIso8601String(),
       'expired_date': expiredDate?.toIso8601String(),
-      'stock': quantity,
+      'quantity': quantity,
       'created_at': createdAt?.toIso8601String(),
     };
   }
@@ -79,7 +79,7 @@ class ProductModel {
       publicId: map['public_id'] != null ? map['public_id'] as String : null,
       registeredDate: DateTime.parse(map['registered_date']),
       expiredDate: DateTime.parse(map['expired_date']),
-      quantity: map['stock'] != null ? map['stock'] as int : null,
+      quantity: map['quantity'] != null ? map['quantity'] as int : null,
       createdAt: DateTime.parse(map['created_at']),
     );
   }

@@ -21,12 +21,12 @@ class AddToCart extends OrderEvent {
 }
 
 class AddToCartByBarcode extends OrderEvent {
-  final String barcode;
+  final List<String> barcodes;
 
-  const AddToCartByBarcode({required this.barcode});
+  const AddToCartByBarcode({required this.barcodes});
 
   @override
-  List<Object?> get props => [barcode];
+  List<Object?> get props => [barcodes];
 }
 
 class AddToCartByTap extends OrderEvent {

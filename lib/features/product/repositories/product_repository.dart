@@ -5,9 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/app_errors/failure.dart';
-import '../../../core/utils/get_user_data.dart';
 import '../../store/models/store_model.dart';
-import '../../store/repositories/store_repository.dart';
 import '../../user/repositories/user_repository.dart';
 import '../models/product_model.dart';
 import 'cloudinary.dart';
@@ -223,7 +221,6 @@ class ProductRepository {
   }
 
   Future<void> editProduct({
-    //TODO:eidt product
     required String id,
     required String newName,
     required int newPrice,
@@ -232,23 +229,40 @@ class ProductRepository {
   }) async {
     try {
       Map<String, dynamic>? result;
-      final repo = StoreRepository();
+
       final userId = _supabaseAuth.currentUser?.id;
       if (userId == null) {
         return;
       }
-      final store = await repo.getActiveStore(userId);
-      if (store == null) {
-        throw Exception("Store ID tidak ditemukan!");
-      }
-      final storeId = store.id;
-      // 🔹 Ambil data lama dari Firestore
-      final docSnapshot =
-          await _firestore.collection('stores/$storeId/products').doc(id).get();
 
-      if (!docSnapshot.exists) {
-        throw Exception("Menu tidak ditemukan!");
-      }
+      // final store = await store(userId);
+      // if (store == null) {
+      //   throw Exception("Store  tidak ditemukan!");
+      // }
+      // final storeId = store.id;
+      // // 🔹 Ambil data lama dari Firestore
+      // final docSnapshot =
+      //     await _firestore.collection('stores/$storeId/products').doc(id).get();
+
+      // if (!docSnapshot.exists) {
+      //   throw Exception("Menu tidak ditemukan!");
+      // }
+
+      final store = await _supabase
+          .from('stores')
+          .select()
+          .eq('owner_id', userId)
+          .single()
+          .then((e) => StoreModel.fromMap(e));
+
+      // 🔹 Ambil data lama dari Firestore
+      final oldData = await _supabase
+          .from('products')
+          .select()
+          .eq('id', id)
+          .eq('store_id', store.id!)
+          .single()
+          .then((e) => ProductModel.fromMap(e));
 
       if (newImage != null) {
         if (oldPublicId != null && oldPublicId != "") {
@@ -256,7 +270,6 @@ class ProductRepository {
         }
         result = await Cloudinary.uploadImageToCloudinary(newImage);
       }
-      final oldData = ProductModel.fromMap(docSnapshot.data()!);
 
       // 🔹 Gunakan copyWith untuk update hanya field yang diubah
       final updatedData = oldData.copyWith(
@@ -266,11 +279,8 @@ class ProductRepository {
         publicId: result?['public_id'],
       );
 
-      // 🔹 Update ke Firestore
-      await _firestore
-          .collection('stores/$storeId/products')
-          .doc(id)
-          .update(updatedData.toMap());
+      // 🔹 Update ke Database
+      await _supabase.from('products').update(updatedData.toMap()).eq('id', id);
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -278,7 +288,9 @@ class ProductRepository {
 
   Stream<Either<Failure, List<ProductModel>>> watchProducts() async* {
     try {
-      final user = await getUserData();
+      final user = await userRepo
+          .getUserDataFromSupabase()
+          .then((e) => e.fold((l) => null, (r) => r));
       if (user == null) {
         yield Left(Failure("User Not found"));
         return;

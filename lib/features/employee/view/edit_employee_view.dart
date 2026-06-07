@@ -1,9 +1,9 @@
-import '../../models/user_model.dart';
+import '../../user/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../core/widgets/my_text_field.dart';
+import '../../../core/widgets/my_text_field.dart';
 import '../bloc/employee_bloc.dart';
 
 class EditEmployee extends StatefulWidget {
@@ -93,14 +93,14 @@ class _EditEmployeeState extends State<EditEmployee> {
                   child: Text("Simpan"),
                   onPressed: () {
                     Navigator.pop(context);
-                    context.read<EmployeeBloc>().add(EditEmployeeSubmitted(
+                    context.read<EmployeeBloc>().add(EmployeeEdited(
                           user: widget.user,
                           name: nameC.text,
                           address: addressC.text,
                           phone: phoneC.text,
                           salary: salaryC.text,
                         ));
-                    context.read<EmployeeBloc>().add(GetEmployeeRequested());
+                    context.read<EmployeeBloc>().add(EmployeeFetched());
                   },
                   // text: "Simpan",
                 ),

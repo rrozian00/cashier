@@ -1,12 +1,11 @@
-import '../../../../core/utils/my_snackbar.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/my_snackbar.dart';
 import '../../../../core/widgets/my_text_field.dart';
-import '../bloc/register_bloc.dart';
-import '../../models/user_model.dart';
 import '../../login/views/login_view.dart';
+import '../../models/user_model.dart';
+import '../bloc/register_bloc.dart';
 
 class RegisterView extends StatelessWidget {
   RegisterView({super.key});
@@ -30,9 +29,9 @@ class RegisterView extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => LoginView(),
               ));
-          showMysnackbar(context, "Berhasil Registrasi", "Silahkan Login !");
+          showMysnackbar(context, "Berhasil Registrasi, Silahkan Login !");
         } else if (state is RegisterFailedState) {
-          showMysnackbar(context, "Gagal Registrasi", state.message);
+          showMysnackbar(context, state.message, isError: true);
           print(state.message);
         }
       },

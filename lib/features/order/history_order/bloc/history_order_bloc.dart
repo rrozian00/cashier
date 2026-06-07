@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -27,8 +26,8 @@ class HistoryOrderBloc extends Bloc<HistoryOrderEvent, HistoryOrderState> {
     final start = end.subtract(const Duration(days: 7)); // 1 minggu terakhir
 
     final result = await orderRepo.getHistoryOrders(
-      Timestamp.fromDate(start),
-      Timestamp.fromDate(end),
+      start,
+      end,
     );
 
     result.fold(
@@ -49,8 +48,8 @@ class HistoryOrderBloc extends Bloc<HistoryOrderEvent, HistoryOrderState> {
     final end = event.picked.end.add(const Duration(days: 1));
 
     final result = await orderRepo.getHistoryOrders(
-      Timestamp.fromDate(start),
-      Timestamp.fromDate(end),
+      start,
+      end,
     );
 
     result.fold(

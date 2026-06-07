@@ -1,10 +1,6 @@
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
-
 import '../../../product/models/product_model.dart';
 
-class CartModel extends Equatable {
+class CartModel {
   final ProductModel product;
   // final int quantity;
 
@@ -36,15 +32,4 @@ class CartModel extends Equatable {
       // quantity: map['quantity'] as int,
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory CartModel.fromJson(String source) =>
-      CartModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  bool get stringify => true;
-
-  @override
-  List<Object?> get props => [product];
 }

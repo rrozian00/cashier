@@ -8,11 +8,12 @@ abstract class CheckOutEvent extends Equatable {
 }
 
 class InitCheckOut extends CheckOutEvent {
+  final List<CartModel> cart;
   final int totalHarga;
-  const InitCheckOut(this.totalHarga);
+  const InitCheckOut(this.totalHarga, this.cart);
 
   @override
-  List<Object> get props => [totalHarga];
+  List<Object> get props => [totalHarga, cart];
 }
 
 class NumberPressed extends CheckOutEvent {

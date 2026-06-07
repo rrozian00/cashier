@@ -1,5 +1,3 @@
-import '../../user/models/user_model.dart';
-
 class StoreModel {
   String? id;
   String? name;
@@ -7,9 +5,8 @@ class StoreModel {
   String? address;
   String? phone;
   String? logoUrl;
-  String? category;
   bool? isActive;
-  List<UserModel>? employees;
+  List<String>? employees;
   DateTime? createdAt;
 
   StoreModel({
@@ -19,7 +16,6 @@ class StoreModel {
     this.address,
     this.phone,
     this.logoUrl,
-    this.category,
     this.isActive,
     this.employees,
     this.createdAt,
@@ -32,9 +28,8 @@ class StoreModel {
     String? address,
     String? phone,
     String? logoUrl,
-    String? category,
     bool? isActive,
-    List<UserModel>? employees,
+    List<String>? employees,
     DateTime? createdAt,
   }) {
     return StoreModel(
@@ -44,7 +39,6 @@ class StoreModel {
       address: address ?? this.address,
       phone: phone ?? this.phone,
       logoUrl: logoUrl ?? this.logoUrl,
-      category: category ?? this.category,
       isActive: isActive ?? this.isActive,
       employees: employees ?? this.employees,
       createdAt: createdAt ?? this.createdAt,
@@ -58,7 +52,6 @@ class StoreModel {
       'address': address,
       'phone': phone,
       'logo_url': logoUrl,
-      'category': category,
       'is_active': isActive,
       'employees': employees,
       'created_at': createdAt?.toIso8601String(),
@@ -73,11 +66,9 @@ class StoreModel {
       address: map['address'] != null ? map['address'] as String : null,
       phone: map['phone'] != null ? map['phone'] as String : null,
       logoUrl: map['logo_url'] != null ? map['logo_url'] as String : null,
-      category: map['category'] != null ? map['category'] as String : null,
       isActive: map['is_active'] != null ? map['is_active'] as bool : null,
-      employees: map['employees'] != null
-          ? (map['employees'] as List<UserModel>)
-          : null,
+      employees:
+          map['employees'] != null ? List<String>.from(map['employees']) : null,
       createdAt: DateTime.tryParse(map['created_at']) as DateTime,
     );
   }

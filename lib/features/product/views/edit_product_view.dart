@@ -50,7 +50,7 @@ class _EditProductViewState extends State<EditProductView> {
           Navigator.pop(context);
         }
         if (state is PickImageError) {
-          showMysnackbar(context, "Error", state.message);
+          showMysnackbar(context, state.message, isError: true);
         }
       },
       child: Scaffold(
@@ -171,7 +171,8 @@ class _EditProductViewState extends State<EditProductView> {
                         context.read<ProductBloc>().add(ProductEditRequested(
                               id: widget.productData.id!,
                               newName: nameC.text,
-                              newPrice: int.tryParse(priceC.text) ?? 0,
+                              newPrice: int.parse(
+                                  priceC.text.replaceAll(RegExp(r'[^\d]'), '')),
                               publicId: widget.productData.publicId ?? "",
                             ));
                       },

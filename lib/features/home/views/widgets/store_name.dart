@@ -62,7 +62,7 @@ class StoreName extends StatelessWidget {
                   style: TextStyle(color: Colors.red),
                 );
               }
-              return Text("-Toko tidak ditemukan-");
+              return Text("404");
             },
           )
         ],

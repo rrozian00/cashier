@@ -96,11 +96,19 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   void _onAddToCartByBarcode(
       AddToCartByBarcode event, Emitter<OrderState> emit) async {
-    final result = await productRepo.getProductByBarcode(event.barcode);
-    result.fold(
-      (err) => emit(OrderError(message: err.message)),
-      (product) => add(AddToCart(product: product)),
-    );
+    // final result = await productRepo.getProductByBarcode(event.barcodes);
+    // result.fold(
+    //   (err) => emit(OrderError(message: err.message)),
+    //   (product) => add(AddToCart(product: product)),
+    // );
+    emit(OrderLoading());
+    for (final barcode in event.barcodes) {
+      final result = await productRepo.getProductByBarcode(barcode);
+      result.fold(
+        (err) => emit(OrderError(message: err.message)),
+        (product) => add(AddToCart(product: product)),
+      );
+    }
   }
 
   Future<void> _onAddToCartByTap(

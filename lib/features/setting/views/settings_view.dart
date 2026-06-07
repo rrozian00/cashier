@@ -13,8 +13,8 @@ import '../../product/blocs/product_bloc.dart';
 import '../../product/views/product_view.dart';
 import '../../store/bloc/store_bloc.dart';
 import '../../store/views/store_view.dart';
-import '../../user/employee/bloc/employee_bloc.dart';
-import '../../user/employee/view/all_employee_view.dart';
+import '../../employee/bloc/employee_bloc.dart';
+import '../../employee/view/all_employee_view.dart';
 import '../../user/profile/views/profile_view.dart';
 import '../cubit/version_cubit.dart';
 
@@ -66,7 +66,7 @@ class SettingsView extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => AllEmployeeView(),
                           ));
-                      context.read<EmployeeBloc>().add(GetEmployeeRequested());
+                      context.read<EmployeeBloc>().add(EmployeeFetched());
                     },
                     title: "Karyawan",
                     icon: Icons.person_outline_rounded,

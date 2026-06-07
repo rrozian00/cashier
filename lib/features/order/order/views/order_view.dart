@@ -75,6 +75,9 @@ class OrderView extends StatelessWidget {
   }
 
   Widget _buildCartList(BuildContext context, OrderBloc orderBloc) {
+    if (orderBloc.state is OrderLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     if (orderBloc.cart.isEmpty) {
       return Center(
         child: Column(
@@ -254,12 +257,12 @@ class OrderView extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              CheckOutView(orderBloc: orderBloc),
+                          builder: (context) => CheckOutView(
+                            carts: orderBloc.cart,
+                          ),
                         ));
-                    context
-                        .read<CheckOutBloc>()
-                        .add(InitCheckOut(orderBloc.totalPrice));
+                    context.read<CheckOutBloc>().add(
+                        InitCheckOut(orderBloc.totalPrice, orderBloc.cart));
                   },
                   child: Text(
                     "BAYAR",
@@ -303,11 +306,11 @@ class OrderView extends StatelessWidget {
               onPressed: () async {
                 final result = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ScannerPage()),
+                  MaterialPageRoute(builder: (context) => ScannerView()),
                 );
 
-                if (result != null && result != "-1") {
-                  orderBloc.add(AddToCartByBarcode(barcode: result));
+                if (result != null && result.isNotEmpty) {
+                  orderBloc.add(AddToCartByBarcode(barcodes: result));
                 }
               },
               child: Text("Scan Barcode"),
