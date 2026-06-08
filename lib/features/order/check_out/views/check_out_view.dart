@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/rupiah_converter.dart';
 import '../../../../core/widgets/my_alert_dialog.dart';
-import '../../order/models/cart_model.dart';
+import '../../../product/models/product_model.dart';
 import '../../reciept/show_receipt.dart';
 import '../bloc/check_out_bloc.dart';
 
@@ -13,7 +13,7 @@ class CheckOutView extends StatelessWidget {
       // required this.orderBloc,
       required this.carts});
   // final OrderBloc orderBloc;
-  final List<CartModel> carts;
+  final List<ProductModel> carts;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,6 @@ class CheckOutView extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return ShowReceipt(
-                      carts: carts,
                       storeName: state.store?.name ?? '',
                       storeAddress: state.store?.address ?? '',
                       userName: state.user?.name ?? '',

@@ -1,20 +1,20 @@
-import '../../user/profile/blocs/profile_bloc/profile_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/app_theme/theme_cubit/theme_cubit.dart';
+import '../../employee/bloc/employee_bloc.dart';
+import '../../employee/view/all_employee_view.dart';
 import '../../expense/views/expense_view.dart';
 import '../../order/history_order/bloc/history_order_bloc.dart';
 import '../../order/history_order/views/history_order_view.dart';
 import '../../order/input_manual/views/input_manual_view.dart';
 import '../../printer/views/printer_view.dart';
 import '../../product/blocs/product_bloc.dart';
-import '../../product/views/product_view.dart';
+import '../../product/views/all_product_view.dart';
 import '../../store/bloc/store_bloc.dart';
-import '../../store/views/store_view.dart';
-import '../../employee/bloc/employee_bloc.dart';
-import '../../employee/view/all_employee_view.dart';
+import '../../store/views/all_store_view.dart';
+import '../../user/profile/blocs/profile_bloc/profile_bloc.dart';
 import '../../user/profile/views/profile_view.dart';
 import '../cubit/version_cubit.dart';
 
@@ -51,7 +51,7 @@ class SettingsView extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => StoreView(),
+                            builder: (context) => AllStoreView(),
                           ));
                       context.read<StoreBloc>().add(StoreFetched());
                     },
@@ -77,7 +77,7 @@ class SettingsView extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ProductView(),
+                            builder: (context) => AllProductView(),
                           ));
                       context.read<ProductBloc>().add(ProductGetRequested());
                     },

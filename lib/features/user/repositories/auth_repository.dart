@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/app_errors/failure.dart';
+import '../../../core/utils/connectivity_checker.dart';
 
 class AuthRepository {
   final _supabaseAuth = Supabase.instance.client.auth;
@@ -16,6 +17,9 @@ class AuthRepository {
 
   Future<Either<Failure, User>> login(String email, String password) async {
     try {
+      final isConnected = await ConnectivityChecker.checkConnection();
+      if (!isConnected) return Left(Failure("No internet connection"));
+
       final res = await Supabase.instance.client.auth
           .signInWithPassword(email: email, password: password);
 
@@ -23,8 +27,16 @@ class AuthRepository {
         return Right(res.user!);
       }
     } on AuthApiException catch (e) {
-      // debugPrint("Error login: ${e.code}");
-      return Left(Failure(e.code!));
+      // return Left(Failure(e.code!));
+      if (e.code == "user_not_confirmed") {
+        return Left(Failure("User not confirmed"));
+      } else if (e.code == "user_not_found") {
+        return Left(Failure("User not found"));
+      } else if (e.code == "invalid_credentials") {
+        return Left(Failure("Email / password salah"));
+      } else {
+        return Left(Failure(e.code!));
+      }
     }
     return Left(Failure("Unexpected error"));
   }

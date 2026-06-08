@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../product/models/product_model.dart';
 import '../../../store/models/store_model.dart';
 import '../../../store/repositories/store_repository.dart';
 import '../../../user/models/user_model.dart';
 import '../../../user/repositories/user_repository.dart';
-import '../../order/models/cart_model.dart';
 import '../../order/models/order_model.dart';
 import '../../order/repositories/order_repository.dart';
 
@@ -13,11 +13,12 @@ part 'check_out_event.dart';
 part 'check_out_state.dart';
 
 class CheckOutBloc extends Bloc<CheckOutEvent, CheckOutState> {
-  final storeRepo = StoreRepository();
-  final orderRepository = OrderRepository();
-  final userRepo = UserRepository();
+  final StoreRepository storeRepo;
+  final OrderRepository orderRepository;
+  final UserRepository userRepo;
 
-  CheckOutBloc() : super(CheckOutLoading()) {
+  CheckOutBloc(this.storeRepo, this.orderRepository, this.userRepo)
+      : super(CheckOutLoading()) {
     on<InitCheckOut>(_onInit);
     on<NumberPressed>(_onNumberPressed);
     on<ClearPressed>(_onClearPressed);

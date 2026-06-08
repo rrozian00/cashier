@@ -12,6 +12,7 @@ dependencies:
   bloc: ^9.2.1
   cloud_firestore: ^6.5.0
   collection: ^1.19.0
+  connectivity_plus: ^7.1.1
   crypto: ^3.0.6
   cupertino_icons: ^1.0.8
   dartz: ^0.10.1

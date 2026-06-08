@@ -1,3 +1,4 @@
+import 'package:cashier/core/widgets/no_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -71,7 +72,8 @@ class NavbarView extends StatelessWidget {
 
         if (state is NavbarError) {
           return Scaffold(
-            body: Center(child: Text(state.message)),
+            body: noData(
+                icon: Icons.error, title: "Error", message: state.message),
           );
         }
         return const Text("404");

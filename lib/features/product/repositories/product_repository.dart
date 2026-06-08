@@ -11,10 +11,12 @@ import '../models/product_model.dart';
 import 'cloudinary.dart';
 
 class ProductRepository {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final _supabaseAuth = Supabase.instance.client.auth;
-  final _supabase = Supabase.instance.client;
-  final userRepo = UserRepository();
+  final FirebaseFirestore _firestore;
+  // final SupabaseClient _supabaseAuth;
+  final SupabaseClient _supabase;
+  final UserRepository userRepo;
+
+  ProductRepository(this._firestore, this._supabase, this.userRepo);
 
   Future<Either<Failure, List<ProductModel>>> getProducts(
       // String category
@@ -88,7 +90,7 @@ class ProductRepository {
   }
 
   //add product
-  Future<Either<Failure, ProductModel>> addProduct({
+  Future<Either<Failure, void>> addProduct({
     required String name,
     required String category,
     required DateTime registeredDate,
@@ -99,7 +101,7 @@ class ProductRepository {
   }) async {
     Map<String, dynamic>? result;
     try {
-      final userId = _supabaseAuth.currentUser?.id;
+      final userId = _supabase.auth.currentUser?.id;
       if (userId == null) {
         return Left(Failure("User tidak terautentikasi."));
       }
@@ -164,7 +166,7 @@ class ProductRepository {
       // await docRef.set(data.toMap());
       await _supabase.from('products').insert(data.toMap());
 
-      return Right(data);
+      return Right(null);
     } catch (e) {
       return left(Failure(e.toString()));
     }
@@ -172,7 +174,7 @@ class ProductRepository {
 
   //hapus
   Future<void> deleteProduct(String id) async {
-    final userId = _supabaseAuth.currentUser?.id;
+    final userId = _supabase.auth.currentUser?.id;
     if (userId == null) {
       throw Exception("User tidak terautentikasi.");
     }
@@ -230,7 +232,7 @@ class ProductRepository {
     try {
       Map<String, dynamic>? result;
 
-      final userId = _supabaseAuth.currentUser?.id;
+      final userId = _supabase.auth.currentUser?.id;
       if (userId == null) {
         return;
       }

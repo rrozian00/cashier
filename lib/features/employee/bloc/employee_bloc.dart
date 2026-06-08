@@ -9,10 +9,11 @@ part 'employee_event.dart';
 part 'employee_state.dart';
 
 class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
-  final UserRepository _userRepository = UserRepository();
-  final EmployeeRepo _employeeRepo = EmployeeRepo();
+  final UserRepository _userRepository;
+  final EmployeeRepo _employeeRepo;
 
-  EmployeeBloc() : super(EmployeeInitial()) {
+  EmployeeBloc(this._employeeRepo, this._userRepository)
+      : super(EmployeeInitial()) {
     //add
     on<EmployeeAdded>((event, emit) async {
       try {

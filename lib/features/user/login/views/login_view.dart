@@ -1,3 +1,5 @@
+import 'package:cashier/core/utils/my_snackbar.dart';
+
 import '../../../navbar/views/navbar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,19 +27,14 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
-        if (state is LoginSuccess) {
+        if (state.isLoading == false && state.user != null) {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => NavbarView(),
               ));
-        } else if (state is LoginError) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              content: Text(state.message),
-            ),
-          );
+        } else if (state.message != null) {
+          showMysnackbar(context, state.message ?? '', isError: true);
         }
       },
       child: Scaffold(
@@ -90,37 +87,34 @@ class LoginView extends StatelessWidget {
                       height: 10,
                     ),
                     BlocBuilder<LoginBloc, LoginState>(
-                      builder: (context, state) {
-                        bool isObscure =
-                            state is LoginInitial && state.obsecure;
-                        return MyTextField(
-                          suffixIcon: IconButton(
-                            onPressed: () => context
-                                .read<LoginBloc>()
-                                .add(PasswordVissibilityTogled()),
-                            icon: Icon(
-                              isObscure
-                                  ? Icons.visibility_off_outlined
-                                  : Icons.visibility_outlined,
-                            ),
+                        builder: (context, state) {
+                      return MyTextField(
+                        suffixIcon: IconButton(
+                          onPressed: () => context
+                              .read<LoginBloc>()
+                              .add(PasswordVisibilityTogled()),
+                          icon: Icon(
+                            state.obscure
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
                           ),
-                          filled: true,
-                          textCapitalization: TextCapitalization.none,
-                          controller: passwordC,
-                          label: "Password",
-                          hint: "Password",
-                          obscure: isObscure,
-                          validator: (value) => value == null || value.isEmpty
-                              ? "Password tidak boleh kosong"
-                              : null,
-                        );
-                      },
-                    ),
+                        ),
+                        filled: true,
+                        textCapitalization: TextCapitalization.none,
+                        controller: passwordC,
+                        label: "Password",
+                        hint: "Password",
+                        obscure: state.obscure,
+                        validator: (value) => value == null || value.isEmpty
+                            ? "Password tidak boleh kosong"
+                            : null,
+                      );
+                    }),
                     SizedBox(height: 20),
                     Center(
                       child: BlocBuilder<LoginBloc, LoginState>(
                         builder: (context, state) {
-                          if (state is! LoginLoading) {
+                          if (state.isLoading == false) {
                             return ElevatedButton(
                               // width: MediaQuery.of(context).size.width * 0.8,
                               onPressed: () {

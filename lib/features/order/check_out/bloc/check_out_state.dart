@@ -52,7 +52,7 @@ sealed class CheckOutState extends Equatable {
 }
 
 final class CheckOutInitial extends CheckOutState {
-  final List<CartModel> cart;
+  final List<ProductModel> cart;
   final int paymentAmount;
   final int totalPrice;
   final bool isProcessing;
@@ -75,7 +75,7 @@ final class CheckOutInitial extends CheckOutState {
   });
 
   CheckOutInitial copyWith({
-    final List<CartModel>? cart,
+    final List<ProductModel>? cart,
     final int? paymentAmount,
     final int? totalPrice,
     final bool? isProcessing,

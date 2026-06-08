@@ -7,9 +7,11 @@ import '../../user/repositories/user_repository.dart';
 import '../models/store_model.dart';
 
 class StoreRepository {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final _supabase = Supabase.instance.client;
-  final userRepository = UserRepository();
+  final FirebaseFirestore _firestore;
+  final SupabaseClient _supabase;
+  final UserRepository userRepository;
+
+  StoreRepository(this._firestore, this._supabase, this.userRepository);
 
   Future<Either<Failure, List<StoreModel>>> getStore(String id) async {
     try {

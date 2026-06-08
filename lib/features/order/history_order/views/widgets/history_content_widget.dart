@@ -23,6 +23,7 @@ class HistoryContentWidget extends StatelessWidget {
               itemBuilder: (context, index) {
                 final createdAt =
                     groupedTransactions.keys.toList().reversed.elementAt(index);
+
                 final transaksiGroup = groupedTransactions[createdAt] ?? [];
 
                 final totalBayar = transaksiGroup.fold<int>(

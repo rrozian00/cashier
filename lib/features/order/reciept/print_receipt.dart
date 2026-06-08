@@ -6,14 +6,12 @@ import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 import '../../../core/utils/rupiah_converter.dart';
 import '../../product/models/product_model.dart';
 import '../check_out/bloc/check_out_bloc.dart';
-import '../order/models/cart_model.dart';
 
 Future<void> printReceipt({
   required BuildContext context,
   required String storeName,
   required String storeAddress,
   required String userName,
-  required List<CartModel> cart,
   required CheckOutState state,
 }) async {
   state as CheckOutInitial;
@@ -67,9 +65,9 @@ Future<void> printReceipt({
   bytes += generator.text("--------------------------------");
 
   // **4. Daftar Produk**
-  debugPrint("Isi Keranjang: ${cart.map((e) => e.toString()).toList()}");
+  debugPrint("Isi Keranjang: ${state.cart.map((e) => e.toString()).toList()}");
 
-  if (cart.isEmpty) {
+  if (state.cart.isEmpty) {
     debugPrint("Tidak ada item dalam keranjang!");
     if (context.mounted) {
       showDialog(
@@ -82,12 +80,12 @@ Future<void> printReceipt({
     return;
   }
 
-  for (var item in cart) {
-    final produk = item.product as ProductModel?;
+  for (var item in state.cart) {
+    final produk = item as ProductModel?;
     if (produk == null) continue;
 
     int hargaSatuan = produk.price ?? 0;
-    int jumlah = item.product.quantity ?? 0;
+    int jumlah = item.quantity ?? 0;
     int subTotal = jumlah * hargaSatuan;
 
     // Format produk dengan rata kiri untuk nama & rata kanan untuk angka

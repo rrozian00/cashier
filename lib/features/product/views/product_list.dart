@@ -128,9 +128,9 @@ class _ProductItem extends StatelessWidget {
                     right: 6,
                     child: BlocBuilder<OrderBloc, OrderState>(
                       builder: (context, state) {
-                        final item = orderBloc.cart.firstWhereOrNull(
-                            (e) => e.product.id == product.id);
-                        final quantity = item?.product.quantity ?? 0;
+                        final item = orderBloc.cart
+                            .firstWhereOrNull((e) => e.id == product.id);
+                        final quantity = item?.quantity ?? 0;
 
                         return quantity > 0
                             ? Container(

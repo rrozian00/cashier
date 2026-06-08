@@ -1,3 +1,4 @@
+import 'package:cashier/core/app_injection/app_injection.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +14,9 @@ import 'features/splash_screen/views/splash_screen_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await initInjection();
+
   await SupabaseInit.supabaseInit();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

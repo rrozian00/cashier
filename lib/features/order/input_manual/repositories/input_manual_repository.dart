@@ -3,14 +3,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../product/models/product_model.dart';
 import '../../../store/repositories/store_repository.dart';
 import '../../../user/repositories/user_repository.dart';
-import '../../order/models/cart_model.dart';
 import '../../order/models/order_model.dart';
 
 class InputManualRepository {
-  // final _firestore = FirebaseFirestore.instance;
-  final _supabase = Supabase.instance.client;
-  final storeRepo = StoreRepository();
-  final userRepo = UserRepository();
+  final SupabaseClient _supabase;
+  final StoreRepository storeRepo;
+  final UserRepository userRepo;
+
+  InputManualRepository(this._supabase, this.storeRepo, this.userRepo);
 
   Future<void> inputManual(
     int total,
@@ -32,8 +32,7 @@ class InputManualRepository {
         //     .collection('orders')
         //     .doc();
 
-        final product = CartModel(
-            product: ProductModel(name: "Input Manual", price: total));
+        final product = ProductModel(name: "Input Manual", price: total);
 
         final data = OrderModel(
           name: "Input Manual",

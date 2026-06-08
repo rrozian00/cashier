@@ -91,7 +91,7 @@ class UserRepository {
           await supabase.client.from('users').select().eq('id', id).single();
       return Right(UserModel.fromMap(user));
     } catch (e) {
-      return Left(Failure('Failed to fetch user data'));
+      return Left(Failure('Failed to get user data'));
     }
   }
 }

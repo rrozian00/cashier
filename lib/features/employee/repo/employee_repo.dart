@@ -9,10 +9,11 @@ import '../../user/models/user_model.dart';
 import '../../user/repositories/user_repository.dart';
 
 class EmployeeRepo {
-  final UserRepository _userRepo = UserRepository();
-  final storeRepo = StoreRepository();
-  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final SupabaseClient _supabase = Supabase.instance.client;
+  final UserRepository _userRepo;
+  final StoreRepository storeRepo;
+  final SupabaseClient _supabase;
+
+  EmployeeRepo(this._userRepo, this.storeRepo, this._supabase);
 
   Future<Either<Failure, void>> createEmployee({
     required String name,
@@ -151,8 +152,6 @@ class EmployeeRepo {
 
   Future<Either<Failure, void>> deleteEmployee(String id) async {
     try {
-      final storeRepository = StoreRepository();
-
       const serviceRoleKey =
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56dmZpY3BmcnB2Z2h2YWp0b2tyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MDU2NzkzMiwiZXhwIjoyMDk2MTQzOTMyfQ.uqGxLFT8-9IjZXUsZ3NwoSznX17YvyqjfSdESbhm_vo";
       const projectUrl = "https://nzvficpfrpvghvajtokr.supabase.co";
@@ -173,7 +172,7 @@ class EmployeeRepo {
         if (ownerId == null) return Left(Failure("User tidak ditemukan."));
 
         // Ambil store aktif
-        final store = await storeRepository
+        final store = await storeRepo
             .getActiveStore(ownerId)
             .then((e) => e.fold((l) => null, (r) => r));
         if (store != null) {

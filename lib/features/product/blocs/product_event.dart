@@ -4,7 +4,7 @@ sealed class ProductEvent extends Equatable {
   const ProductEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 final class ProductGetRequested extends ProductEvent {
@@ -22,7 +22,7 @@ final class ProductAddRequested extends ProductEvent {
   final DateTime registeredDate;
   final DateTime expiredDate;
   final int price;
-  // final File image;
+  final File? imageFile;
 
   const ProductAddRequested({
     required this.registeredDate,
@@ -31,17 +31,18 @@ final class ProductAddRequested extends ProductEvent {
     required this.category,
     required this.productCode,
     required this.price,
-    // required this.image,
+    this.imageFile,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         registeredDate,
         expiredDate,
         category,
         name,
         productCode,
         price,
+        imageFile
       ];
 }
 
@@ -52,19 +53,19 @@ final class ProductEditRequested extends ProductEvent {
   final String newName;
   final int newPrice;
   final String publicId;
-  // final File newImage;
+  final File? newImage;
 
   const ProductEditRequested({
     required this.id,
     required this.newName,
     required this.newPrice,
     required this.publicId,
-    // required this.newImage,
+    this.newImage,
   });
 
   @override
-  List<Object> get props => [
-        // newImage,
+  List<Object?> get props => [
+        newImage,
         publicId,
         id,
         newName,

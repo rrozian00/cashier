@@ -1,10 +1,10 @@
-import 'package:cashier/features/order/order/models/cart_model.dart';
+import '../../../product/models/product_model.dart';
 
 class OrderModel {
   String? id;
   String? name;
   String? storeId;
-  List<CartModel>? products;
+  List<ProductModel>? products;
   int? total;
   int? change;
   int? payment;
@@ -24,7 +24,7 @@ class OrderModel {
     String? id,
     String? name,
     String? storeId,
-    List<CartModel>? products,
+    List<ProductModel>? products,
     int? total,
     int? change,
     int? payment,
@@ -44,7 +44,6 @@ class OrderModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
       'name': name,
       'store_id': storeId,
       'products': products?.map((x) => x.toMap()).toList(),
@@ -61,11 +60,14 @@ class OrderModel {
         name: map['name'] != null ? map['name'] as String : null,
         storeId: map['store_id'] != null ? map['store_id'] as String : null,
         products: map['products'] != null
-            ? List<CartModel>.from(
-                (map['products'] as List).map(
-                  (e) => CartModel.fromMap(e),
-                ),
-              )
+            ? (map['products'] as List).map((e) {
+                // Pastikan data elemen berupa Map sebelum di-parsing ke ProductModel
+                if (e is Map<String, dynamic>) {
+                  return ProductModel.fromMap(e);
+                }
+                // Jika tipenya kacau, kembalikan objek kosong atau tangani dengan aman
+                return ProductModel();
+              }).toList()
             : null,
         total: map['total'] != null ? map['total'] as int : null,
         change: map['change'] != null ? map['change'] as int : null,

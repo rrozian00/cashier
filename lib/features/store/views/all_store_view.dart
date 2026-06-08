@@ -1,13 +1,13 @@
-import 'add_store_view.dart';
-
-import '../../../core/widgets/no_data.dart';
-import '../bloc/store_bloc.dart';
-import 'store_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class StoreView extends StatelessWidget {
-  const StoreView({super.key});
+import '../../../core/widgets/no_data.dart';
+import '../bloc/store_bloc.dart';
+import 'add_store_view.dart';
+import 'store_detail.dart';
+
+class AllStoreView extends StatelessWidget {
+  const AllStoreView({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -8,7 +8,7 @@ abstract class CheckOutEvent extends Equatable {
 }
 
 class InitCheckOut extends CheckOutEvent {
-  final List<CartModel> cart;
+  final List<ProductModel> cart;
   final int totalHarga;
   const InitCheckOut(this.totalHarga, this.cart);
 
@@ -27,7 +27,7 @@ class NumberPressed extends CheckOutEvent {
 class ClearPressed extends CheckOutEvent {}
 
 class ProcessPayment extends CheckOutEvent {
-  final List<CartModel> cart;
+  final List<ProductModel> cart;
 
   const ProcessPayment({required this.cart});
   @override

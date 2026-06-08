@@ -5,15 +5,15 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import '../../order/models/order_model.dart';
-import '../../order/repositories/order_repository.dart';
+import '../repos/history_order_repository.dart';
 
 part 'history_order_event.dart';
 part 'history_order_state.dart';
 
 class HistoryOrderBloc extends Bloc<HistoryOrderEvent, HistoryOrderState> {
-  final orderRepo = OrderRepository();
+  final HistoryOrderRepository historyOrderRepo;
 
-  HistoryOrderBloc() : super(HistoryOrderLoading()) {
+  HistoryOrderBloc(this.historyOrderRepo) : super(HistoryOrderLoading()) {
     on<ShowMyDateRange>(_onShowMydateRange);
     on<ShowInitial>(_onShowInitial); // Panggil fungsi inisialisasi
   }
@@ -23,9 +23,10 @@ class HistoryOrderBloc extends Bloc<HistoryOrderEvent, HistoryOrderState> {
       ShowInitial event, Emitter<HistoryOrderState> emit) async {
     emit(HistoryOrderLoading());
     final end = DateTime.now();
-    final start = end.subtract(const Duration(days: 7)); // 1 minggu terakhir
+    // final start = end.subtract(const Duration(days: -7)); // 1 minggu terakhir
+    final start = DateTime(end.year, end.month, end.day - 7);
 
-    final result = await orderRepo.getHistoryOrders(
+    final result = await historyOrderRepo.getHistoryOrders(
       start,
       end,
     );
@@ -47,7 +48,7 @@ class HistoryOrderBloc extends Bloc<HistoryOrderEvent, HistoryOrderState> {
     final start = event.picked.start;
     final end = event.picked.end.add(const Duration(days: 1));
 
-    final result = await orderRepo.getHistoryOrders(
+    final result = await historyOrderRepo.getHistoryOrders(
       start,
       end,
     );

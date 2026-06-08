@@ -6,9 +6,9 @@ part 'input_manual_event.dart';
 part 'input_manual_state.dart';
 
 class InputManualBloc extends Bloc<InputManualEvent, InputManualState> {
-  final inputManualRepo = InputManualRepository();
+  final InputManualRepository inputManualRepo;
 
-  InputManualBloc() : super(InputManualInitial()) {
+  InputManualBloc(this.inputManualRepo) : super(InputManualInitial()) {
     on<AddInputManual>((event, emit) async {
       try {
         emit(InputManualLoading());

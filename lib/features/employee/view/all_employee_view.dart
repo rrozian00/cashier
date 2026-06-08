@@ -142,7 +142,7 @@ Widget _buildListView(EmployeeSuccess state) {
   );
 }
 
-_showDeleteDialog(BuildContext context, UserModel data) {
+Future<void> _showDeleteDialog(BuildContext context, UserModel data) {
   return showDialog(
     context: context,
     builder: (context) => AlertDialog(

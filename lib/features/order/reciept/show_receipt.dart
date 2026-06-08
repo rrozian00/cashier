@@ -1,13 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cashier/features/order/check_out/bloc/check_out_bloc.dart';
 import 'package:cashier/features/order/order/bloc/order_bloc.dart';
-import 'package:cashier/features/order/order/models/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/utils/rupiah_converter.dart';
-import '../../product/models/product_model.dart';
 import 'print_receipt.dart';
 
 class ShowReceipt extends StatelessWidget {
@@ -17,7 +15,7 @@ class ShowReceipt extends StatelessWidget {
     required this.storeAddress,
     required this.userName,
     required this.state,
-    required this.carts,
+    // required this.products,
   });
 
   final String storeName;
@@ -25,7 +23,7 @@ class ShowReceipt extends StatelessWidget {
   final String userName;
 
   final CheckOutInitial state;
-  final List<CartModel> carts;
+  // final List<ProductModel> products;
 
   @override
   Widget build(BuildContext context) {
@@ -65,57 +63,54 @@ class ShowReceipt extends StatelessWidget {
 
             // Daftar Produk
             Expanded(
-              child: ListView(
-                children: [
-                  ...carts.map((item) {
-                    final produk = item.product as ProductModel?;
-                    if (produk == null) {
-                      debugPrint("Produk null di item: $item");
-                      return const SizedBox();
-                    }
+                child: ListView.builder(
+                    itemCount: state.cart.length,
+                    itemBuilder: (context, index) {
+                      final product = state.cart[index];
+                      if (state.cart.isEmpty) {
+                        debugPrint("Produk null di item: $product");
+                        return const SizedBox();
+                      }
 
-                    int hargaSatuan = produk.price ?? 0;
-                    int jumlah = item.product.quantity ?? 0;
-                    int subTotal = jumlah * hargaSatuan;
+                      int hargaSatuan = product.price ?? 0;
+                      int jumlah = product.quantity ?? 0;
+                      int subTotal = jumlah * hargaSatuan;
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                produk.name ?? 'Nama Tidak Ada',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 6.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  product.name ?? 'Nama Tidak Ada',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                "$jumlah x ${rupiahConverter(hargaSatuan)}",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 10,
-                                  color: Colors.grey,
+                                Text(
+                                  "$jumlah x ${rupiahConverter(hargaSatuan)}",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 10,
+                                    color: Colors.grey,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            rupiahConverter(subTotal),
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-                ],
-              ),
-            ),
+                            Text(
+                              rupiahConverter(subTotal),
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    })),
 
             const Divider(thickness: 1.5),
 
@@ -159,7 +154,6 @@ class ShowReceipt extends StatelessWidget {
                     onPressed: () {
                       printReceipt(
                         context: context,
-                        cart: carts,
                         state: state,
                         storeAddress: storeAddress,
                         storeName: storeName,

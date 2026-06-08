@@ -28,7 +28,7 @@ class ProductLoaded extends OrderState {
 }
 
 class OrderCartState extends OrderState {
-  final List<CartModel> cart;
+  final List<ProductModel> cart;
   final int totalPrice;
 
   const OrderCartState({
