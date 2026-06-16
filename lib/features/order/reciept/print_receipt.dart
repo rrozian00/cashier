@@ -1,3 +1,4 @@
+import 'package:cashier/core/widgets/my_snackbar.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -19,12 +20,7 @@ Future<void> printReceipt({
   if (!isConnected) {
     debugPrint("Printer belum terhubung!");
     if (context.mounted) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          content: Text("Belum ada printer yang Terhubung!"),
-        ),
-      );
+      mySnackbar(context, "Belum ada printer yang terhubung!", isError: true);
     }
     return;
   }

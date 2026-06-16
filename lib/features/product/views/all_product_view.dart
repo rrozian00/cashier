@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/utils/my_snackbar.dart';
+import '../../../core/widgets/my_snackbar.dart';
 import '../../../core/utils/rupiah_converter.dart';
 import '../../../core/widgets/my_alert_dialog.dart';
 import '../../../core/widgets/no_data.dart';
@@ -27,7 +27,7 @@ class AllProductView extends StatelessWidget {
       body: BlocConsumer<ProductBloc, ProductState>(
         listener: (context, state) {
           if (state is ProductFailed) {
-            showMysnackbar(context, state.message, isError: true);
+            mySnackbar(context, state.message, isError: true);
           }
         },
         builder: (context, state) {

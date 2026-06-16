@@ -1,4 +1,4 @@
-import '../../../core/utils/my_snackbar.dart';
+import '../../../core/widgets/my_snackbar.dart';
 import '../bloc/printer_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +11,7 @@ class PrinterView extends StatelessWidget {
     return BlocListener<PrinterBloc, PrinterState>(
       listener: (context, state) {
         if (state is PrinterFailed) {
-          showMysnackbar(context, state.message, isError: true);
+          mySnackbar(context, state.message, isError: true);
         }
       },
       child: Scaffold(

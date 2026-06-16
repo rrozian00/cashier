@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/utils/my_snackbar.dart';
+import '../../../core/widgets/my_snackbar.dart';
 import '../../../core/utils/rupiah_converter.dart';
 import '../../../core/widgets/image_picker_field.dart'; // Import Custom Widget
 import '../../scanner/views/scanner_view.dart';
@@ -57,10 +57,10 @@ class _AddProductViewState extends State<AddProductView> {
           // Pola Unified State: Sukses Add otomatis memicu ProductSuccess (Refresh List)
           if (state is ProductSuccess) {
             Navigator.pop(context);
-            showMysnackbar(context, "Produk berhasil ditambahkan");
+            mySnackbar(context, "Produk berhasil ditambahkan");
           }
           if (state is ProductFailed) {
-            showMysnackbar(context, state.message, isError: true);
+            mySnackbar(context, state.message, isError: true);
           }
         },
         builder: (context, state) {

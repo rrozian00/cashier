@@ -1,9 +1,8 @@
-import 'package:cashier/core/widgets/no_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-import '../../home/views/home_view.dart';
+import '../../../core/widgets/no_data.dart';
 import '../../order/order/views/order_view.dart';
 import '../../printer/views/printer_view.dart';
 import '../../setting/views/settings_view.dart';
@@ -26,24 +25,24 @@ class NavbarView extends StatelessWidget {
 
           final pages = role == 'owner'
               ? [
-                  HomeView(),
+                  // HomeView(),
                   OrderView(),
                   SettingsView(),
                 ]
               : [
-                  HomeView(),
+                  // HomeView(),
                   OrderView(),
                   PrinterView(),
                   ProfileView(),
                 ];
           final tabs = (role == 'owner'
               ? [
-                  GButton(icon: Icons.home, text: "Beranda"),
+                  // GButton(icon: Icons.home, text: "Beranda"),
                   GButton(icon: Icons.shopping_cart_rounded, text: "Keranjang"),
                   GButton(icon: Icons.settings, text: "Pengaturan"),
                 ]
               : [
-                  GButton(icon: Icons.home, text: "Beranda"),
+                  // GButton(icon: Icons.home, text: "Beranda"),
                   GButton(icon: Icons.shopping_cart_rounded, text: "Keranjang"),
                   GButton(icon: Icons.print, text: "Printer"),
                   GButton(icon: Icons.person, text: "Profil"),

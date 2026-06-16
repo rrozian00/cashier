@@ -1,4 +1,4 @@
-import 'package:cashier/core/utils/my_snackbar.dart';
+import 'package:cashier/core/widgets/my_snackbar.dart';
 
 import '../../../navbar/views/navbar_view.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,7 @@ class LoginView extends StatelessWidget {
                 builder: (context) => NavbarView(),
               ));
         } else if (state.message != null) {
-          showMysnackbar(context, state.message ?? '', isError: true);
+          mySnackbar(context, state.message ?? '', isError: true);
         }
       },
       child: Scaffold(

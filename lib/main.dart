@@ -18,6 +18,7 @@ void main() async {
   await initInjection();
 
   await SupabaseInit.supabaseInit();
+  
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

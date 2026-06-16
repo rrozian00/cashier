@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/utils/my_snackbar.dart';
+import '../../../../core/widgets/my_snackbar.dart';
 import '../../../../core/widgets/my_text_field.dart';
 import '../../login/views/login_view.dart';
 import '../../models/user_model.dart';
@@ -29,9 +29,9 @@ class RegisterView extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => LoginView(),
               ));
-          showMysnackbar(context, "Berhasil Registrasi, Silahkan Login !");
+          mySnackbar(context, "Berhasil Registrasi, Silahkan Login !");
         } else if (state is RegisterFailedState) {
-          showMysnackbar(context, state.message, isError: true);
+          mySnackbar(context, state.message, isError: true);
           print(state.message);
         }
       },

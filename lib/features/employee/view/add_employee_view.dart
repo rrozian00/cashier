@@ -1,4 +1,4 @@
-import 'package:cashier/core/utils/my_snackbar.dart';
+import 'package:cashier/core/widgets/my_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,12 +22,12 @@ class AddEmployeeView extends StatelessWidget {
       listener: (context, state) {
         if (state is EmployeeSuccess) {
           Navigator.pop(context);
-          showMysnackbar(context, "Berhasil tambah karyawan.");
+          mySnackbar(context, "Berhasil tambah karyawan.");
         }
         if (state is EmployeeError) {
           Navigator.pop(context);
 
-          showMysnackbar(context, "Gagal", isError: true);
+          mySnackbar(context, "Gagal", isError: true);
         }
       },
       child: Scaffold(
